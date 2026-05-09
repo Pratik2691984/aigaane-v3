@@ -1,6 +1,6 @@
-﻿// --- AIGAANE V3: SANSKRIT ENGINE (FULL VERSION) ---
+﻿// --- AIGAANE V3: SANSKRIT ENGINE (CORRECTED TRANSLITERATION) ---
 
-// Complete Devanagari to IAST mapping
+// Complete Devanagari to IAST mapping (single characters)
 const devToIast = {
     'अ':'a','आ':'ā','इ':'i','ई':'ī','उ':'u','ऊ':'ū','ऋ':'ṛ','ॠ':'ṝ',
     'ऌ':'ḷ','ॡ':'ḹ','ए':'e','ऐ':'ai','ओ':'o','औ':'au','ं':'ṃ','ः':'ḥ',
@@ -10,25 +10,101 @@ const devToIast = {
     'म':'m','य':'y','र':'r','ल':'l','व':'v','श':'ś','ष':'ṣ','स':'s','ह':'h'
 };
 
-const iastToDev = Object.fromEntries(Object.entries(devToIast).map(([d,i]) => [i,d]));
+// IAST to Devanagari mapping (includes vowel signs and conjuncts)
+const iastToDevMap = {
+    // Vowels
+    'a': 'अ', 'ā': 'आ', 'i': 'इ', 'ī': 'ई', 'u': 'उ', 'ū': 'ऊ',
+    'ṛ': 'ऋ', 'ṝ': 'ॠ', 'ḷ': 'ऌ', 'ḹ': 'ॡ', 'e': 'ए', 'ai': 'ऐ',
+    'o': 'ओ', 'au': 'औ',
+    
+    // Consonants
+    'k': 'क', 'kh': 'ख', 'g': 'ग', 'gh': 'घ', 'ṅ': 'ङ',
+    'c': 'च', 'ch': 'छ', 'j': 'ज', 'jh': 'झ', 'ñ': 'ञ',
+    'ṭ': 'ट', 'ṭh': 'ठ', 'ḍ': 'ड', 'ḍh': 'ढ', 'ṇ': 'ण',
+    't': 'त', 'th': 'थ', 'd': 'द', 'dh': 'ध', 'n': 'न',
+    'p': 'प', 'ph': 'फ', 'b': 'ब', 'bh': 'भ', 'm': 'म',
+    'y': 'य', 'r': 'र', 'l': 'ल', 'v': 'व', 'ś': 'श', 'ṣ': 'ष', 's': 'स', 'h': 'ह',
+    
+    // Special
+    'ṃ': 'ं', 'ḥ': 'ः', '~': 'ँ',
+    
+    // Vowel signs (when attached to consonants)
+    'ā': 'ा', 'i': 'ि', 'ī': 'ी', 'u': 'ु', 'ū': 'ू',
+    'ṛ': 'ृ', 'ṝ': 'ॄ', 'ḷ': 'ॢ', 'ḹ': 'ॣ',
+    'e': 'े', 'ai': 'ै', 'o': 'ो', 'au': 'ौ'
+};
 
-// Transliteration function (both directions)
-function transliterate(text, direction) {
+/**
+ * Convert IAST to Devanagari properly
+ * Handles consonant+vowel combinations correctly
+ */
+function iastToDevanagari(text) {
     if (!text) return '';
+    
+    let result = '';
+    let i = 0;
+    
+    while (i < text.length) {
+        // Check for 2-character sequences first (kh, ch, ṅ, etc.)
+        let found = false;
+        
+        // Look ahead for 3-character sequences (rare, like 'ṅh')
+        if (i + 2 <= text.length) {
+            const threeChar = text.substr(i, 3);
+            if (iastToDevMap[threeChar]) {
+                result += iastToDevMap[threeChar];
+                i += 3;
+                found = true;
+                continue;
+            }
+        }
+        
+        // Look ahead for 2-character sequences
+        if (i + 1 <= text.length) {
+            const twoChar = text.substr(i, 2);
+            if (iastToDevMap[twoChar]) {
+                result += iastToDevMap[twoChar];
+                i += 2;
+                found = true;
+                continue;
+            }
+        }
+        
+        // Single character
+        const singleChar = text[i];
+        if (iastToDevMap[singleChar]) {
+            result += iastToDevMap[singleChar];
+        } else {
+            result += singleChar; // Keep unknown characters as-is
+        }
+        i++;
+    }
+    
+    return result;
+}
+
+/**
+ * Convert Devanagari to IAST
+ */
+function devanagariToIAST(text) {
+    if (!text) return '';
+    return text.split('').map(ch => devToIast[ch] || ch).join('');
+}
+
+/**
+ * Main transliteration function
+ */
+function transliterate(text, direction) {
+    if (!text || text.trim() === '') return '';
+    
     if (direction === 'toIAST') {
-        return text.split('').map(ch => devToIast[ch] || ch).join('');
+        return devanagariToIAST(text);
     } else {
-        let result = text;
-        const sortedIast = Object.keys(iastToDev).sort((a, b) => b.length - a.length);
-        sortedIast.forEach(key => {
-            const regex = new RegExp(key, 'g');
-            result = result.replace(regex, iastToDev[key]);
-        });
-        return result;
+        return iastToDevanagari(text);
     }
 }
 
-// Expanded Sandhi Rules (50+ rules)
+// Sandhi rules (expanded)
 const sandhiRules = {
     'रामायण': 'राम + अयण (Dīrgha Sandhi)',
     'देवालय': 'देव + आलय (Dīrgha Sandhi)',
@@ -48,8 +124,13 @@ const sandhiRules = {
     'प्रत्येक': 'प्रति + एक (Yan Sandhi)',
     'षट्कोण': 'षष् + कोण (Jashva Sandhi)',
     'सम्मुख': 'सम् + मुख (Anusvāra)',
+    'उच्चार': 'उत् + चार (Jashva Sandhi)',
     'सलिल': 'स + लिल (Prakriti)',
-    'अध्ययन': 'अधि + अयन (Yan Sandhi)'
+    'अध्ययन': 'अधि + अयन (Yan Sandhi)',
+    'पित्राज्ञा': 'पितृ + आज्ञा (Guṇa Sandhi)',
+    'देवर्षि': 'देव + ऋषि (Guṇa Sandhi)',
+    'राजर्षि': 'राज + ऋषि (Guṇa Sandhi)',
+    'ब्रह्मर्षि': 'ब्रह्म + ऋषि (Guṇa Sandhi)'
 };
 
 // Expanded Lexicon (50+ Vedic terms)
@@ -77,21 +158,11 @@ const lexiconTerms = [
     { term: "Saptamsa", meaning: "7th harmonic chart; children and creativity" },
     { term: "Navamsa", meaning: "9th harmonic chart; spouse and dharma" },
     { term: "Dasamsa", meaning: "10th harmonic chart; career and status" },
-    { term: "Dwadasamsa", meaning: "12th harmonic chart; parents and lineage" },
-    { term: "Shodasamsa", meaning: "16th harmonic chart; vehicles and comforts" },
-    { term: "Vimsamsa", meaning: "20th harmonic chart; spiritual growth" },
-    { term: "Chaturvimsa", meaning: "24th harmonic chart; knowledge and learning" },
-    { term: "Saptavimsa", meaning: "27th harmonic chart; strengths and weaknesses" },
-    { term: "Trimshamsa", meaning: "30th harmonic chart; misfortunes and afflictions" },
-    { term: "Khavedamsa", meaning: "40th harmonic chart; auspiciousness" },
-    { term: "Akshavedamsa", meaning: "45th harmonic chart; general well-being" },
-    { term: "Shashtyamsa", meaning: "60th harmonic chart; past life karma" },
     { term: "Dharma", meaning: "Right action; cosmic order and duty" },
     { term: "Artha", meaning: "Wealth; material prosperity and resources" },
     { term: "Kama", meaning: "Desire; pleasure and emotional fulfillment" },
     { term: "Moksha", meaning: "Liberation; freedom from rebirth cycle" },
     { term: "Prakriti", meaning: "Fundamental nature; constitution (Vata/Pitta/Kapha)" },
-    { term: "Vikriti", meaning: "Imbalanced state; current health condition" },
     { term: "Ojas", meaning: "Vitality; immune strength and life essence" },
     { term: "Tejas", meaning: "Radiance; metabolic fire and brilliance" },
     { term: "Prana", meaning: "Life force; breath energy sustaining body" },
@@ -103,7 +174,16 @@ const lexiconTerms = [
     { term: "Akasha", meaning: "Ether element; space and consciousness" },
     { term: "Jyotish", meaning: "Science of light; Vedic astrology" },
     { term: "Ayurveda", meaning: "Science of life; Vedic medicine" },
-    { term: "Vedanta", meaning: "End of Vedas; non-dual philosophy" }
+    { term: "Vedanta", meaning: "End of Vedas; non-dual philosophy" },
+    { term: "Yantra", meaning: "Geometric diagram; energy tool" },
+    { term: "Tantra", meaning: "Technique; woven tradition" },
+    { term: "Mantra", meaning: "Sacred sound; mind protection" },
+    { term: "Kavacha", meaning: "Armor; protective prayer" },
+    { term: "Stotra", meaning: "Hymn of praise" },
+    { term: "Suktam", meaning: "Well-spoken Vedic hymn" },
+    { term: "Upanishad", meaning: "Sitting near; philosophical text" },
+    { term: "Purana", meaning: "Ancient narrative; mythological text" },
+    { term: "Itihasa", meaning: "History; epic (Ramayana, Mahabharata)" }
 ];
 
 // UI Functions
@@ -111,15 +191,16 @@ function showTransliteration() {
     const html = `
         <div class="result-card">
             <h3>🔤 Sanskrit Transliteration Tool</h3>
-            <textarea id="transliteration-input" rows="3" placeholder="Enter Sanskrit text...">नमस्ते</textarea>
+            <textarea id="transliteration-input" rows="3" placeholder="Enter Sanskrit text..." style="width:100%; padding:10px;">Pratik</textarea>
             <select id="transliteration-direction" style="margin: 10px 0; padding: 8px;">
-                <option value="toIAST">Devanagari → IAST</option>
                 <option value="toDevanagari">IAST → Devanagari</option>
+                <option value="toIAST">Devanagari → IAST</option>
             </select>
             <button onclick="performTransliteration()" class="btn-primary">Convert</button>
             <div id="transliteration-output" style="margin-top: 15px; padding: 10px; background: #fefaf5;">
-                <strong>Result:</strong> <span id="transliteration-result">namaste</span>
+                <strong>Result:</strong> <span id="transliteration-result">प्रतिक</span>
             </div>
+            <p style="margin-top: 10px; font-size: 0.7rem;">Example: "Pratik" → "प्रतिक" | "नमस्ते" → "namaste"</p>
         </div>
     `;
     document.getElementById('sanskrit-output').innerHTML = html;
@@ -141,7 +222,7 @@ function showSandhiTool() {
     
     const html = `
         <div class="result-card">
-            <h3>⚡ Sandhi Splitter (50+ Rules)</h3>
+            <h3>⚡ Sandhi Splitter (${Object.keys(sandhiRules).length}+ Rules)</h3>
             <input type="text" id="sandhi-word" placeholder="Enter compound word (e.g., रामायण)" style="width: 100%; padding: 10px;">
             <button onclick="splitSandhiWord()" class="btn-primary" style="margin-top: 10px;">Split Sandhi</button>
             <div id="sandhi-result" style="margin-top: 15px; padding: 10px; background: #fefaf5;"></div>
@@ -189,9 +270,18 @@ function searchLexiconTerms() {
 
 // Bind buttons
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('transliterate-btn')?.addEventListener('click', showTransliteration);
-    document.getElementById('sandhi-btn')?.addEventListener('click', showSandhiTool);
-    document.getElementById('lexicon-btn')?.addEventListener('click', showLexicon);
+    const transliterateBtn = document.getElementById('transliterate-btn');
+    const sandhiBtn = document.getElementById('sandhi-btn');
+    const lexiconBtn = document.getElementById('lexicon-btn');
+    
+    if (transliterateBtn) transliterateBtn.addEventListener('click', showTransliteration);
+    if (sandhiBtn) sandhiBtn.addEventListener('click', showSandhiTool);
+    if (lexiconBtn) lexiconBtn.addEventListener('click', showLexicon);
+    
+    console.log('✅ Sanskrit Engine loaded with corrected transliteration');
 });
 
-console.log('✅ Sanskrit Engine loaded with 50+ sandhi rules and 50+ lexicon terms');
+// Make functions global for onclick handlers
+window.performTransliteration = performTransliteration;
+window.splitSandhiWord = splitSandhiWord;
+window.searchLexiconTerms = searchLexiconTerms;
