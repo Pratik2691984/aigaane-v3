@@ -1,0 +1,64 @@
+{
+  "version": 2,
+  "name": "aigaane-v3",
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "engine/*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "engine/*.json",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "tabs/*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "style.css",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/engine/(.*)",
+      "dest": "/engine/$1"
+    },
+    {
+      "src": "/tabs/(.*)",
+      "dest": "/tabs/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/engine/kernel.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, must-revalidate"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    }
+  ]
+}
