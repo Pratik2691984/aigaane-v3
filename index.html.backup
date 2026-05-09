@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aigaane V3 — 49D Vedic Astrology Engine | Soul Map First Architecture">
+    <title>Aigaane V3 · 49D Vedic Kernel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-grid">
+    <!-- HEADER: Sharp & Technical -->
+    <header class="site-header">
+        <div class="logo-block">
+            <h1>ĀIGĀANE <span class="badge-49d">v3 · 49D KERNEL</span></h1>
+            <p class="subhead">Quantatech Arithmetic · Soul Map First</p>
+        </div>
+        <div class="kernel-stats" id="kernel-stats">
+            <span class="stat"><span class="icon-cube"></span> Σ Dim: <span id="dim-sum">—</span></span>
+            <span class="stat"><span class="icon-wave"></span> Entropy: <span id="anumana-entropy">—</span></span>
+            <span class="stat mono">🔬 Hash: <span id="res-hash">—</span></span>
+        </div>
+    </header>
+
+    <!-- TABS: Unified Navigation -->
+    <nav class="sharp-tabs">
+        <button class="tab-btn active" data-tab="soulmap">🌀 SOUL MAP</button>
+        <button class="tab-btn" data-tab="sanskrit">📜 SANSKRIT ENGINE</button>
+        <button class="tab-btn" data-tab="music">🎵 MANTRA & MUSIC</button>
+    </nav>
+
+    <!-- TAB PANES -->
+    <main class="tab-container">
+        <!-- SOUL MAP TAB -->
+        <div id="soulmap" class="tab-pane active">
+            <div class="panel-header">
+                <h2><span class="icon-user"></span> Birth Coordinates → 49D Tensor</h2>
+                <p>The kernel drives every prediction. Change birth data to recalculate all tabs uniformly.</p>
+            </div>
+            <div class="form-card">
+                <div class="form-grid">
+                    <div class="input-field"><label>Year</label><input type="number" id="birth-year" value="1990"></div>
+                    <div class="input-field"><label>Month</label><input type="number" id="birth-month" value="6"></div>
+                    <div class="input-field"><label>Day</label><input type="number" id="birth-day" value="15"></div>
+                    <div class="input-field"><label>Hour (0-23)</label><input type="number" id="birth-hour" value="10"></div>
+                    <div class="input-field"><label>Minute</label><input type="number" id="birth-minute" value="30"></div>
+                    <div class="input-field"><label>Latitude</label><input type="text" id="birth-lat" value="28.6139"></div>
+                    <div class="input-field"><label>Longitude</label><input type="text" id="birth-lon" value="77.2090"></div>
+                </div>
+                <button id="recalc-kernel" class="btn-primary"><span class="icon-refresh"></span> Recalculate 49D Kernel</button>
+            </div>
+            <div id="soulmap-output" class="results-area">
+                <div class="loading-placeholder">Click recalculate or wait for kernel sync...</div>
+            </div>
+        </div>
+
+        <!-- SANSKRIT ENGINE TAB -->
+        <div id="sanskrit" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-book"></span> Sanskrit Engine · Phonetic Extraction</h2>
+                <p>Transliteration, Sandhi splitting, and Vedic lexicon — all derived from 49D resonance.</p>
+            </div>
+            <div class="toolbar">
+                <button class="tool-btn" id="transliterate-btn">🔤 Devanagari ↔ IAST</button>
+                <button class="tool-btn" id="sandhi-btn">⚡ Sandhi Splitter</button>
+                <button class="tool-btn" id="lexicon-btn">📖 Jyotish Lexicon</button>
+            </div>
+            <div id="sanskrit-output" class="results-area">
+                <div class="info-card">Select a tool to begin Sanskrit processing.</div>
+            </div>
+        </div>
+
+        <!-- MANTRA & MUSIC TAB -->
+        <div id="music" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-music"></span> Mantra & Music · Resonance Mapping</h2>
+                <p>Frequency dimensions (8-21) map directly to Vedic mantras and swaras.</p>
+            </div>
+            <div id="music-output" class="results-area">
+                <div class="loading-placeholder">Generating from kernel frequency band...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>© 2026 Aigaane · 49D Arithmetic Kernel · All outputs derived from unified tensor</p>
+    </footer>
+</div>
+
+<script>
+    // TAB SWITCHING - MUST LOAD FIRST
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded, setting up tabs...');
+        
+        // Get all tab buttons
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const panes = document.querySelectorAll('.tab-pane');
+        
+        console.log('Found tabs:', tabBtns.length);
+        
+        // Add click handlers to each tab button
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                console.log('Tab clicked:', tabId);
+                
+                // Remove active class from all buttons and panes
+                tabBtns.forEach(b => b.classList.remove('active'));
+                panes.forEach(p => p.classList.remove('active'));
+                
+                // Add active class to current button and pane
+                this.classList.add('active');
+                const activePane = document.getElementById(tabId);
+                if (activePane) {
+                    activePane.classList.add('active');
+                    console.log('Activated pane:', tabId);
+                } else {
+                    console.error('Pane not found:', tabId);
+                }
+            });
+        });
+        
+        console.log('Tab handlers attached successfully');
+    });
+</script>
+
+<!-- Load modules in correct order -->
+<script src="engine/quantatech.js"></script>
+<script src="tabs/soul-map.js"></script>
+<script src="tabs/sanskrit.js"></script>
+<script src="tabs/music-mantra.js"></script>
+
+<script>
+    // Initialize everything after all scripts load
+    window.addEventListener('load', async () => {
+        console.log('All scripts loaded, initializing Quantatech...');
+        
+        if (window.Quantatech) {
+            await window.Quantatech.init();
+            console.log('Quantatech initialized, metrics:', window.Quantatech.getMetrics());
+            
+            // Render initial content
+            if (window.SoulMap) window.SoulMap.render();
+            if (window.MusicMantra) window.MusicMantra.render();
+        } else {
+            console.error('Quantatech not loaded! Check file path.');
+        }
+        
+        // Set up recalc button
+        const recalcBtn = document.getElementById('recalc-kernel');
+        if (recalcBtn) {
+            recalcBtn.addEventListener('click', () => {
+                const birth = {
+                    year: parseInt(document.getElementById('birth-year').value),
+                    month: parseInt(document.getElementById('birth-month').value),
+                    day: parseInt(document.getElementById('birth-day').value),
+                    hour: parseInt(document.getElementById('birth-hour').value),
+                    minute: parseInt(document.getElementById('birth-minute').value),
+                    lat: parseFloat(document.getElementById('birth-lat').value),
+                    lon: parseFloat(document.getElementById('birth-lon').value)
+                };
+                window.Quantatech.recompute(birth);
+                if (window.SoulMap) window.SoulMap.render();
+                if (window.MusicMantra) window.MusicMantra.render();
+            });
+        }
+    });
+</script>
+</body>
+</html>
+ 
+ 
