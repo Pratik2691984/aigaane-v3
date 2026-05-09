@@ -1,8 +1,10 @@
-// engine/quantatech.js - 49D Arithmetic Kernel
+﻿// --- AIGAANE V3: 49D QUANTATECH KERNEL (PRODUCTION GRADE) ---
+
 window.Quantatech = (function() {
     let kernelTensor = new Array(49).fill(0.5);
     let kernelMetrics = { dimensionSum: 0, vectorMagnitude: 0, anumanaEntropy: 0, resonanceHash: '' };
     let kernelData = null;
+    let isInitialized = false;
 
     function hashBirthToSeed(birth) {
         const { year, month, day, hour, minute, lat, lon } = birth;
@@ -38,34 +40,78 @@ window.Quantatech = (function() {
         return { dimensionSum: sum, vectorMagnitude: magnitude, anumanaEntropy: entropy, resonanceHash: hashStr };
     }
 
+    function updateUI() {
+        const sumEl = document.getElementById('dim-sum');
+        const entropyEl = document.getElementById('anumana-entropy');
+        const hashEl = document.getElementById('res-hash');
+        if (sumEl) sumEl.innerText = kernelMetrics.dimensionSum;
+        if (entropyEl) entropyEl.innerText = kernelMetrics.anumanaEntropy;
+        if (hashEl) hashEl.innerText = kernelMetrics.resonanceHash;
+        
+        // Show success indicator
+        const statsContainer = document.getElementById('kernel-stats');
+        if (statsContainer && isInitialized) {
+            statsContainer.style.opacity = '1';
+        }
+    }
+
+    function showError(message) {
+        console.error('Quantatech Error:', message);
+        const statsContainer = document.getElementById('kernel-stats');
+        if (statsContainer) {
+            statsContainer.style.border = '1px solid #ff4d4d';
+            setTimeout(() => {
+                statsContainer.style.border = '';
+            }, 3000);
+        }
+    }
+
     return {
         init: async function() {
-            // Auto-detect environment
-        const basePath = window.location.pathname.includes('/aigaane') ? '/aigaane' : '';
-        const response = await fetch(`${basePath}/engine/kernel.json`);
-            kernelData = await response.json();
-            const defaultBirth = { year: 1990, month: 6, day: 15, hour: 10, minute: 30, lat: 28.6139, lon: 77.2090 };
-            this.recompute(defaultBirth);
-            return true;
+            try {
+                const response = await fetch('/engine/kernel.json');
+                if (!response.ok) throw new Error(`HTTP ${response.status}: Failed to load kernel.json`);
+                kernelData = await response.json();
+                console.log('✅ Kernel JSON loaded:', kernelData.vedic_entries?.length || 0, 'entries');
+                
+                const defaultBirth = { 
+                    year: 1990, month: 6, day: 15, hour: 10, minute: 30, 
+                    lat: 28.6139, lon: 77.2090 
+                };
+                this.recompute(defaultBirth);
+                isInitialized = true;
+                return true;
+            } catch (error) {
+                console.error('❌ Kernel initialization failed:', error);
+                showError(error.message);
+                return false;
+            }
         },
+        
         recompute: function(birth) {
-            const seed = hashBirthToSeed(birth);
-            kernelTensor = generateTensor(seed);
-            kernelMetrics = calculateMetrics(kernelTensor);
-            this.updateUI();
-            return { tensor: kernelTensor, metrics: kernelMetrics };
+            try {
+                if (!birth || typeof birth.year === 'undefined') {
+                    throw new Error('Invalid birth data');
+                }
+                const seed = hashBirthToSeed(birth);
+                kernelTensor = generateTensor(seed);
+                kernelMetrics = calculateMetrics(kernelTensor);
+                this.updateUI();
+                return { tensor: kernelTensor, metrics: kernelMetrics };
+            } catch (error) {
+                console.error('Recompute error:', error);
+                showError(error.message);
+                return null;
+            }
         },
+        
         getTensor: function() { return kernelTensor; },
         getMetrics: function() { return kernelMetrics; },
         getVedicEntries: function() { return kernelData?.vedic_entries || []; },
         getLexicon: function() { return kernelData?.lexicon || []; },
-        updateUI: function() {
-            const sumEl = document.getElementById('dim-sum');
-            const entropyEl = document.getElementById('anumana-entropy');
-            const hashEl = document.getElementById('res-hash');
-            if (sumEl) sumEl.innerText = kernelMetrics.dimensionSum;
-            if (entropyEl) entropyEl.innerText = kernelMetrics.anumanaEntropy;
-            if (hashEl) hashEl.innerText = kernelMetrics.resonanceHash;
-        }
+        isReady: function() { return isInitialized; },
+        updateUI: updateUI
     };
 })();
+
+console.log('✅ 49D Quantatech Kernel loaded');
