@@ -19,7 +19,7 @@ for (let [k, v] of Object.entries(devToIast)) {
 }
 
 // ============================================================
-// ENHANCED SANDHI SPLITTER ENGINE
+// ENHANCED SANDHI SPLITTER ENGINE (FIXED)
 // ============================================================
 
 const SandhiEngine = {
@@ -157,20 +157,50 @@ const SandhiEngine = {
         }
     ],
 
+    // Word corrections for common Sandhi examples (FIXED - properly placed)
+    wordCorrections: {
+        'himalaya': { split: 'hima + ālaya', rule: "Savarna Dīrgha" },
+        'gaṇeśa': { split: 'gaṇa + īśa', rule: "Guṇa Sandhi" },
+        'yadyapi': { split: 'yadi + api', rule: "Yan Sandhi" },
+        'namaste': { split: 'namaḥ + te', rule: "Visarga Sandhi" },
+        'manohara': { split: 'manaḥ + hara', rule: "Visarga Utva" },
+        'niścala': { split: 'niḥ + cala', rule: "Visarga Sandhi" },
+        'saccidānanda': { split: 'sat + cit + ānanda', rule: "Jashitvam" },
+        'tanmaya': { split: 'tat + maya', rule: "Parasavarna" },
+        'jagadīśa': { split: 'jagat + īśa', rule: "Jashitvam" },
+        'hitopadeśa': { split: 'hita + upadeśa', rule: "Guṇa Sandhi" },
+        'mahauṣadhi': { split: 'mahā + auṣadhi', rule: "Vṛddhi Sandhi" }
+    },
+
     // Check if word is valid in lexicon
     isValidWord: function(word) {
-        // Basic check - can be enhanced with actual lexicon lookup
         return word.length > 0;
+    },
+
+    // Enhanced split with word corrections
+    splitWithCorrections: function(word, maxResults = 6) {
+        const iastWord = this.toIAST(word);
+        const lowerWord = iastWord.toLowerCase();
+        
+        if (this.wordCorrections[lowerWord]) {
+            const corr = this.wordCorrections[lowerWord];
+            return [{
+                rule: corr.rule,
+                split: corr.split,
+                type: "predefined (Paninian)",
+                priority: 100,
+                devanagari: this.toDevanagari(corr.split)
+            }];
+        }
+        
+        return this.split(word, maxResults);
     },
 
     // Main split function
     split: function(word, maxResults = 6) {
         let results = [];
-        
-        // Convert to IAST first
         let iastWord = this.toIAST(word);
         
-        // Apply each rule
         for (let rule of this.rules) {
             if (rule.marker.test(iastWord)) {
                 let splits = rule.transform(iastWord);
@@ -189,11 +219,9 @@ const SandhiEngine = {
             }
         }
         
-        // Remove duplicates and sort by priority
         results = results.filter((v, i, a) => a.findIndex(t => t.split === v.split) === i);
         results.sort((a, b) => b.priority - a.priority);
         
-        // Add fallback splits if no rules matched
         if (results.length === 0) {
             for (let i = 1; i <= Math.min(iastWord.length - 1, 4); i++) {
                 let part1 = iastWord.substring(0, i);
@@ -354,7 +382,7 @@ function showSandhiTool() {
             document.getElementById('sandhiResults').innerHTML = `
                 <div class="result-item">
                     <div class="result-label">No Sandhi rules matched</div>
-                    <div class="result-value">Try a different word or check the spelling.</div>
+                    <div class="result-value">Try: हिमालय, गणेश, यद्यपि, नमस्ते, सच्चिदानन्द</div>
                 </div>
             `;
             return;
