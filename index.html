@@ -842,82 +842,175 @@
         'स्क': 'ska', 'स्ट': 'sṭa', 'स्थ': 'stha', 'स्प': 'spa', 'स्फ': 'spha'
     };
     
-    /**
-     * Convert Devanagari to IAST - Correct algorithm
+        /**
+     * Convert Devanagari to IAST - Corrected with Inherent 'a' preservation
+     * 
+     * RULE: Every consonant NOT followed by Halanta (्) or Vowel Sign (Matra) gets inherent 'a'
+     * EXAMPLE: न (na) → 'na' NOT 'n'
+     *          त (ta) → 'ta' NOT 't'
+     *          क् (k) → 'k' (no vowel because Halanta)
+     *          का (kā) → 'kā' (vowel sign present)
      */
     function devanagariToIAST(text) {
         if (!text) return '';
         
-        // First, normalize the text (remove ZWJ/ZWNJ if any)
+        // Normalize the text
         text = text.normalize('NFC');
         
         let result = '';
         let i = 0;
         const len = text.length;
         
+        // Helper: Check if character is a vowel sign (matra)
+        const isVowelSign = (ch) => 'ािीुूृॄेैोौ'.includes(ch);
+        
+        // Helper: Check if character is a consonant
+        const isConsonant = (ch) => 'कखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह'.includes(ch);
+        
+        // Helper: Get consonant base (without inherent vowel)
+        const getConsonantBase = (ch) => {
+            const map = {
+                'क':'k','ख':'kh','ग':'g','घ':'gh','ङ':'ṅ',
+                'च':'c','छ':'ch','ज':'j','झ':'jh','ञ':'ñ',
+                'ट':'ṭ','ठ':'ṭh','ड':'ḍ','ढ':'ḍh','ण':'ṇ',
+                'त':'t','थ':'th','द':'d','ध':'dh','न':'n',
+                'प':'p','फ':'ph','ब':'b','भ':'bh','म':'m',
+                'य':'y','र':'r','ल':'l','व':'v',
+                'श':'ś','ष':'ṣ','स':'s','ह':'h'
+            };
+            return map[ch] || ch;
+        };
+        
+        // Special conjunct mapping
+        const specialConjuncts = {
+            'क्ष': 'kṣ', 'ज्ञ': 'jñ', 'श्र': 'śr', 'त्र': 'tr',
+            'प्र': 'pr', 'प्ल': 'pl', 'क्र': 'kr', 'ग्र': 'gr',
+            'द्व': 'dv', 'द्य': 'dy', 'ह्य': 'hy', 'स्य': 'sy',
+            'त्व': 'tv', 'त्य': 'ty', 'न्य': 'ny', 'न्व': 'nv',
+            'ग्ध': 'gdh', 'ब्ध': 'bdh', 'प्त': 'pt', 'प्स': 'ps',
+            'ल्क': 'lk', 'ल्प': 'lp', 'ल्ब': 'lb', 'ल्म': 'lm',
+            'ष्क': 'ṣk', 'ष्ट': 'ṣṭ', 'ष्ठ': 'ṣṭh', 'ष्ण': 'ṣṇ', 'ष्प': 'ṣp', 'ष्फ': 'ṣph',
+            'स्क': 'sk', 'स्ट': 'sṭ', 'स्थ': 'sth', 'स्न': 'sn', 'स्प': 'sp', 'स्फ': 'sph', 'स्म': 'sm', 'स्य': 'sy'
+        };
+        
         while (i < len) {
-            let matched = false;
+            const current = text[i];
             
-            // Check for conjuncts (3 characters: consonant + ् + consonant)
+            // Handle conjuncts (consonant + ् + consonant)
             if (i + 2 < len && text[i+1] === '्') {
-                const conjunct = text[i] + text[i+1] + text[i+2];
-                if (CONJUNCT_TABLE[conjunct]) {
-                    result += CONJUNCT_TABLE[conjunct];
-                    i += 3;
-                    matched = true;
-                }
-                // Check for conjuncts with vowel sign (consonant + ् + consonant + vowel)
-                else if (i + 3 < len) {
-                    const conjunctFour = text[i] + text[i+1] + text[i+2] + text[i+3];
-                    for (let [key, value] of Object.entries(CONJUNCT_TABLE)) {
-                        if (conjunctFour.startsWith(key) && key.length === 3) {
-                            result += value;
-                            i += 3;
-                            matched = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            
-            // Check for vowel signs (matras)
-            if (!matched && text[i] in DEVANAGARI_MAP) {
-                const mapped = DEVANAGARI_MAP[text[i]];
+                const conjunctKey = text[i] + text[i+2];
                 
-                // Handle anusvara at word boundaries
-                if (mapped === 'ṃ' && (result === '' || result.endsWith(' '))) {
-                    // Don't add anusvara at beginning of words
-                    i++;
+                if (specialConjuncts[conjunctKey]) {
+                    result += specialConjuncts[conjunctKey];
+                    i += 3;
                     continue;
                 }
                 
-                result += mapped;
-                i++;
-                matched = true;
+                // Generic conjunct: just combine the consonants
+                const cons1 = getConsonantBase(text[i]);
+                const cons2 = getConsonantBase(text[i+2]);
+                result += cons1 + cons2;
+                i += 3;
+                continue;
             }
             
-            // Regular character
-            if (!matched) {
-                result += text[i];
+            // Handle vowel signs (matras) - these attach to previous consonant
+            if (isVowelSign(current)) {
+                const vowelMap = {
+                    'ा':'ā', 'ि':'i', 'ी':'ī', 'ु':'u', 'ू':'ū',
+                    'ृ':'ṛ', 'ॄ':'ṝ', 'े':'e', 'ै':'ai', 'ो':'o', 'ौ':'au'
+                };
+                result += vowelMap[current] || current;
                 i++;
+                continue;
             }
+            
+            // Handle independent vowels
+            const vowelMap = {
+                'अ':'a', 'आ':'ā', 'इ':'i', 'ई':'ī', 'उ':'u', 'ऊ':'ū',
+                'ऋ':'ṛ', 'ॠ':'ṝ', 'ऌ':'ḷ', 'ॡ':'ḹ',
+                'ए':'e', 'ऐ':'ai', 'ओ':'o', 'औ':'au'
+            };
+            
+            if (vowelMap[current]) {
+                result += vowelMap[current];
+                i++;
+                continue;
+            }
+            
+            // Handle anusvara and visarga
+            if (current === 'ं') {
+                result += 'ṃ';
+                i++;
+                continue;
+            }
+            if (current === 'ः') {
+                result += 'ḥ';
+                i++;
+                continue;
+            }
+            if (current === 'ँ') {
+                result += 'ṃ';
+                i++;
+                continue;
+            }
+            
+            // Handle consonant with inherent 'a' - THE KEY FIX
+            if (isConsonant(current)) {
+                const base = getConsonantBase(current);
+                
+                // Check what follows
+                let hasVowelSign = false;
+                let hasHalanta = false;
+                
+                if (i + 1 < len) {
+                    const next = text[i+1];
+                    hasVowelSign = isVowelSign(next);
+                    hasHalanta = (next === '्');
+                }
+                
+                // Apply inherent 'a' ONLY if no vowel sign and no halanta
+                if (!hasVowelSign && !hasHalanta) {
+                    result += base + 'a';
+                } else {
+                    result += base;
+                }
+                i++;
+                continue;
+            }
+            
+            // Handle halanta (skip it - we already processed in conjuncts)
+            if (current === '्') {
+                i++;
+                continue;
+            }
+            
+            // Default: pass through
+            result += current;
+            i++;
         }
         
         // Post-processing fixes
-        result = result.replace(/ṃm/g, 'ṃ');
-        result = result.replace(/ṃ([^aeiou])/g, 'ṃ$1');
+        result = result.replace(/aa/g, 'ā');
+        result = result.replace(/ii/g, 'ī');
+        result = result.replace(/uu/g, 'ū');
+        result = result.replace(/ṛṛ/g, 'ṝ');
+        result = result.replace(/aā/g, 'ā');
+        result = result.replace(/iī/g, 'ī');
+        result = result.replace(/uū/g, 'ū');
         result = result.replace(/āa/g, 'ā');
         result = result.replace(/īi/g, 'ī');
         result = result.replace(/ūu/g, 'ū');
-        result = result.replace(/ṃṃ/g, 'ṃ');
         result = result.replace(/āu/g, 'au');
         result = result.replace(/āi/g, 'ai');
-        result = result.replace(/oa/g, 'o');  // Fix 'oa' patterns
-        result = result.replace(/eā/g, 'e');  // Fix 'eā' patterns
+        
+        // Fix anusvara placement
+        result = result.replace(/ṃ([^aeiouāīū])/g, 'ṃ$1');
+        result = result.replace(/ṃm/g, 'ṃ');
+        result = result.replace(/^ṃ/, '');
         
         return result;
     }
-    
     /**
      * Convert IAST to Devanagari
      */
