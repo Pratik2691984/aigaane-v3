@@ -764,204 +764,174 @@
             });
             renderHistory();
 
-            // ==================== SANSKRIT ENGINE - COMPLETE REWRITE ====================
-    // Devanagari to IAST mapping
-    const DEVANAGARI_TO_IAST = {
+               // ==================== SANSKRIT ENGINE - COMPLETE FIX ====================
+    
+    // Devanagari to IAST mapping (basic characters)
+    const DEVANAGARI_MAP = {
         // Vowels (independent)
         'अ': 'a', 'आ': 'ā', 'इ': 'i', 'ई': 'ī', 'उ': 'u', 'ऊ': 'ū',
         'ऋ': 'ṛ', 'ॠ': 'ṝ', 'ऌ': 'ḷ', 'ॡ': 'ḹ',
         'ए': 'e', 'ऐ': 'ai', 'ओ': 'o', 'औ': 'au',
         
         // Consonants
-        'क': 'ka', 'ख': 'kha', 'ग': 'ga', 'घ': 'gha', 'ङ': 'ṅa',
-        'च': 'ca', 'छ': 'cha', 'ज': 'ja', 'झ': 'jha', 'ञ': 'ña',
-        'ट': 'ṭa', 'ठ': 'ṭha', 'ḍa': 'ḍ', 'ड': 'ḍa', 'ढ': 'ḍha', 'ण': 'ṇa',
-        'त': 'ta', 'थ': 'tha', 'द': 'da', 'ध': 'dha', 'न': 'na',
-        'प': 'pa', 'फ': 'pha', 'ब': 'ba', 'भ': 'bha', 'म': 'ma',
-        'य': 'ya', 'र': 'ra', 'ल': 'la', 'व': 'va',
-        'श': 'śa', 'ष': 'ṣa', 'स': 'sa', 'ह': 'ha',
+        'क': 'k', 'ख': 'kh', 'ग': 'g', 'घ': 'gh', 'ङ': 'ṅ',
+        'च': 'c', 'छ': 'ch', 'ज': 'j', 'झ': 'jh', 'ञ': 'ñ',
+        'ट': 'ṭ', 'ठ': 'ṭh', 'ड': 'ḍ', 'ढ': 'ḍh', 'ण': 'ṇ',
+        'त': 't', 'थ': 'th', 'द': 'd', 'ध': 'dh', 'न': 'n',
+        'प': 'p', 'फ': 'ph', 'ब': 'b', 'भ': 'bh', 'म': 'm',
+        'य': 'y', 'र': 'r', 'ल': 'l', 'व': 'v',
+        'श': 'ś', 'ष': 'ṣ', 'स': 's', 'ह': 'h',
         
-        // Vowel signs (matras) - these modify the previous consonant
+        // Vowel signs (matras)
         'ा': 'ā', 'ि': 'i', 'ी': 'ī', 'ु': 'u', 'ू': 'ū',
         'ृ': 'ṛ', 'ॄ': 'ṝ', 'े': 'e', 'ै': 'ai', 'ो': 'o', 'ौ': 'au',
         
         // Other marks
-        'ं': 'ṃ', 'ः': 'ḥ', 'ँ': 'ṃ', '्': '',  // virama removed
-        
-        // Special
-        'ॐ': 'om', '॥': '||', '।': '|', 'ऽ': 'a'
+        'ं': 'ṃ', 'ः': 'ḥ', 'ँ': 'ṃ', '्': '', 'ऽ': 'a',
+        'ॐ': 'om', '।': '|', '॥': '||'
     };
     
-    // Special conjunct mappings (when halanta is used)
-    const CONJUNCT_MAP = {
-        // Common conjuncts
-        'क् क': 'kka', 'क् ख': 'kkha', 'क् ग': 'kga', 'क् घ': 'kgha',
-        'ग् ध': 'gdha', 'ग् द': 'gda',
-        'च् च': 'cca', 'च् छ': 'ccha', 'च् ज': 'cja', 'च् झ': 'cjha',
-        'ज् ज': 'jja', 'ज् ञ': 'jña', 'ज् झ': 'jjha',
-        'ट् ट': 'ṭṭa', 'ट् ठ': 'ṭṭha',
-        'ड् ड': 'ḍḍa', 'ड् ढ': 'ḍḍha',
-        'त् त': 'tta', 'त् थ': 'ttha', 'त् द': 'tda', 'त् ध': 'tdha', 'त् न': 'tna',
-        'त् प': 'tpa', 'त् फ': 'tpha', 'त् ब': 'tba', 'त् भ': 'tbha', 'त् म': 'tma',
-        'त् य': 'tya', 'त् र': 'tra', 'त् ल': 'tla', 'त् व': 'tva', 'त् श': 'tśa', 'त् ष': 'tṣa', 'त् स': 'tsa', 'त् ह': 'tha',
-        'द् द': 'dda', 'द् ध': 'ddha', 'द् न': 'dna', 'द् य': 'dya', 'द् र': 'dra', 'द् व': 'dva',
-        'द् भ': 'dbha', 'द् म': 'dma',
-        'न् त': 'nta', 'न् थ': 'ntha', 'न् द': 'nda', 'न् ध': 'ndha', 'न् न': 'nna', 'न् य': 'nya',
-        'न् व': 'nva', 'न् श': 'nśa', 'न् ष': 'nṣa', 'न् स': 'nsa', 'न् ह': 'nha',
-        'प् प': 'ppa', 'प् फ': 'ppha', 'प् ल': 'pla', 'प् य': 'pya', 'प् र': 'pra', 'प् व': 'pva',
-        'ब् ज': 'bja', 'ब् द': 'bda', 'ब् ध': 'bdha', 'ब् ब': 'bba', 'ब् र': 'bra', 'ब् व': 'bva',
-        'भ् य': 'bhya', 'भ् र': 'bhra', 'भ् व': 'bhva',
-        'म् प': 'mpa', 'म् फ': 'mpha', 'म् ब': 'mba', 'म् भ': 'mbha', 'म् य': 'mya', 'म् र': 'mra', 'म् ल': 'mla', 'म् व': 'mva',
-        'य् य': 'yya', 'य् व': 'yva',
-        'र् ग': 'rga', 'र् ज': 'rja', 'र् ड': 'rḍa', 'र् त': 'rta', 'र् थ': 'rtha', 'र् द': 'rda', 'र् ध': 'rdha',
-        'र् न': 'rna', 'र् प': 'rpa', 'र् फ': 'rpha', 'र् ब': 'rba', 'र् भ': 'rbha', 'र् म': 'rma', 'र् य': 'rya',
-        'र् ल': 'rla', 'र् व': 'rva', 'र् श': 'rśa', 'र् ष': 'rṣa', 'र् स': 'rsa', 'र् ह': 'rha',
-        'ल् क': 'lka', 'ल् ग': 'lga', 'ल् त': 'lta', 'ल् द': 'lda', 'ल् प': 'lpa', 'ल् ब': 'lba', 'ल् य': 'lya', 'ल् व': 'lva',
-        'व् य': 'vya', 'व् र': 'vra', 'व् ल': 'vla',
-        'श् च': 'śca', 'श् न': 'śna', 'श् प': 'śpa', 'श् र': 'śra', 'श् ल': 'śla', 'श् व': 'śva',
-        'ष् क': 'ṣka', 'ष् ट': 'ṣṭa', 'ष् ण': 'ṣṇa', 'ष् प': 'ṣpa', 'ष् फ': 'ṣpha', 'ष् र': 'ṣra',
-        'स् क': 'ska', 'स् ख': 'skha', 'स् च': 'sca', 'स् त': 'sta', 'स् थ': 'stha', 'स् द': 'sda',
-        'स् ध': 'sdha', 'स् न': 'sna', 'स् प': 'spa', 'स् फ': 'spha', 'स् ब': 'sba', 'स् भ': 'sbha',
-        'स् म': 'sma', 'स् य': 'sya', 'स् र': 'sra', 'स् ल': 'sla', 'स् व': 'sva', 'स् ह': 'sha',
-        'ह् न': 'hna', 'ह् य': 'hya', 'ह् र': 'hra', 'ह् ल': 'hla', 'ह् व': 'hva',
+    // Conjunct mappings (consonant + halant + consonant)
+    const CONJUNCT_TABLE = {
+        // Velar + velar
+        'क्क': 'kka', 'क्ख': 'kkha', 'क्ग': 'kga', 'क्घ': 'kgha', 'क्ङ': 'kṅa',
+        'ग्ग': 'gga', 'ग्घ': 'ggha', 'ङ्क': 'ṅka', 'ङ्ख': 'ṅkha', 'ङ्ग': 'ṅga', 'ङ्घ': 'ṅgha',
+        
+        // Palatal + palatal
+        'च्च': 'cca', 'च्छ': 'ccha', 'च्ज': 'cja', 'च्झ': 'cjha',
+        'ज्ज': 'jja', 'ज्झ': 'jjha', 'ञ्च': 'ñca', 'ञ्छ': 'ñcha', 'ञ्ज': 'ñja', 'ञ्झ': 'ñjha',
+        
+        // Retroflex + retroflex
+        'ट्ट': 'ṭṭa', 'ट्ठ': 'ṭṭha', 'ट्ड': 'ṭḍa', 'ट्ढ': 'ṭḍha',
+        'ड्ड': 'ḍḍa', 'ड्ढ': 'ḍḍha', 'ण्ट': 'ṇṭa', 'ण्ठ': 'ṇṭha', 'ण्ड': 'ṇḍa', 'ण्ढ': 'ṇḍha',
+        
+        // Dental + dental
+        'त्त': 'tta', 'त्थ': 'ttha', 'त्द': 'tda', 'त्ध': 'tdha', 'त्न': 'tna',
+        'द्द': 'dda', 'द्ध': 'ddha', 'द्न': 'dna', 'न्त': 'nta', 'न्थ': 'ntha', 'न्द': 'nda', 'न्ध': 'ndha', 'न्न': 'nna',
+        
+        // Labial + labial
+        'प्प': 'ppa', 'प्फ': 'ppha', 'प्ब': 'pba', 'प्भ': 'pbha', 'प्म': 'pma',
+        'ब्ब': 'bba', 'ब्भ': 'bbha', 'म्प': 'mpa', 'म्फ': 'mpha', 'म्ब': 'mba', 'म्भ': 'mbha', 'म्म': 'mma',
+        
+        // Semivowels + consonants
+        'क्य': 'kya', 'क्र': 'kra', 'क्ल': 'kla', 'क्व': 'kva',
+        'ग्य': 'gya', 'ग्र': 'gra', 'ग्ल': 'gla', 'ग्व': 'gva',
+        'च्य': 'cya', 'च्र': 'cra', 'च्ल': 'cla', 'च्व': 'cva',
+        'ज्य': 'jya', 'ज्र': 'jra', 'ज्व': 'jva',
+        'ट्य': 'ṭya', 'ट्र': 'ṭra', 'ट्व': 'ṭva',
+        'ड्य': 'ḍya', 'ड्र': 'ḍra', 'ड्व': 'ḍva',
+        'त्य': 'tya', 'त्र': 'tra', 'त्व': 'tva', 'त्स': 'tsa',
+        'द्य': 'dya', 'द्र': 'dra', 'द्व': 'dva',
+        'न्य': 'nya', 'न्र': 'nra', 'न्व': 'nva',
+        'प्य': 'pya', 'प्र': 'pra', 'प्ल': 'pla', 'प्व': 'pva',
+        'ब्य': 'bya', 'ब्र': 'bra', 'ब्ल': 'bla', 'ब्व': 'bva',
+        'म्य': 'mya', 'म्र': 'mra', 'म्ल': 'mla', 'म्व': 'mva',
+        'य्य': 'yya', 'य्र': 'yra', 'य्व': 'yva',
+        'र्य': 'rya', 'र्व': 'rva', 'र्ल': 'rla',
+        'ल्य': 'lya', 'ल्व': 'lva',
+        'व्य': 'vya', 'व्र': 'vra', 'व्ल': 'vla',
+        'श्य': 'śya', 'श्र': 'śra', 'श्व': 'śva',
+        'ष्य': 'ṣya', 'ष्र': 'ṣra', 'ष्व': 'ṣva',
+        'स्य': 'sya', 'स्र': 'sra', 'स्व': 'sva',
+        'ह्य': 'hya', 'ह्र': 'hra', 'ह्व': 'hva',
         
         // Special conjuncts
-        'क् ष': 'kṣa', 'ज् ञ': 'jña', 'ह् ण': 'hṇa', 'त् स': 'tsa', 'द् य': 'dya',
-        'क् ल': 'kla', 'क् य': 'kya', 'ग् य': 'gya', 'ग् र': 'gra', 'ग् ल': 'gla',
-        'च् य': 'cya', 'च् र': 'cra', 'ज् य': 'jya', 'ज् र': 'jra',
-        'ट् य': 'ṭya', 'ट् र': 'ṭra', 'ड् य': 'ḍya', 'ड् र': 'ḍra',
-        'त् य': 'tya', 'त् र': 'tra', 'त् ल': 'tla', 'त् व': 'tva',
-        'द् ग': 'dga', 'द् ध': 'ddha', 'द् य': 'dya', 'द् र': 'dra', 'द् ल': 'dla', 'द् व': 'dva',
-        'न् द': 'nda', 'न् ध': 'ndha', 'न् य': 'nya', 'न् र': 'nra', 'न् व': 'nva',
-        'प् य': 'pya', 'प् र': 'pra', 'प् ल': 'pla', 'प् व': 'pva',
-        'ब् य': 'bya', 'ब् र': 'bra', 'ब् ल': 'bla', 'ब् व': 'bva',
-        'म् य': 'mya', 'म् र': 'mra', 'म् ल': 'mla', 'म् व': 'mva',
-        'य् य': 'yya', 'य् र': 'yra', 'य् व': 'yva',
-        'र् य': 'rya', 'र् व': 'rva',
-        'ल् य': 'lya', 'ल् व': 'lva',
-        'व् य': 'vya', 'व् र': 'vra',
-        'श् च': 'śca', 'श् य': 'śya', 'श् र': 'śra', 'श् व': 'śva',
-        'ष् य': 'ṣya', 'ष् र': 'ṣra',
-        'स् य': 'sya', 'स् र': 'sra', 'स् व': 'sva',
-        'ह् य': 'hya', 'ह् र': 'hra', 'ह् व': 'hva'
+        'क्ष': 'kṣa', 'ज्ञ': 'jña', 'श्रृ': 'śrṛ', 'क्त': 'kta',
+        'स्न': 'sna', 'स्म': 'sma', 'ह्ण': 'hṇa', 'ह्ल': 'hla',
+        'ष्क': 'ṣka', 'ष्ट': 'ṣṭa', 'ष्ठ': 'ṣṭha', 'ष्ण': 'ṣṇa', 'ष्प': 'ṣpa', 'ष्फ': 'ṣpha',
+        'स्क': 'ska', 'स्ट': 'sṭa', 'स्थ': 'stha', 'स्प': 'spa', 'स्फ': 'spha'
     };
-
+    
     /**
-     * Convert Devanagari to IAST correctly
-     * Algorithm: Process character by character, building output with proper vowel attachments
+     * Convert Devanagari to IAST - Correct algorithm
      */
     function devanagariToIAST(text) {
         if (!text) return '';
         
+        // First, normalize the text (remove ZWJ/ZWNJ if any)
+        text = text.normalize('NFC');
+        
         let result = '';
-        let pendingConsonant = '';
         let i = 0;
         const len = text.length;
         
         while (i < len) {
-            const ch = text[i];
+            let matched = false;
             
-            // Handle virama (halant)
-            if (ch === '्') {
-                // Virama indicates the previous consonant has no vowel
-                // The next character will combine with it
-                i++;
-                if (i < len) {
-                    const nextChar = text[i];
-                    // Look for vowel sign or consonant to combine
-                    if (DEVANAGARI_TO_IAST[nextChar] && DEVANAGARI_TO_IAST[nextChar].length === 1) {
-                        // Vowel sign - attach to pending consonant
-                        const vowel = DEVANAGARI_TO_IAST[nextChar];
-                        if (pendingConsonant) {
-                            result += pendingConsonant.slice(0, -1) + vowel;
-                            pendingConsonant = '';
+            // Check for conjuncts (3 characters: consonant + ् + consonant)
+            if (i + 2 < len && text[i+1] === '्') {
+                const conjunct = text[i] + text[i+1] + text[i+2];
+                if (CONJUNCT_TABLE[conjunct]) {
+                    result += CONJUNCT_TABLE[conjunct];
+                    i += 3;
+                    matched = true;
+                }
+                // Check for conjuncts with vowel sign (consonant + ् + consonant + vowel)
+                else if (i + 3 < len) {
+                    const conjunctFour = text[i] + text[i+1] + text[i+2] + text[i+3];
+                    for (let [key, value] of Object.entries(CONJUNCT_TABLE)) {
+                        if (conjunctFour.startsWith(key) && key.length === 3) {
+                            result += value;
+                            i += 3;
+                            matched = true;
+                            break;
                         }
-                        i++;
-                    } else {
-                        // Consonant conjunct - use mapping
-                        const conjunctKey = pendingConsonant.slice(0, -1) + '् ' + DEVANAGARI_TO_IAST[nextChar];
-                        if (CONJUNCT_MAP[conjunctKey]) {
-                            result += CONJUNCT_MAP[conjunctKey];
-                        } else {
-                            result += pendingConsonant.slice(0, -1) + DEVANAGARI_TO_IAST[nextChar];
-                        }
-                        pendingConsonant = '';
-                        i++;
                     }
                 }
-                continue;
             }
             
-            // Handle vowel signs (matras)
-            if (ch === 'ा' || ch === 'ि' || ch === 'ी' || ch === 'ु' || ch === 'ू' ||
-                ch === 'ृ' || ch === 'ॄ' || ch === 'े' || ch === 'ै' || ch === 'ो' || ch === 'ौ') {
-                const vowel = DEVANAGARI_TO_IAST[ch];
-                if (pendingConsonant) {
-                    result += pendingConsonant.slice(0, -1) + vowel;
-                    pendingConsonant = '';
-                } else if (result.length > 0 && result[result.length - 1].match(/[aāiīuūṛṝ]$/)) {
-                    // Handle independent vowel signs (rare)
-                    result += vowel;
-                } else {
-                    result += vowel;
+            // Check for vowel signs (matras)
+            if (!matched && text[i] in DEVANAGARI_MAP) {
+                const mapped = DEVANAGARI_MAP[text[i]];
+                
+                // Handle anusvara at word boundaries
+                if (mapped === 'ṃ' && (result === '' || result.endsWith(' '))) {
+                    // Don't add anusvara at beginning of words
+                    i++;
+                    continue;
                 }
+                
+                result += mapped;
                 i++;
-                continue;
-            }
-            
-            // Handle anusvara and visarga
-            if (ch === 'ं') {
-                result += 'ṃ';
-                i++;
-                continue;
-            }
-            if (ch === 'ः') {
-                result += 'ḥ';
-                i++;
-                continue;
+                matched = true;
             }
             
             // Regular character
-            const mapped = DEVANAGARI_TO_IAST[ch];
-            if (mapped) {
-                // If we have a pending consonant, flush it first
-                if (pendingConsonant) {
-                    result += pendingConsonant;
-                    pendingConsonant = '';
-                }
-                // Store as pending consonant (will get vowel or become conjunct)
-                pendingConsonant = mapped;
-            } else {
-                result += ch;
+            if (!matched) {
+                result += text[i];
+                i++;
             }
-            i++;
         }
         
-        // Flush any remaining pending consonant
-        if (pendingConsonant) {
-            result += pendingConsonant;
-        }
-        
-        // Clean up: remove duplicate characters and fix common issues
-        result = result.replace(/aa/g, 'ā');
-        result = result.replace(/ii/g, 'ī');
-        result = result.replace(/uu/g, 'ū');
-        result = result.replace(/ṛṛ/g, 'ṝ');
-        result = result.replace(/ḷḷ/g, 'ḹ');
+        // Post-processing fixes
+        result = result.replace(/ṃm/g, 'ṃ');
+        result = result.replace(/ṃ([^aeiou])/g, 'ṃ$1');
+        result = result.replace(/āa/g, 'ā');
+        result = result.replace(/īi/g, 'ī');
+        result = result.replace(/ūu/g, 'ū');
+        result = result.replace(/ṃṃ/g, 'ṃ');
+        result = result.replace(/āu/g, 'au');
+        result = result.replace(/āi/g, 'ai');
+        result = result.replace(/oa/g, 'o');  // Fix 'oa' patterns
+        result = result.replace(/eā/g, 'e');  // Fix 'eā' patterns
         
         return result;
     }
-
+    
     /**
      * Convert IAST to Devanagari
      */
-    const IAST_TO_DEVANAGARI = {};
-    for (let [k, v] of Object.entries(DEVANAGARI_TO_IAST)) {
-        if (v && !IAST_TO_DEVANAGARI[v]) {
-            IAST_TO_DEVANAGARI[v] = k;
+    const IAST_MAP = {};
+    for (let [k, v] of Object.entries(DEVANAGARI_MAP)) {
+        if (v && !IAST_MAP[v]) {
+            IAST_MAP[v] = k;
         }
     }
-
+    // Add conjuncts in reverse
+    for (let [k, v] of Object.entries(CONJUNCT_TABLE)) {
+        IAST_MAP[v] = k;
+    }
+    
     function iastToDevanagari(text) {
         if (!text) return '';
         
@@ -971,16 +941,14 @@
         
         while (i < len) {
             let matched = false;
-            // Try longest match first (2 characters for diphthongs)
-            for (let l = 2; l >= 1; l--) {
-                if (i + l <= len) {
-                    const substr = text.substr(i, l);
-                    if (IAST_TO_DEVANAGARI[substr]) {
-                        result += IAST_TO_DEVANAGARI[substr];
-                        i += l;
-                        matched = true;
-                        break;
-                    }
+            // Try longest match first (3 characters for conjuncts)
+            for (let l = Math.min(4, len - i); l >= 1; l--) {
+                const substr = text.substr(i, l);
+                if (IAST_MAP[substr]) {
+                    result += IAST_MAP[substr];
+                    i += l;
+                    matched = true;
+                    break;
                 }
             }
             if (!matched) {
@@ -990,8 +958,8 @@
         }
         return result;
     }
-
-    // Transliteration button handler
+    
+    // Transliteration button
     document.getElementById('transliterateBtn').addEventListener('click', () => {
         const input = document.getElementById('translitInput').value.trim();
         if (!input) {
@@ -1011,6 +979,47 @@
         document.getElementById('translitResult').innerHTML = output;
         updateStats(output);
     });
+    
+    // Test case buttons
+    function addSanskritTestCases() {
+        const testContainer = document.getElementById('transliterationPanel');
+        if (testContainer && !document.querySelector('.sanskrit-test-cases')) {
+            const testDiv = document.createElement('div');
+            testDiv.className = 'sanskrit-test-cases';
+            testDiv.style.marginTop = '1rem';
+            testDiv.style.padding = '1rem';
+            testDiv.style.background = 'rgba(255,255,255,0.05)';
+            testDiv.style.borderRadius = '12px';
+            testDiv.innerHTML = '<h4>📜 Test Cases (Click to test):</h4><div style="display:flex; flex-wrap:wrap; gap:0.5rem;">';
+            
+            const tests = [
+                { dev: "अमृतत्वस्य", iast: "amṛtatvasya" },
+                { dev: "वित्तेन", iast: "vittena" },
+                { dev: "संधिविग्रहयोः", iast: "saṃdhivigrahavoḥ" },
+                { dev: "जीवेषु", iast: "jīveṣu" },
+                { dev: "करुणा", iast: "karuṇā" },
+                { dev: "मैत्री", iast: "maitrī" },
+                { dev: "सन्तुष्टः", iast: "santuṣṭaḥ" },
+                { dev: "कल्याणम्", iast: "kalyāṇam" }
+            ];
+            
+            tests.forEach(t => {
+                const btn = document.createElement('button');
+                btn.textContent = `${t.dev} → ${t.iast}`;
+                btn.style.fontSize = '0.75rem';
+                btn.style.padding = '0.3rem 0.6rem';
+                btn.onclick = () => {
+                    document.getElementById('translitInput').value = t.dev;
+                    document.getElementById('transliterateBtn').click();
+                };
+                testDiv.querySelector('div').appendChild(btn);
+            });
+            testDiv.innerHTML += '</div>';
+            testContainer.appendChild(testDiv);
+        }
+    }
+    
+    setTimeout(addSanskritTestCases, 100);
             // ==================== GLOBAL STATE OBSERVER ====================
             document.querySelectorAll('input').forEach(input => {
                 input.addEventListener('input', (e) => {
