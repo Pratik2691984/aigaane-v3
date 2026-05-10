@@ -3,582 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Parijat 1.0 | 9 Rasas | Topocentric | Sthayi-Antara Lab</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
-            font-family: 'Inter', 'Noto Sans Devanagari', monospace;
-            min-height: 100vh;
-            color: #e0e0e0;
-            padding-bottom: 60px;
-        }
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
-        }
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .nav-links {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            padding: 0.4rem 1rem;
-            border-radius: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            transition: 0.2s;
-        }
-        .nav-links a:hover, .nav-links a.active {
-            background: #FF9933;
-            color: #1a1a2e;
-            font-weight: bold;
-        }
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { font-size: 48px; background: linear-gradient(135deg, #ffd700, #ff9933); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .card {
-            background: rgba(20, 20, 40, 0.8);
-            border-radius: 28px;
-            padding: 24px;
-            margin-bottom: 28px;
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 215, 0, 0.25);
-        }
-        .composition-card {
-            background: rgba(139, 92, 246, 0.12);
-            border-left: 4px solid #8b5cf6;
-        }
-        .sanskrit-text {
-            font-family: 'Noto Sans Devanagari', monospace;
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: #ffd700;
-        }
-        .transliteration {
-            font-size: 0.85rem;
-            color: #aaa;
-            margin: 6px 0;
-        }
-        .raga-info {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-            padding: 10px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-        }
-        .raga-badge {
-            background: #ffd70020;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-        }
-        textarea {
-            width: 100%;
-            padding: 18px;
-            font-size: 18px;
-            font-family: 'Noto Sans Devanagari', monospace;
-            background: #0a0a1a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
-            border-radius: 20px;
-            resize: vertical;
-        }
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        .btn {
-            background: linear-gradient(135deg, #ffd700, #ff9933);
-            color: #1a1a2e;
-            padding: 10px 22px;
-            border: none;
-            border-radius: 60px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 14px;
-        }
-        .btn-chant { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; }
-        .btn-download { background: linear-gradient(135deg, #10b981, #059669); color: white; }
-        .btn-composition { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; }
-        .btn:hover { transform: scale(1.02); filter: brightness(1.05); }
-        .letter-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 10px;
-            margin-top: 16px;
-        }
-        .letter-card {
-            background: rgba(255, 215, 0, 0.08);
-            border-radius: 16px;
-            padding: 10px 12px;
-            border-left: 3px solid #ffd700;
-        }
-        .stats-row {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-        .stat-box {
-            background: rgba(0, 0, 0, 0.45);
-            border-radius: 20px;
-            padding: 14px 18px;
-            flex: 1;
-            text-align: center;
-        }
-        .stat-number { font-size: 32px; font-weight: bold; color: #ffd700; }
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #2a2f3a;
-            border-radius: 4px;
-            margin: 8px 0;
-            overflow: hidden;
-        }
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #10b981, #ffd700);
-            transition: width 0.2s;
-        }
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0a0a1aee;
-            color: #ffd700;
-            padding: 10px 24px;
-            border-radius: 60px;
-            z-index: 3000;
-            backdrop-filter: blur(12px);
-            border: 1px solid #ffd700;
-            animation: fadeToast 2.8s forwards;
-            pointer-events: none;
-            font-size: 14px;
-        }
-        @keyframes fadeToast {
-            0% { opacity: 1; }
-            70% { opacity: 1; }
-            100% { opacity: 0; visibility: hidden; }
-        }
-        input[type="range"] { width: 100%; margin: 12px 0; background: #2a2f3a; height: 6px; border-radius: 10px; }
-        select { background: #1e1e2a; color: #ffd700; border: 1px solid #ffd700; border-radius: 60px; padding: 8px 16px; font-weight: bold; }
-        .filter-bar {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-            padding: 12px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-            align-items: center;
-        }
-        .rasa-filter-btn {
-            background: rgba(255,215,0,0.2);
-            color: white;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .rasa-filter-btn.active {
-            background: #ffd700;
-            color: #1a1a2e;
-        }
-        .mantra-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .mantra-card {
-            background: rgba(30,30,50,0.8);
-            border-radius: 24px;
-            padding: 16px;
-            border: 1px solid rgba(255,215,0,0.3);
-            transition: 0.2s;
-            position: relative;
-        }
-        .mantra-card.selected {
-            border: 2px solid #8b5cf6;
-            background: rgba(139,92,246,0.2);
-        }
-        .mantra-text {
-            font-family: 'Noto Sans Devanagari', monospace;
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #ffd700;
-            margin-bottom: 12px;
-        }
-        .mantra-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            color: #aaa;
-            margin-top: 12px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .send-to-engine-btn {
-            background: #8b5cf6;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 40px;
-            color: white;
-            font-size: 11px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .rasa-selector {
-            background: #1a1a2a;
-            border: 1px solid #ffd700;
-            border-radius: 40px;
-            padding: 4px 8px;
-            font-size: 11px;
-            color: #ffd700;
-        }
-        .batch-actions {
-            margin-bottom: 16px;
-            padding: 12px;
-            background: rgba(139,92,246,0.2);
-            border-radius: 16px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 12px;
-        }
-        .checkbox-select {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            accent-color: #8b5cf6;
-        }
-        @media (max-width: 700px) { .mantra-grid { grid-template-columns: 1fr; } }
-    </style>
+    <meta name="description" content="Aigaane V3 — 49D Vedic Astrology Engine | Soul Map First Architecture">
+    <title>Aigaane V3 · 49D Vedic Kernel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-    <div class="navbar">
-        <div class="logo">🕉 AIGAANE · Parijat 1.0</div>
-        <div class="nav-links">
-            <a href="#" class="active" id="labTabBtn">📿 Mantra Lab</a>
-            <a href="#" id="engineTabBtn">🎵 Sūtra-Engine</a>
-        </div>
-    </div>
 
-    <!-- MANTRA LAB SECTION -->
-    <div id="mantraLabSection">
-        <div class="header">
-            <h1>🕉️ Parijat 1.0 · 9 Rasas Lab</h1>
-            <p>Topocentric Krittika | Batch Rasa | Send to Engine | Full Metadata Export</p>
+<div class="app-grid">
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="logo-block">
+            <h1>ĀIGĀANE <span class="badge-49d">v3 · 49D KERNEL</span></h1>
+            <p class="subhead">Quantatech Arithmetic · Soul Map First · Complete Vedic Suite</p>
         </div>
+        <div class="kernel-stats" id="kernel-stats">
+            <span class="stat"><span class="icon-cube"></span> Σ Dim: <span id="dim-sum">—</span></span>
+            <span class="stat"><span class="icon-wave"></span> Entropy: <span id="anumana-entropy">—</span></span>
+            <span class="stat mono">🔬 Hash: <span id="res-hash">—</span></span>
+        </div>
+    </header>
 
-        <div class="card">
-            <div class="filter-bar">
-                <strong>🎭 Filter by Rasa:</strong>
-                <button class="rasa-filter-btn active" data-filter-rasa="all">All</button>
-                <button class="rasa-filter-btn" data-filter-rasa="Śānta">🕊️ Śānta</button>
-                <button class="rasa-filter-btn" data-filter-rasa="Vīra">⚔️ Vīra</button>
-                <button class="rasa-filter-btn" data-filter-rasa="Karuna">💚 Karuna</button>
-                <button class="rasa-filter-btn" data-filter-rasa="Adbhuta">✨ Adbhuta</button>
-                <button class="rasa-filter-btn" data-filter-rasa="Hāsya">😊 Hāsya</button>
-                <button class="rasa-filter-btn" data-filter-rasa="Raudra">🔥 Raudra</button>
-                <button class="rasa-filter-btn" data-filter-rasa="Bhayānaka">😨 Bhayānaka</button>
-                <button class="rasa-filter-btn" data-filter-rasa="Bibhatsa">😖 Bibhatsa</button>
-                <button class="rasa-filter-btn" data-filter-rasa="Śṛṅgāra">💕 Śṛṅgāra</button>
-                <button class="btn" id="addCompositionBtn" style="margin-left:auto; padding:6px 16px;">🕉️ Add Parijat Composition</button>
+    <!-- TABS: 5 TABS -->
+    <nav class="sharp-tabs">
+        <button class="tab-btn active" data-tab="music">🎵 MUSIC & MANTRA</button>
+        <button class="tab-btn" data-tab="astrology">⭐ ASTROLOGY</button>
+        <button class="tab-btn" data-tab="soulmap">🌀 SOUL MAP</button>
+        <button class="tab-btn" data-tab="sanskrit">📜 SANSKRIT ENGINE</button>
+        <button class="tab-btn" data-tab="info">ℹ️ INFO</button>
+    </nav>
+
+    <!-- TAB PANES -->
+    <main class="tab-container">
+        
+        <!-- TAB 1: MUSIC & MANTRA -->
+        <div id="music" class="tab-pane active">
+            <div class="panel-header">
+                <h2><span class="icon-music"></span> Mantra & Music · 49D Resonance Mapping</h2>
+                <p>Frequency dimensions (8-21) map directly to Vedic mantras and swaras.</p>
             </div>
-
-            <!-- Batch Actions Bar -->
-            <div id="batchActionsBar" class="batch-actions">
-                <span>📦 Batch Actions: <strong id="selectedCount">0</strong> selected</span>
-                <select id="batchRasaSelect">
-                    <option value="">Assign Rasa...</option>
-                    <option value="Śānta">🕊️ Śānta</option>
-                    <option value="Vīra">⚔️ Vīra</option>
-                    <option value="Karuna">💚 Karuna</option>
-                    <option value="Adbhuta">✨ Adbhuta</option>
-                    <option value="Hāsya">😊 Hāsya</option>
-                    <option value="Raudra">🔥 Raudra</option>
-                    <option value="Bhayānaka">😨 Bhayānaka</option>
-                    <option value="Bibhatsa">😖 Bibhatsa</option>
-                    <option value="Śṛṅgāra">💕 Śṛṅgāra</option>
-                </select>
-                <button class="btn" id="batchApplyRasaBtn">Apply to Selected</button>
-                <button class="btn" id="clearSelectionBtn">Clear</button>
-                <button class="btn btn-download" id="exportCompleteMetadataBtn">📥 Export Full JSON (with metadata)</button>
-            </div>
-
-            <div id="mantraGridContainer" class="mantra-grid"></div>
-            <div id="labStats" style="margin-top: 16px; text-align: center; font-size: 13px; color: #ffd700;"></div>
-        </div>
-    </div>
-
-    <!-- SŪTRA ENGINE SECTION (hidden initially) -->
-    <div id="sutraEngineSection" style="display: none;">
-        <div class="header">
-            <h1>🎵 Sūtra-Engine | 9 Rasas + Sthayi-Antara</h1>
-            <p>Microtonal Chanting | Meend Profiles | WAV Export</p>
-        </div>
-        <div class="card">
-            <h3>🌙 λ (Lunar Longitude) — Topocentric Corrected</h3>
-            <input type="range" id="lambdaSlider" min="0" max="360" value="33.33" step="0.5">
-            <p>λ = <strong id="lambdaVal">33.33</strong>° → Drone Sa: <strong id="targetFreq">460.55</strong> Hz (Ahmedabad)</p>
-            <div class="lambda-presets" style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;">
-                <span class="raga-badge" style="cursor:pointer;" onclick="window.setLambda(0)">Universal (0°)</span>
-                <span class="raga-badge" style="cursor:pointer; background:#ffd70040;" onclick="window.setLambda(33.33)">⭐ Krittika (33.33°)</span>
-                <span class="raga-badge" style="cursor:pointer;" onclick="window.setLambda(90)">Summer (90°)</span>
-                <span class="raga-badge" style="cursor:pointer;" onclick="window.setLambda(180)">Autumn (180°)</span>
-                <span class="raga-badge" style="cursor:pointer;" onclick="window.setLambda(270)">Winter (270°)</span>
+            <div id="music-output" class="results-area">
+                <div class="loading-placeholder">Generating from kernel frequency band...</div>
             </div>
         </div>
-        <div class="card composition-card">
-            <div class="raga-info">
-                <span class="raga-badge">🎵 Raaga: Yaman</span>
-                <span class="raga-badge">🥁 Tala: Teental</span>
-                <span class="raga-badge">🕊️ Rasa: Śānta</span>
+
+        <!-- TAB 2: ASTROLOGY -->
+        <div id="astrology" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-star"></span> Vedic Astrology · Planetary Positions</h2>
+                <p>Graha positions, Nakshatra, Rashi, and Dosha analysis from your 49D kernel.</p>
             </div>
-            <h3>🌿 STHAYI / ANTARA</h3>
-            <textarea id="sanskritInput" rows="4" placeholder="Enter Sanskrit or load composition…"></textarea>
-            <div class="btn-group">
-                <button class="btn" id="analyzeBtn">🔍 Analyze</button>
-                <button class="btn btn-chant" id="chantBtn">🎤 Smooth Chant</button>
-                <button class="btn btn-download" id="downloadWavBtn">⬇️ Single WAV</button>
-                <button class="btn btn-download" id="batchExportFromLabBtn">🎵 Batch Export ZIP (from Lab)</button>
+            <div class="form-card">
+                <div class="form-grid">
+                    <div class="input-field"><label>Your Name</label><input type="text" id="user-name" value="Seeker" placeholder="Enter your name"></div>
+                    <div class="input-field"><label>Birth Year</label><input type="number" id="birth-year" value="1990"></div>
+                    <div class="input-field"><label>Birth Month</label><input type="number" id="birth-month" value="6"></div>
+                    <div class="input-field"><label>Birth Day</label><input type="number" id="birth-day" value="15"></div>
+                    <div class="input-field"><label>Birth Hour (0-23)</label><input type="number" id="birth-hour" value="10"></div>
+                    <div class="input-field"><label>Birth Minute</label><input type="number" id="birth-minute" value="30"></div>
+                    <div class="input-field full-width">
+                        <label>📍 Birth Location <span style="font-size:0.7rem;">(Wikipedia style)</span></label>
+                        <input type="text" id="birth-location" value="New Delhi, India" placeholder="City, Country (e.g., Mumbai, India)">
+                        <small style="display:block; font-size:0.65rem; margin-top:4px;">Lat/Lon auto-detected from location name</small>
+                    </div>
+                </div>
+                <button id="recalc-kernel" class="btn-primary"><span class="icon-refresh"></span> Generate Astrology & Soul Map</button>
             </div>
-            <div id="outputPanel" style="display: none;"></div>
+            <div id="astrology-output" class="results-area">
+                <div class="loading-placeholder">Enter birth details and click Generate...</div>
+            </div>
         </div>
-        <div id="engineStats" style="font-size: 12px; text-align: center; margin-top: 12px;"></div>
-    </div>
+
+        <!-- TAB 3: SOUL MAP -->
+        <div id="soulmap" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-user"></span> Soul Map · 49D Dimensional Profile</h2>
+                <p>Your Ātma Kāraka, Nakṣatra, and life purpose derived from unified 49D arithmetic.</p>
+            </div>
+            <div id="soulmap-output" class="results-area">
+                <div class="loading-placeholder">Enter birth details to generate your Soul Map...</div>
+            </div>
+        </div>
+
+        <!-- TAB 4: SANSKRIT ENGINE -->
+        <div id="sanskrit" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-book"></span> Sanskrit Engine · Phonetic Extraction</h2>
+                <p>Transliteration, Sandhi splitting, and Vedic lexicon.</p>
+            </div>
+            <div class="toolbar">
+                <button class="tool-btn" id="transliterate-btn">🔤 Transliteration</button>
+                <button class="tool-btn" id="sandhi-btn">⚡ Sandhi Splitter</button>
+                <button class="tool-btn" id="lexicon-btn">📖 Jyotish Lexicon</button>
+            </div>
+            <div id="sanskrit-output" class="results-area">
+                <div class="info-card">Select a tool to begin Sanskrit processing.</div>
+            </div>
+        </div>
+
+        <!-- TAB 5: INFO -->
+        <div id="info" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-info"></span> About Aigaane V3</h2>
+                <p>The 49D Arithmetic Kernel · Quantatech Engine · Vedic Wisdom</p>
+            </div>
+            <div class="info-content">
+                <div class="result-card">
+                    <h3>🧠 The 49D Kernel Architecture</h3>
+                    <div class="result-grid">
+                        <div class="result-item"><strong>Dimensions 1-7</strong><br>Root Physical Coordinates<br><small>Spatial-temporal base</small></div>
+                        <div class="result-item"><strong>Dimensions 8-21</strong><br>Frequency Resonance Band<br><small>Vedic mantras & swaras</small></div>
+                        <div class="result-item"><strong>Dimensions 22-49</strong><br>Anumana Predictive Layer<br><small>Entropy & outcomes</small></div>
+                    </div>
+                </div>
+                <div class="result-card">
+                    <h3>📜 About the Engine</h3>
+                    <p>Aigaane V3 is a 49-dimensional Vedic astronomy engine that unifies:</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Jyotish (Vedic Astrology)</li>
+                        <li>Sanskrit phonetics and transliteration</li>
+                        <li>Mantra and musical resonance mapping</li>
+                        <li>Soul Map Ātma Kāraka analysis</li>
+                        <li>49D arithmetic tensor calculations</li>
+                    </ul>
+                </div>
+                <div class="result-card">
+                    <h3>🌍 Location Database</h3>
+                    <p>Supported locations include major cities worldwide. Lat/Lon are automatically calculated from city names.</p>
+                    <p><strong>Examples:</strong> New Delhi, Mumbai, Bangalore, Chennai, Kolkata, Ahmedabad, Pune, Jaipur, London, New York, Tokyo, Sydney</p>
+                </div>
+                <div class="result-card">
+                    <h3>⚡ Technical Specifications</h3>
+                    <div class="result-grid">
+                        <div class="result-item"><strong>Kernel Version</strong><br>3.0.1</div>
+                        <div class="result-item"><strong>Tensor Size</strong><br>49 Dimensions</div>
+                        <div class="result-item"><strong>Hash Function</strong><br>49D Resonance Hash</div>
+                        <div class="result-item"><strong>Entropy Range</strong><br>-15 to 0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>© 2026 Aigaane · 49D Arithmetic Kernel · All outputs derived from unified tensor</p>
+    </footer>
 </div>
 
 <script>
-    // ================================
-    // MANTRA LAB STORAGE & STATE
-    // ================================
-    let mantras = [];
-    let selectedMantraIds = new Set();
-    let currentRasaFilter = "all";
+    // Location to Lat/Lon Database (Wikipedia style)
+    const locationDatabase = {
+        // India - Major Cities
+        'new delhi': { lat: 28.6139, lon: 77.2090 },
+        'delhi': { lat: 28.6139, lon: 77.2090 },
+        'mumbai': { lat: 19.0760, lon: 72.8777 },
+        'bombay': { lat: 19.0760, lon: 72.8777 },
+        'bangalore': { lat: 12.9716, lon: 77.5946 },
+        'bengaluru': { lat: 12.9716, lon: 77.5946 },
+        'chennai': { lat: 13.0827, lon: 80.2707 },
+        'kolkata': { lat: 22.5726, lon: 88.3639 },
+        'ahmedabad': { lat: 23.0225, lon: 72.5714 },
+        'pune': { lat: 18.5204, lon: 73.8567 },
+        'jaipur': { lat: 26.9124, lon: 75.7873 },
+        'hyderabad': { lat: 17.3850, lon: 78.4867 },
+        'lucknow': { lat: 26.8467, lon: 80.9462 },
+        'surat': { lat: 21.1702, lon: 72.8311 },
+        'kanpur': { lat: 26.4499, lon: 80.3319 },
+        'nagpur': { lat: 21.1458, lon: 79.0882 },
+        'indore': { lat: 22.7196, lon: 75.8577 },
+        'bhopal': { lat: 23.2599, lon: 77.4126 },
+        'patna': { lat: 25.5941, lon: 85.1376 },
+        'vadodara': { lat: 22.3072, lon: 73.1812 },
+        // International
+        'london': { lat: 51.5074, lon: -0.1278 },
+        'new york': { lat: 40.7128, lon: -74.0060 },
+        'los angeles': { lat: 34.0522, lon: -118.2437 },
+        'chicago': { lat: 41.8781, lon: -87.6298 },
+        'toronto': { lat: 43.6532, lon: -79.3832 },
+        'sydney': { lat: -33.8688, lon: 151.2093 },
+        'melbourne': { lat: -37.8136, lon: 144.9631 },
+        'tokyo': { lat: 35.6762, lon: 139.6503 },
+        'shanghai': { lat: 31.2304, lon: 121.4737 },
+        'beijing': { lat: 39.9042, lon: 116.4074 },
+        'singapore': { lat: 1.3521, lon: 103.8198 },
+        'dubai': { lat: 25.2048, lon: 55.2708 },
+        'istanbul': { lat: 41.0082, lon: 28.9784 },
+        'berlin': { lat: 52.5200, lon: 13.4050 },
+        'paris': { lat: 48.8566, lon: 2.3522 },
+        'rome': { lat: 41.9028, lon: 12.4964 },
+        'cairo': { lat: 30.0444, lon: 31.2357 }
+    };
 
-    function loadMantrasFromStorage() {
-        const saved = localStorage.getItem('aigaane_mantras');
-        if (saved) {
-            mantras = JSON.parse(saved);
-        } else {
-            // Default demo mantras
-            mantras = [
-                { id: 1, text: "ॐ शान्तिः शान्तिः शान्तिः", rasa: "Śānta", status: "verified", timestamp: new Date().toISOString() },
-                { id: 2, text: "जय श्रीराम जय श्रीराम", rasa: "Vīra", status: "verified", timestamp: new Date().toISOString() },
-                { id: 3, text: "करुणा सिन्धो कृपा सिन्धो", rasa: "Karuna", status: "verified", timestamp: new Date().toISOString() },
-                { id: 4, text: "चिदानन्द रूपः शिवोऽहम्", rasa: "Adbhuta", status: "verified", timestamp: new Date().toISOString() }
-            ];
-            saveMantras();
+    // Get coordinates from location name
+    function getCoordinatesFromLocation(locationName) {
+        if (!locationName || locationName.trim() === '') {
+            return { lat: 28.6139, lon: 77.2090 };
+        }
+        const normalized = locationName.toLowerCase().trim();
+        if (locationDatabase[normalized]) {
+            return locationDatabase[normalized];
+        }
+        for (const [key, value] of Object.entries(locationDatabase)) {
+            if (normalized.includes(key)) {
+                return value;
+            }
+        }
+        return { lat: 28.6139, lon: 77.2090 };
+    }
+
+    // Update hidden lat/lon fields
+    function updateLocationDisplay() {
+        const locationInput = document.getElementById('birth-location');
+        if (locationInput && locationInput.value) {
+            const coords = getCoordinatesFromLocation(locationInput.value);
+            let latInput = document.getElementById('birth-lat');
+            let lonInput = document.getElementById('birth-lon');
+            if (!latInput) {
+                const formGrid = document.querySelector('#astrology .form-grid');
+                if (formGrid) {
+                    const hiddenLat = document.createElement('input');
+                    hiddenLat.type = 'hidden';
+                    hiddenLat.id = 'birth-lat';
+                    hiddenLat.value = coords.lat;
+                    const hiddenLon = document.createElement('input');
+                    hiddenLon.type = 'hidden';
+                    hiddenLon.id = 'birth-lon';
+                    hiddenLon.value = coords.lon;
+                    formGrid.appendChild(hiddenLat);
+                    formGrid.appendChild(hiddenLon);
+                    latInput = hiddenLat;
+                    lonInput = hiddenLon;
+                }
+            } else {
+                latInput.value = coords.lat;
+                lonInput.value = coords.lon;
+            }
         }
     }
 
-    function saveMantras() {
-        localStorage.setItem('aigaane_mantras', JSON.stringify(mantras));
-    }
-
-    function renderMantraGrid() {
-        const container = document.getElementById('mantraGridContainer');
-        if (!container) return;
-        let filtered = mantras;
-        if (currentRasaFilter !== 'all') filtered = mantras.filter(m => m.rasa === currentRasaFilter);
-        if (filtered.length === 0) { container.innerHTML = '<div style="text-align:center; padding:40px;">✨ No mantras found. Click "Add Parijat Composition" or import JSON.</div>'; return; }
-        container.innerHTML = filtered.map(m => `
-            <div class="mantra-card ${selectedMantraIds.has(m.id) ? 'selected' : ''}" data-id="${m.id}">
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                    <input type="checkbox" class="checkbox-select" data-id="${m.id}" ${selectedMantraIds.has(m.id) ? 'checked' : ''}>
-                    <span class="raga-badge">${getRasaEmoji(m.rasa)} ${m.rasa}</span>
-                    <span class="raga-badge">ID: ${m.id}</span>
-                </div>
-                <div class="mantra-text">${escapeHtml(m.text)}</div>
-                <div class="mantra-meta">
-                    <select class="rasa-selector" data-id="${m.id}" data-field="rasa">
-                        ${getRasaOptions(m.rasa)}
-                    </select>
-                    <button class="send-to-engine-btn" data-id="${m.id}">🎵 Analyze in Sūtra-Engine</button>
-                </div>
-            </div>
-        `).join('');
-        attachMantraEventListeners();
-        document.getElementById('selectedCount').innerText = selectedMantraIds.size;
-        updateLabStats();
-    }
-
-    function getRasaOptions(selected) {
-        const rasas = ['Śānta','Vīra','Karuna','Adbhuta','Hāsya','Raudra','Bhayānaka','Bibhatsa','Śṛṅgāra'];
-        return rasas.map(r => `<option value="${r}" ${selected===r ? 'selected' : ''}>${getRasaEmoji(r)} ${r}</option>`).join('');
-    }
-
-    function getRasaEmoji(r) {
-        const map = { 'Śānta':'🕊️','Vīra':'⚔️','Karuna':'💚','Adbhuta':'✨','Hāsya':'😊','Raudra':'🔥','Bhayānaka':'😨','Bibhatsa':'😖','Śṛṅgāra':'💕' };
-        return map[r] || '🎭';
-    }
-
-    function attachMantraEventListeners() {
-        document.querySelectorAll('.checkbox-select').forEach(cb => {
-            cb.onchange = (e) => { const id = parseInt(e.target.dataset.id); if(e.target.checked) selectedMantraIds.add(id); else selectedMantraIds.delete(id); renderMantraGrid(); };
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            const tabId = btn.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
         });
-        document.querySelectorAll('.rasa-selector').forEach(sel => {
-            sel.onchange = (e) => { const id = parseInt(e.target.dataset.id); const newRasa = e.target.value; const mantra = mantras.find(m => m.id === id); if(mantra) { mantra.rasa = newRasa; saveMantras(); renderMantraGrid(); showToast(`🎭 Rasa updated to ${newRasa}`); } };
-        });
-        document.querySelectorAll('.send-to-engine-btn').forEach(btn => {
-            btn.onclick = (e) => { const id = parseInt(btn.dataset.id); sendToSutraEngine(id); };
-        });
-    }
+    });
 
-    function sendToSutraEngine(id) {
-        const mantra = mantras.find(m => m.id === id);
-        if (mantra) {
-            localStorage.setItem('sutra_engine_temp_text', mantra.text);
-            localStorage.setItem('sutra_engine_temp_rasa', mantra.rasa);
-            document.getElementById('engineTabBtn').click();
-            showToast(`📤 Sent "${mantra.text.substring(0, 30)}..." to Sūtra-Engine`);
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async () => {
+        updateLocationDisplay();
+        
+        const locationInput = document.getElementById('birth-location');
+        if (locationInput) {
+            locationInput.addEventListener('change', updateLocationDisplay);
+            locationInput.addEventListener('blur', updateLocationDisplay);
         }
-    }
-
-    function batchAssignRasa() {
-        const batchRasa = document.getElementById('batchRasaSelect').value;
-        if (!batchRasa) { showToast("Select a Rasa first"); return; }
-        if (selectedMantraIds.size === 0) { showToast("No mantras selected"); return; }
-        for (let id of selectedMantraIds) {
-            const m = mantras.find(m => m.id === id);
-            if (m) m.rasa = batchRasa;
+        
+        if (window.Quantatech) {
+            await window.Quantatech.init();
         }
-        saveMantras();
-        showToast(`✨ Assigned ${batchRasa} to ${selectedMantraIds.size} mantras`);
-        renderMantraGrid();
-    }
-
-    function clearSelection() { selectedMantraIds.clear(); renderMantraGrid(); }
-
-    function updateLabStats() {
-        const counts = { 'Śānta':0,'Vīra':0,'Karuna':0,'Adbhuta':0,'Hāsya':0,'Raudra':0,'Bhayānaka':0,'Bibhatsa':0,'Śṛṅgāra':0 };
-        mantras.forEach(m => { if(counts[m.rasa] !== undefined) counts[m.rasa]++; else counts['Śānta']++; });
-        const statsHtml = Object.entries(counts).map(([r,c]) => `<span style="margin-right:12px;">${getRasaEmoji(r)} ${r}: ${c}</span>`).join('');
-        document.getElementById('labStats').innerHTML = `📊 Total Mantras: ${mantras.length} | ${statsHtml}`;
-    }
-
-    function exportCompleteMetadata() {
-        const rasaDistribution = {
-            Śānta: mantras.filter(m => m.rasa === 'Śānta').length,
-            Vīra: mantras.filter(m => m.rasa === 'Vīra').length,
-            Karuna: mantras.filter(m => m.rasa === 'Karuna').length,
-            Adbhuta: mantras.filter(m => m.rasa === 'Adbhuta').length,
-            Hāsya: mantras.filter(m => m.rasa === 'Hāsya').length,
-            Raudra: mantras.filter(m => m.rasa === 'Raudra').length,
-            Bhayānaka: mantras.filter(m => m.rasa === 'Bhayānaka').length,
-            Bibhatsa: mantras.filter(m => m.rasa === 'Bibhatsa').length,
-            Śṛṅgāra: mantras.filter(m => m.rasa === 'Śṛṅgāra').length
-        };
-        const exportData = {
-            version: "Parijat 1.0",
-            timestamp: new Date().toISOString(),
-            location: { lat: 23.0225, lon: 72.5714, nakshatra: "Krittika", lambda: 33.33 },
-            totalMantras: mantras.length,
-            rasaDistribution,
-            mantras: mantras
-        };
-        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `aigaane_mantras_complete_${Date.now()}.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-        showToast(`📥 Exported ${mantras.length} mantras with complete metadata`);
-    }
-
-    function addCompositionToLab() {
-        const composition = {
-            id: Date.now(),
-            text: "ज्ञानं प्रकाशं हृदये विभाति । सत्यं परं ब्रह्म सदा नमस्ते ॥ शब्दार्थ युक्तं गणितेन पूर्णम् । सिद्धं हि तत्त्वं परिजात रूपम् ॥",
-            rasa: "Śānta",
-            raga: "Yaman",
-            tala: "Teental",
-            meter: "Upajati",
-            status: "verified",
-            timestamp: new Date().toISOString()
-        };
-        mantras.unshift(composition);
-        saveMantras();
-        renderMantraGrid();
-        showToast("🕉️ Parijat Composition added to Lab!");
-    }
-
-    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
-
-    // ================================
-    // SŪTRA ENGINE FUNCTIONS (partial port)
-    // ================================
-    let currentLambda = 33.33;
-    let currentEngineAnalysis = null;
-    function setLambda(val) { currentLambda = val; document.getElementById('lambdaSlider').value = val; document.getElementById('lambdaVal').innerText = val.toFixed(2); const freq = getMicrotonalFreq(0); document.getElementById('targetFreq').innerText = freq.toFixed(2); if(document.getElementById('sanskritInput').value.trim()) renderEngineOutput(document.getElementById('sanskritInput').value); }
-    function getMicrotonalFreq(offsetDeg = 0) { const correctedLambda = currentLambda - 0.05; return 432 * Math.pow(2, (correctedLambda + offsetDeg) / 360); }
-    function getRasaRatio(rasa) { const ratios = { 'Śānta':1.5, 'Vīra':1.125, 'Karuna':1.066, 'Adbhuta':1.406, 'Hāsya':1.125, 'Raudra':1.58, 'Bhayānaka':1.777, 'Bibhatsa':1.777, 'Śṛṅgāra':1.125 }; return ratios[rasa] || 1.5; }
-    const RASA_PROFILES = { 'Śānta':{ duration:2.0, meend:'steady', cents:0 }, 'Vīra':{ duration:1.5, meend:'ascending', cents:4 }, 'Karuna':{ duration:3.5, meend:'descending', cents:-6 }, 'Adbhuta':{ duration:2.5, meend:'zigzag', cents:3 }, 'Hāsya':{ duration:1.8, meend:'bouncing', cents:2 }, 'Raudra':{ duration:1.2, meend:'angular', cents:8 }, 'Bhayānaka':{ duration:5.0, meend:'dissonant', cents:-10 }, 'Bibhatsa':{ duration:2.2, meend:'jittery', cents:-4 }, 'Śṛṅgāra':{ duration:3.0, meend:'sinusoidal', cents:2 } };
-    function analyzeSutra(text) { const chars = [...text]; let totalMatras = 0; let heavyConjuncts = 0; for(let i=0; i<chars.length; i++) { let ch=chars[i]; if(ch === ' '||ch==='।'||ch==='॥') continue; let matra=1; let isGuru=false; if(ch==='ा'||ch==='ी'||ch==='ू'||ch==='े'||ch==='ै'||ch==='ो'||ch==='ौ'){ matra=2; isGuru=true; } if(chars[i+1]==='्'){ matra=2; isGuru=true; } totalMatras+=matra; if(isGuru) heavyConjuncts++; } return { totalMatras, heavyConjuncts, dominantRasa:'Śānta' }; }
-    function renderEngineOutput(text) { const analysis = analyzeSutra(text); currentEngineAnalysis = analysis; const panel = document.getElementById('outputPanel'); panel.style.display = 'block'; panel.innerHTML = `<div class="stats-row"><div class="stat-box"><div class="stat-number">${analysis.totalMatras}</div><div>📊 Total Mātrās</div></div><div class="stat-box"><div class="stat-number">${analysis.heavyConjuncts}</div><div>⚡ Guru</div></div></div><div class="card"><h2>🎨 Rasa Tuning</h2><div>Current Rasa: <strong id="engineRasaDisplay">Śānta</strong> | Meend Profile Active</div></div>`; }
-    function generateWavBlob(freq, duration, rasa='Śānta', sampleRate=44100) { const samples = Math.floor(duration * sampleRate); const audioData = new Float32Array(samples); const profile = RASA_PROFILES[rasa] || RASA_PROFILES['Śānta']; for (let i=0; i<samples; i++) { const t = i/sampleRate; let centsOffset = profile.cents; if(profile.meend==='ascending') centsOffset = profile.cents * (t/duration); else if(profile.meend==='descending') centsOffset = profile.cents * (1 - t/duration); else if(profile.meend==='zigzag') centsOffset = profile.cents * Math.sin(2*Math.PI*4*t/duration); else if(profile.meend==='sinusoidal') centsOffset = profile.cents * Math.sin(2*Math.PI*2*t/duration); const instantFreq = freq * Math.pow(2, centsOffset/1200); let s = Math.sin(2*Math.PI*instantFreq*t); s += 0.3*Math.sin(2*Math.PI*instantFreq*2*t); s += 0.15*Math.sin(2*Math.PI*instantFreq*3*t); s = s/1.45; const env = Math.min(1, i/(sampleRate*0.02)) * (1 - Math.min(1, i/samples)); audioData[i] = s * env * 0.5; } const dataLength = audioData.length*2; const buffer = new ArrayBuffer(44+dataLength); const view = new DataView(buffer); function writeStr(o,s){for(let i=0;i<s.length;i++)view.setUint8(o+i,s.charCodeAt(i));} writeStr(0,'RIFF'); view.setUint32(4,36+dataLength,true); writeStr(8,'WAVE'); writeStr(12,'fmt '); view.setUint32(16,16,true); view.setUint16(20,1,true); view.setUint16(22,1,true); view.setUint32(24,sampleRate,true); view.setUint32(28,sampleRate*2,true); view.setUint16(32,2,true); view.setUint16(34,16,true); writeStr(36,'data'); view.setUint32(40,dataLength,true); let offset=44; for(let i=0;i<audioData.length;i++){ let s=Math.max(-1,Math.min(1,audioData[i])); let intSample=s<0?s*0x8000:s*0x7FFF; view.setInt16(offset,intSample,true); offset+=2;} return new Blob([view],{type:'audio/wav'}); }
-    async function speakText(text) { return new Promise(r=>{ const u=new SpeechSynthesisUtterance(text); u.lang='sa-IN'; u.rate=0.65; u.onend=r; window.speechSynthesis.speak(u); }); }
-    function exportEngineWav(text, filename) { const freq = getMicrotonalFreq(0) * getRasaRatio('Śānta'); const wav = generateWavBlob(freq, 2.5, 'Śānta'); const url=URL.createObjectURL(wav); const a=document.createElement('a'); a.href=url; a.download=filename; a.click(); URL.revokeObjectURL(url); showToast(`✅ Exported ${filename}`); }
-    async function batchExportFromLabToZip() { const mantrasList = mantras; if(!mantrasList.length){ showToast("No mantras in lab"); return; } const rasaFilter = document.getElementById('exportRasaFilter')?.value || 'all'; let filtered = mantrasList; if(rasaFilter !== 'all') filtered = mantrasList.filter(m=>m.rasa===rasaFilter); if(!filtered.length){ showToast(`No mantras with ${rasaFilter}`); return; } const JSZip = window.JSZip; if(!JSZip){ showToast("Loading JSZip..."); const script=document.createElement('script'); script.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'; script.onload=()=>batchExportFromLabToZip(); document.head.appendChild(script); return; } const zip=new JSZip(); const baseFreq=getMicrotonalFreq(0); for(let i=0;i<filtered.length;i++){ const m=filtered[i]; const rasa=m.rasa||'Śānta'; const profile=RASA_PROFILES[rasa]||RASA_PROFILES['Śānta']; const wav=generateWavBlob(baseFreq*getRasaRatio(rasa), profile.duration, rasa); zip.file(`mantra_${m.id}_${rasa}.wav`, wav); if(i%15===0) await new Promise(r=>setTimeout(r,5)); } const zipBlob=await zip.generateAsync({type:'blob'}); const url=URL.createObjectURL(zipBlob); const a=document.createElement('a'); a.href=url; a.download=`sutra_batch_${rasaFilter}_${Date.now()}.zip`; a.click(); URL.revokeObjectURL(url); showToast(`✅ Exported ${filtered.length} WAVs`); }
-    function showToast(msg) { let t=document.createElement('div'); t.className='toast'; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2800); }
-
-    // ================================
-    // TAB SWITCHING & ENGINE INIT
-    // ================================
-    document.getElementById('labTabBtn').onclick = (e) => { e.preventDefault(); document.getElementById('mantraLabSection').style.display = 'block'; document.getElementById('sutraEngineSection').style.display = 'none'; document.getElementById('labTabBtn').classList.add('active'); document.getElementById('engineTabBtn').classList.remove('active'); };
-    document.getElementById('engineTabBtn').onclick = (e) => { e.preventDefault(); document.getElementById('mantraLabSection').style.display = 'none'; document.getElementById('sutraEngineSection').style.display = 'block'; document.getElementById('labTabBtn').classList.remove('active'); document.getElementById('engineTabBtn').classList.add('active'); const tempText = localStorage.getItem('sutra_engine_temp_text'); if(tempText){ document.getElementById('sanskritInput').value = tempText; renderEngineOutput(tempText); localStorage.removeItem('sutra_engine_temp_text'); const tempRasa = localStorage.getItem('sutra_engine_temp_rasa'); if(tempRasa){ if(document.getElementById('exportRasaFilter')) document.getElementById('exportRasaFilter').value=tempRasa; showToast(`📥 Loaded from Mantra Lab: ${tempRasa}`); localStorage.removeItem('sutra_engine_temp_rasa');} } };
-
-    // Bind engine controls dynamically after DOM ready
-    window.setLambda = setLambda;
-    document.getElementById('analyzeBtn')?.addEventListener('click',()=>{ const t=document.getElementById('sanskritInput').value.trim(); if(t) renderEngineOutput(t); else showToast("Enter text"); });
-    document.getElementById('chantBtn')?.addEventListener('click',async()=>{ const t=document.getElementById('sanskritInput').value.trim(); if(t){ await speakText(t); showToast("✅ Chant complete"); } });
-    document.getElementById('downloadWavBtn')?.addEventListener('click',()=>{ const t=document.getElementById('sanskritInput').value.trim(); if(t) exportEngineWav(t, `mantra_${Date.now()}.wav`); });
-    document.getElementById('batchExportFromLabBtn')?.addEventListener('click',batchExportFromLabToZip);
-    document.getElementById('lambdaSlider')?.addEventListener('input',(e)=>{ setLambda(parseFloat(e.target.value)); });
-
-    // Lab event listeners
-    document.getElementById('batchApplyRasaBtn')?.addEventListener('click',batchAssignRasa);
-    document.getElementById('clearSelectionBtn')?.addEventListener('click',clearSelection);
-    document.getElementById('exportCompleteMetadataBtn')?.addEventListener('click',exportCompleteMetadata);
-    document.getElementById('addCompositionBtn')?.addEventListener('click',addCompositionToLab);
-    document.querySelectorAll('.rasa-filter-btn').forEach(btn=>{ btn.onclick=()=>{ document.querySelectorAll('.rasa-filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); currentRasaFilter=btn.dataset.filterRasa; renderMantraGrid(); }; });
-
-    // Initial load
-    loadMantrasFromStorage();
-    renderMantraGrid();
-    if(!document.getElementById('exportRasaFilter')) { const hiddenSelect = document.createElement('select'); hiddenSelect.id='exportRasaFilter'; hiddenSelect.style.display='none'; document.body.appendChild(hiddenSelect); }
-    document.getElementById('targetFreq').innerText = getMicrotonalFreq(0).toFixed(2);
+        
+        const recalcBtn = document.getElementById('recalc-kernel');
+        if (recalcBtn) {
+            recalcBtn.addEventListener('click', () => {
+                updateLocationDisplay();
+                const birth = {
+                    name: document.getElementById('user-name')?.value || 'Seeker',
+                    year: parseInt(document.getElementById('birth-year')?.value || 1990),
+                    month: parseInt(document.getElementById('birth-month')?.value || 6),
+                    day: parseInt(document.getElementById('birth-day')?.value || 15),
+                    hour: parseInt(document.getElementById('birth-hour')?.value || 10),
+                    minute: parseInt(document.getElementById('birth-minute')?.value || 30),
+                    lat: parseFloat(document.getElementById('birth-lat')?.value || 28.6139),
+                    lon: parseFloat(document.getElementById('birth-lon')?.value || 77.2090)
+                };
+                if (window.Quantatech) window.Quantatech.recompute(birth);
+                if (window.MusicMantra) window.MusicMantra.render();
+                if (window.AstrologyEngine) window.AstrologyEngine.render();
+                if (window.SoulMap) window.SoulMap.render();
+            });
+        }
+    });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script src="engine/quantatech.js"></script>
+<script src="tabs/music-mantra.js"></script>
+<script src="tabs/astrology.js"></script>
+<script src="tabs/soul-map.js"></script>
+<script src="tabs/sanskrit.js"></script>
 </body>
 </html>
