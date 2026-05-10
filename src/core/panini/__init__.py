@@ -1,3 +1,11 @@
-﻿from .lattice import Tag, Modality, TagLattice
+﻿from .tag_algebra import (
+    ProvenancedTag, TagSemanticRole, TagPriority, 
+    TagAlgebra, Phoneme, AgamaRegistry, PaninianEngine,
+    InheritanceMode
+)
 
-__all__ = ["Tag", "Modality", "TagLattice"]
+__all__ = [
+    "ProvenancedTag", "TagSemanticRole", "TagPriority",
+    "TagAlgebra", "Phoneme", "AgamaRegistry", "PaninianEngine",
+    "InheritanceMode"
+]
