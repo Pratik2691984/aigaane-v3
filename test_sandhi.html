@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head><title>Sandhi Splitter Test</title>
+<style>
+body { font-family: monospace; padding: 20px; background: #1a1a2e; color: white; }
+input, button { padding: 8px; margin: 5px; }
+.result { background: #2a2a3e; padding: 10px; margin-top: 10px; border-radius: 5px; }
+</style>
+</head>
+<body>
+<h2>🧪 Sandhi Splitter Test</h2>
+<input type="text" id="word" placeholder="Enter Sanskrit word" value="हिमालय">
+<button onclick="testSandhi()">Test Split</button>
+<div id="result" class="result"></div>
+
+<script>
+// Simplified version for testing
+const devToIast = {
+    'अ':'a','आ':'ā','इ':'i','ई':'ī','उ':'u','ऊ':'ū','ऋ':'ṛ','ॠ':'ṝ',
+    'ऌ':'ḷ','ॡ':'ḹ','ए':'e','ऐ':'ai','ओ':'o','औ':'au','ं':'ṃ','ः':'ḥ',
+    'क':'k','ख':'kh','ग':'g','घ':'gh','ङ':'ṅ','च':'c','छ':'ch','ज':'j',
+    'झ':'jh','ञ':'ñ','ट':'ṭ','ठ':'ṭh','ड':'ḍ','ढ':'ḍh','ण':'ṇ','त':'t',
+    'थ':'th','द':'d','ध':'dh','न':'n','प':'p','फ':'ph','ब':'b','भ':'bh',
+    'म':'m','य':'y','र':'r','ल':'l','व':'v','श':'ś','ष':'ṣ','स':'s','ह':'h'
+};
+
+function toIAST(text) {
+    let result = '';
+    for (let ch of text) result += devToIast[ch] || ch;
+    return result;
+}
+
+function testSandhi() {
+    const word = document.getElementById('word').value;
+    const iast = toIAST(word);
+    document.getElementById('result').innerHTML = `
+        <strong>Input:</strong> ${word}<br>
+        <strong>IAST:</strong> ${iast}<br>
+        <strong>Possible splits:</strong><br>
+        • ${iast.slice(0, -2)} + ${iast.slice(-2)}<br>
+        • ${iast.slice(0, -3)} + ${iast.slice(-3)}<br>
+        • ${iast.slice(0, -4)} + ${iast.slice(-4)}
+    `;
+}
+</script>
+</body>
+</html>
