@@ -14,7 +14,8 @@ class NakshatraSound:
         if json_path is None:
             json_path = os.path.join(os.path.dirname(__file__), "data", "nakshatra_sound.json")
         
-        with open(json_path, "r", encoding="utf-8") as f:
+        # Use utf-8-sig to handle BOM automatically
+        with open(json_path, "r", encoding="utf-8-sig") as f:
             self.data = json.load(f)
         
         # Create lookup by name and index
@@ -53,10 +54,7 @@ class NakshatraSound:
         return base_freq * ratio
     
     def get_meter_pattern(self, chand: str) -> dict:
-        """
-        Convert meter name to syllable pattern
-        Returns pattern and syllable count
-        """
+        """Convert meter name to syllable pattern"""
         meters = {
             "Vasantatilaka": {"pattern": "S S G S G G", "syllables": 12},
             "Shikharini": {"pattern": "G G G S G S G G G", "syllables": 17},
@@ -65,40 +63,6 @@ class NakshatraSound:
             "Shārdūlavikrīḍita": {"pattern": "G G S G G S G G G", "syllables": 19}
         }
         return meters.get(chand, {"pattern": "S G", "syllables": 2})
-    
-    def to_49d_vector(self, nakshatra: dict) -> list:
-        """
-        Convert nakshatra sound attributes to 49-dimensional vector
-        Each attribute maps to specific dimension ranges
-        """
-        vec = [0.0] * 49
-        
-        # Svara (dimensions 1-7) - one-hot based on note
-        svara_map = {
-            "Sa (śuddha)": 0, "Re (komal)": 1, "Ga (śuddha)": 2,
-            "Ma (tivra)": 3, "Pa (śuddha)": 4, "Dha (komal)": 5,
-            "Ni (komal)": 6
-        }
-        svara_idx = svara_map.get(nakshatra["svara"], 0)
-        vec[svara_idx] = 1.0
-        
-        # Raga (dimensions 8-20) - encode as frequency cluster
-        raga_freq = hash(nakshatra["raga"]) % 13
-        vec[8 + raga_freq] = 0.8
-        
-        # Chand/meter (dimensions 21-28) - syllable count
-        meter = self.get_meter_pattern(nakshatra["chand"])
-        vec[21] = meter["syllables"] / 20.0
-        
-        # Bija phoneme (dimensions 29-40) - phonetic class
-        bija_val = ord(nakshatra["bija"][0]) % 12
-        vec[29 + bija_val] = 0.9
-        
-        # Lyric seed (dimensions 41-49) - semantic anchor
-        seed_val = len(nakshatra["seed"]) / 10.0
-        vec[41] = seed_val
-        
-        return vec
     
     def generate_mantra_phrase(self, nakshatra: dict) -> str:
         """Generate a simple mantra phrase using bija and seed"""
@@ -119,19 +83,8 @@ def get_sound_db() -> NakshatraSound:
         _sound_db = NakshatraSound()
     return _sound_db
 
-# Quick test
 if __name__ == "__main__":
     db = get_sound_db()
-    rohini = db.get_by_name("Rohiṇī")
-    print(f"\n📊 Rohiṇī Sound Data:")
-    print(f"   Svara: {rohini['svara']}")
-    print(f"   Rāga: {rohini['raga']}")
-    print(f"   Chand: {rohini['chand']}")
-    print(f"   Bīja: {rohini['bija']}")
-    print(f"   Seed: {rohini['seed']}")
-    print(f"   Mantra: {db.generate_mantra_phrase(rohini)}")
-    print(f"   Frequency: {db.get_svara_frequency(rohini['svara']):.1f} Hz")
-    
-    # Test 49D vector
-    vec = db.to_49d_vector(rohini)
-    print(f"\n   49D Vector (first 10 dims): {vec[:10]}")
+    test = db.get_by_name("Rohini")
+    if test:
+        print(f"Test: {test['name']} -> {test['svara']}")
