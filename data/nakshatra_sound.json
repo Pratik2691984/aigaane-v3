@@ -1,0 +1,33 @@
+﻿{
+  "version": "1.0",
+  "description": "Pure sound architecture for 27 Nakshatras - No astrology, only music & mantra",
+  "nakshatras": [
+    {"index":1,"name":"Ashwinī","svara":"Ni (komal)","raga":"Bhairav","chand":"Vasantatilaka","bija":"A","seed":"Aśva","frequency_ratio":"5/4"},
+    {"index":2,"name":"Bharaṇī","svara":"Ma (tivra)","raga":"Todi","chand":"Shikharini","bija":"Ī","seed":"Īśā","frequency_ratio":"4/3"},
+    {"index":3,"name":"Kṛttikā","svara":"Ga (śuddha)","raga":"Marwa","chand":"Mandākrāntā","bija":"U","seed":"Ulkā","frequency_ratio":"5/4"},
+    {"index":4,"name":"Rohiṇī","svara":"Re (komal)","raga":"Khamaj","chand":"Vasantatilaka","bija":"AI","seed":"Ena","frequency_ratio":"9/8"},
+    {"index":5,"name":"Mrigaśirā","svara":"Sa (śuddha)","raga":"Bageshree","chand":"Upajati","bija":"Ē","seed":"Mriga","frequency_ratio":"1/1"},
+    {"index":6,"name":"Ārdrā","svara":"Dha (komal)","raga":"Malkauns","chand":"Shārdūlavikrīḍita","bija":"O","seed":"Rudra","frequency_ratio":"11/8"},
+    {"index":7,"name":"Punarvasu","svara":"Pa (śuddha)","raga":"Yaman","chand":"Vasantatilaka","bija":"AU","seed":"Aditi","frequency_ratio":"3/2"},
+    {"index":8,"name":"Puṣya","svara":"Ni (komal)","raga":"Darbari","chand":"Upajati","bija":"AM","seed":"Brhaspati","frequency_ratio":"7/4"},
+    {"index":9,"name":"Āśleṣā","svara":"Ga (śuddha)","raga":"Bhimpalasi","chand":"Mandākrāntā","bija":"AH","seed":"Nāga","frequency_ratio":"5/4"},
+    {"index":10,"name":"Maghā","svara":"Re (komal)","raga":"Bhairav","chand":"Shikharini","bija":"KA","seed":"Pitṛ","frequency_ratio":"9/8"},
+    {"index":11,"name":"Pūrva Phālgunī","svara":"Ma (tivra)","raga":"Khamaj","chand":"Vasantatilaka","bija":"KHA","seed":"Bhaga","frequency_ratio":"4/3"},
+    {"index":12,"name":"Uttara Phālgunī","svara":"Sa (śuddha)","raga":"Bhoop","chand":"Upajati","bija":"GA","seed":"Aryaman","frequency_ratio":"1/1"},
+    {"index":13,"name":"Hasta","svara":"Dha (komal)","raga":"Yaman","chand":"Mandākrāntā","bija":"GHA","seed":"Savitṛ","frequency_ratio":"11/8"},
+    {"index":14,"name":"Citrā","svara":"Ni (komal)","raga":"Brindavani Sarang","chand":"Shikharini","bija":"CA","seed":"Viśva","frequency_ratio":"7/4"},
+    {"index":15,"name":"Svāti","svara":"Pa (śuddha)","raga":"Hamsadhwani","chand":"Vasantatilaka","bija":"CHA","seed":"Vāyu","frequency_ratio":"3/2"},
+    {"index":16,"name":"Viśākhā","svara":"Ga (śuddha)","raga":"Shankara","chand":"Upajati","bija":"JA","seed":"Indra","frequency_ratio":"5/4"},
+    {"index":17,"name":"Anurādhā","svara":"Re (komal)","raga":"Malkauns","chand":"Mandākrāntā","bija":"JHA","seed":"Mitra","frequency_ratio":"9/8"},
+    {"index":18,"name":"Jyeṣṭhā","svara":"Ma (tivra)","raga":"Darbari","chand":"Shikharini","bija":"ÑA","seed":"Indra","frequency_ratio":"4/3"},
+    {"index":19,"name":"Mūla","svara":"Sa (śuddha)","raga":"Malkauns","chand":"Vasantatilaka","bija":"ṬA","seed":"Nirṛti","frequency_ratio":"1/1"},
+    {"index":20,"name":"Pūrva Aṣāḍhā","svara":"Dha (komal)","raga":"Khamaj","chand":"Upajati","bija":"ṬHA","seed":"Apa","frequency_ratio":"11/8"},
+    {"index":21,"name":"Uttara Aṣāḍhā","svara":"Ni (komal)","raga":"Bhoop","chand":"Mandākrāntā","bija":"ḌA","seed":"Viśve","frequency_ratio":"7/4"},
+    {"index":22,"name":"Śravaṇa","svara":"Pa (śuddha)","raga":"Yaman","chand":"Shikharini","bija":"ḌHA","seed":"Viṣṇu","frequency_ratio":"3/2"},
+    {"index":23,"name":"Dhanisṭhā","svara":"Ga (śuddha)","raga":"Brindavani Sarang","chand":"Vasantatilaka","bija":"ṆA","seed":"Vasu","frequency_ratio":"5/4"},
+    {"index":24,"name":"Śatabhiṣā","svara":"Re (komal)","raga":"Bhairav","chand":"Upajati","bija":"TA","seed":"Varuṇa","frequency_ratio":"9/8"},
+    {"index":25,"name":"Pūrva Bhādrapadā","svara":"Ma (tivra)","raga":"Desh","chand":"Mandākrāntā","bija":"THA","seed":"Aja","frequency_ratio":"4/3"},
+    {"index":26,"name":"Uttara Bhādrapadā","svara":"Sa (śuddha)","raga":"Darbari","chand":"Shikharini","bija":"DA","seed":"Ahir","frequency_ratio":"1/1"},
+    {"index":27,"name":"Revatī","svara":"Dha (komal)","raga":"Bhimpalasi","chand":"Vasantatilaka","bija":"DHA","seed":"Pūṣan","frequency_ratio":"11/8"}
+  ]
+}
