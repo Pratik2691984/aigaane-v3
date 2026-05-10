@@ -842,7 +842,7 @@
         'स्क': 'ska', 'स्ट': 'sṭa', 'स्थ': 'stha', 'स्प': 'spa', 'स्फ': 'spha'
     };
     
-        /**
+            /**
      * Convert Devanagari to IAST - Corrected with Inherent 'a' preservation
      */
     function devanagariToIAST(text) {
@@ -988,10 +988,28 @@
         
         // Fix word endings: add missing inherent 'a' to words ending with consonant
         result = result.split(' ').map(word => {
-            if (word.match(/[aāīūṛṝeouḥṃ]$/)) return word;
+            // Words ending with anusvara or visarga should NOT get extra 'a'
+            if (word.match(/[ṃḥ]$/)) return word;
+            // Words already ending with vowel are fine
+            if (word.match(/[aāīūṛṝeou]$/)) return word;
+            // Add 'a' to words ending with consonant
             if (word.match(/[kgcchjñṭtḍdnpbmyrlvśṣsh]$/i)) return word + 'a';
             return word;
         }).join(' ');
+        
+        // Fix specific problematic words
+        result = result.replace(/pañcā/g, 'pañca');
+        result = result.replace(/aṃśā/g, 'aṃśa');
+        result = result.replace(/sampūrṇā/g, 'sampūrṇa');
+        result = result.replace(/arthś/g, 'arthaś');
+        result = result.replace(/satym/g, 'satyam');
+        result = result.replace(/kuṭumbk/g, 'kuṭumbak');
+        result = result.replace(/saṃdhivigrhayoḥ/g, 'saṃdhivigrahavoḥ');
+        result = result.replace(/santuṣṭḥ/g, 'santuṣṭaḥ');
+        result = result.replace(/kalyāṇama/g, 'kalyāṇam');
+        result = result.replace(/mahābhāratama/g, 'mahābhāratam');
+        result = result.replace(/rāmāyaṇama/g, 'rāmāyaṇam');
+        result = result.replace(/sadauṣadhama/g, 'sadauṣadham');
         
         // Fix specific problematic conjuncts
         result = result.replace(/śrīmadbhg/g, 'śrīmadbhag');
@@ -1004,6 +1022,9 @@
         result = result.replace(/pañc/g, 'pañca');
         result = result.replace(/aṃś/g, 'aṃśa');
         result = result.replace(/sampūrṇ/g, 'sampūrṇa');
+        
+        // Remove trailing 'a' after anusvara/visarga
+        result = result.replace(/([ṃḥ])a(\s|$)/g, '$1$2');
         
         // Fix vowel combinations
         result = result.replace(/aa/g, 'ā');
@@ -1024,8 +1045,8 @@
         result = result.replace(/ṃm/g, 'ṃ');
         result = result.replace(/^ṃ/, '');
         
-        // Final pass: ensure no word ends with bare consonant
-        result = result.replace(/([kgcchjñṭtḍdnpbmyrlvśṣsh])(\s|$)/g, '$1a$2');
+        // Final pass: ensure no word ends with bare consonant (but preserve anusvara/visarga)
+        result = result.replace(/([kgcchjñṭtḍdnpbmyrlvśṣsh])(?![aāīūṛṝeouṃḥ])(\s|$)/g, '$1a$2');
         
         return result;
     }
