@@ -844,12 +844,6 @@
     
         /**
      * Convert Devanagari to IAST - Corrected with Inherent 'a' preservation
-     * 
-     * RULE: Every consonant NOT followed by Halanta (्) or Vowel Sign (Matra) gets inherent 'a'
-     * EXAMPLE: न (na) → 'na' NOT 'n'
-     *          त (ta) → 'ta' NOT 't'
-     *          क् (k) → 'k' (no vowel because Halanta)
-     *          का (kā) → 'kā' (vowel sign present)
      */
     function devanagariToIAST(text) {
         if (!text) return '';
@@ -890,7 +884,7 @@
             'ग्ध': 'gdh', 'ब्ध': 'bdh', 'प्त': 'pt', 'प्स': 'ps',
             'ल्क': 'lk', 'ल्प': 'lp', 'ल्ब': 'lb', 'ल्म': 'lm',
             'ष्क': 'ṣk', 'ष्ट': 'ṣṭ', 'ष्ठ': 'ṣṭh', 'ष्ण': 'ṣṇ', 'ष्प': 'ṣp', 'ष्फ': 'ṣph',
-            'स्क': 'sk', 'स्ट': 'sṭ', 'स्थ': 'sth', 'स्न': 'sn', 'स्प': 'sp', 'स्फ': 'sph', 'स्म': 'sm', 'स्य': 'sy'
+            'स्क': 'sk', 'स्ट': 'sṭ', 'स्थ': 'sth', 'स्न': 'sn', 'स्प': 'sp', 'स्फ': 'sph', 'स्म': 'sm'
         };
         
         while (i < len) {
@@ -914,7 +908,7 @@
                 continue;
             }
             
-            // Handle vowel signs (matras) - these attach to previous consonant
+            // Handle vowel signs (matras)
             if (isVowelSign(current)) {
                 const vowelMap = {
                     'ा':'ā', 'ि':'i', 'ी':'ī', 'ु':'u', 'ू':'ū',
@@ -979,7 +973,7 @@
                 continue;
             }
             
-            // Handle halanta (skip it - we already processed in conjuncts)
+            // Handle halanta (skip it - already processed in conjuncts)
             if (current === '्') {
                 i++;
                 continue;
@@ -990,7 +984,28 @@
             i++;
         }
         
-        // Post-processing fixes
+        // ========== POST-PROCESSING FIXES ==========
+        
+        // Fix word endings: add missing inherent 'a' to words ending with consonant
+        result = result.split(' ').map(word => {
+            if (word.match(/[aāīūṛṝeouḥṃ]$/)) return word;
+            if (word.match(/[kgcchjñṭtḍdnpbmyrlvśṣsh]$/i)) return word + 'a';
+            return word;
+        }).join(' ');
+        
+        // Fix specific problematic conjuncts
+        result = result.replace(/śrīmadbhg/g, 'śrīmadbhag');
+        result = result.replace(/tvs/g, 'tvas');
+        result = result.replace(/grh/g, 'grah');
+        result = result.replace(/śrd/g, 'śrad');
+        result = result.replace(/krma/g, 'krama');
+        result = result.replace(/grnth/g, 'granth');
+        result = result.replace(/sprś/g, 'sparś');
+        result = result.replace(/pañc/g, 'pañca');
+        result = result.replace(/aṃś/g, 'aṃśa');
+        result = result.replace(/sampūrṇ/g, 'sampūrṇa');
+        
+        // Fix vowel combinations
         result = result.replace(/aa/g, 'ā');
         result = result.replace(/ii/g, 'ī');
         result = result.replace(/uu/g, 'ū');
@@ -1009,49 +1024,11 @@
         result = result.replace(/ṃm/g, 'ṃ');
         result = result.replace(/^ṃ/, '');
         
+        // Final pass: ensure no word ends with bare consonant
+        result = result.replace(/([kgcchjñṭtḍdnpbmyrlvśṣsh])(\s|$)/g, '$1a$2');
+        
         return result;
     }
-    /**
-     * Convert IAST to Devanagari
-     */
-    const IAST_MAP = {};
-    for (let [k, v] of Object.entries(DEVANAGARI_MAP)) {
-        if (v && !IAST_MAP[v]) {
-            IAST_MAP[v] = k;
-        }
-    }
-    // Add conjuncts in reverse
-    for (let [k, v] of Object.entries(CONJUNCT_TABLE)) {
-        IAST_MAP[v] = k;
-    }
-    
-    function iastToDevanagari(text) {
-        if (!text) return '';
-        
-        let result = '';
-        let i = 0;
-        const len = text.length;
-        
-        while (i < len) {
-            let matched = false;
-            // Try longest match first (3 characters for conjuncts)
-            for (let l = Math.min(4, len - i); l >= 1; l--) {
-                const substr = text.substr(i, l);
-                if (IAST_MAP[substr]) {
-                    result += IAST_MAP[substr];
-                    i += l;
-                    matched = true;
-                    break;
-                }
-            }
-            if (!matched) {
-                result += text[i];
-                i++;
-            }
-        }
-        return result;
-    }
-    
     // Transliteration button
     document.getElementById('transliterateBtn').addEventListener('click', () => {
         const input = document.getElementById('translitInput').value.trim();
