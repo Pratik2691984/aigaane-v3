@@ -1,520 +1,298 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>AIGAANE · Vedic OS | Soul Map Engine</title>
-  <meta name="description" content="AIGAANE — Vedic Operating System. Real-time Horā, 8 planetary frequencies, Nakshatra wisdom, global sangha mandala.">
-  
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
-  
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0B0E14;
-      color: #FFFFFF;
-      min-height: 100vh;
-      transition: background 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      overflow-x: hidden;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: radial-gradient(2px 2px at 20px 30px, #ffffff20, rgba(0,0,0,0)),
-                        radial-gradient(1px 1px at 60px 90px, #FFD70030, rgba(0,0,0,0));
-      background-size: 200px 200px, 150px 150px;
-      background-repeat: repeat;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
-    }
-    .container { max-width: 1300px; margin: 0 auto; padding: 1.5rem; position: relative; z-index: 1; }
-    .glass-card {
-      background: rgba(20, 20, 30, 0.55);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      border-radius: 32px;
-      padding: 1.5rem;
-      transition: all 0.4s ease;
-    }
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-weight: 600;
-      background: linear-gradient(135deg, #FFD700, #FFA500, #FF69B4);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
-    @media (max-width: 800px) { .dashboard-grid { grid-template-columns: 1fr; } }
-    .hora-main { text-align: center; }
-    .planet-icon { font-size: 3.5rem; filter: drop-shadow(0 0 15px currentColor); margin-bottom: 0.25rem; }
-    .planet-name { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 600; letter-spacing: 3px; }
-    .frequency-badge {
-      display: inline-block;
-      background: rgba(0,0,0,0.5);
-      border-radius: 40px;
-      padding: 0.25rem 1rem;
-      font-family: monospace;
-      font-size: 0.8rem;
-      border: 1px solid rgba(255,215,0,0.3);
-      margin: 0.5rem 0;
-    }
-    .timer { font-size: 2.5rem; font-family: monospace; font-weight: 600; letter-spacing: 3px; margin: 0.5rem 0; }
-    .progress-bar-bg { background: rgba(255,255,255,0.1); border-radius: 20px; height: 6px; overflow: hidden; }
-    .progress-fill { height: 100%; border-radius: 20px; transition: width 1s linear, background-color 0.6s ease; }
-    .nakshatra-card {
-      background: rgba(255,215,0,0.05);
-      border-radius: 20px;
-      padding: 1rem;
-      text-align: center;
-      border-left: 3px solid #FFD700;
-      margin-top: 1rem;
-    }
-    .audio-controls { display: flex; gap: 0.8rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
-    .audio-btn, .export-btn {
-      background: rgba(255,215,0,0.1);
-      border: 1px solid rgba(255,215,0,0.3);
-      border-radius: 40px;
-      padding: 0.5rem 1.2rem;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: #FFD700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .audio-btn:hover, .export-btn:hover { background: rgba(255,215,0,0.2); transform: scale(0.97); }
-    .mandala-container {
-      background: rgba(0,0,0,0.3);
-      border-radius: 28px;
-      padding: 1rem;
-      text-align: center;
-    }
-    canvas {
-      background: rgba(0,0,0,0.2);
-      border-radius: 50%;
-      width: 100%;
-      max-width: 280px;
-      height: auto;
-      margin: 0 auto;
-      display: block;
-      cursor: pointer;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    }
-    .view-toggle { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem; }
-    .toggle-btn {
-      background: transparent;
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      color: rgba(255, 255, 255, 0.6);
-      padding: 0.4rem 1.2rem;
-      border-radius: 30px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .toggle-btn.active { background: rgba(255, 215, 0, 0.15); color: #FFD700; border-color: #FFD700; }
-    .share-buttons { display: flex; gap: 0.6rem; justify-content: center; margin-top: 0.8rem; flex-wrap: wrap; }
-    .share-btn {
-      background: rgba(255,215,0,0.1);
-      border: 1px solid rgba(255,215,0,0.3);
-      border-radius: 30px;
-      padding: 0.3rem 0.9rem;
-      font-size: 0.7rem;
-      cursor: pointer;
-      color: #FFD700;
-    }
-    .practice-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .practice-card {
-      background: rgba(255,255,255,0.03);
-      border-radius: 20px;
-      padding: 1rem;
-      border: 1px solid rgba(255,255,255,0.05);
-      transition: all 0.3s ease;
-    }
-    .practice-card:hover { transform: translateY(-3px); background: rgba(255,215,0,0.05); border-color: rgba(255,215,0,0.2); }
-    .practice-title { font-weight: 600; font-size: 1rem; margin-bottom: 0.3rem; }
-    .practice-desc { font-size: 0.7rem; color: rgba(255,255,255,0.6); margin-bottom: 0.5rem; }
-    .practice-tag {
-      display: inline-block;
-      background: rgba(255,215,0,0.12);
-      border-radius: 12px;
-      padding: 0.15rem 0.6rem;
-      font-size: 0.65rem;
-      font-family: monospace;
-    }
-    .soulmap-sidebar {
-      background: rgba(255,215,0,0.03);
-      border-radius: 20px;
-      padding: 1rem;
-      border-left: 3px solid #FFD700;
-      margin-top: 1rem;
-    }
-    .shadow-mirror-card {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: rgba(0,0,0,0.35);
-      border-left: 3px solid #A0522D;
-      border-radius: 20px;
-    }
-    .intention-buttons { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
-    .intention-chip {
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,215,0,0.2);
-      border-radius: 20px;
-      padding: 0.2rem 0.6rem;
-      font-size: 0.65rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .intention-chip:hover { background: rgba(255,215,0,0.2); transform: scale(0.95); }
-    .location-status { font-size: 0.7rem; font-family: monospace; color: #FFD700; margin-top: 0.5rem; text-align: center; }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.95);
-      backdrop-filter: blur(12px);
-      z-index: 10000;
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background: rgba(20,20,30,0.96);
-      border-radius: 32px;
-      padding: 1.8rem;
-      text-align: center;
-      border: 1px solid rgba(255,215,0,0.3);
-      max-width: 420px;
-      margin: 1rem;
-    }
-    @keyframes goldPulse { 0%,100% { text-shadow: 0 0 0 #FFD700; } 50% { text-shadow: 0 0 20px #FFD700; } }
-    .recalibrating { animation: goldPulse 2s ease-in-out; }
-    @media (max-width: 640px) { .container { padding: 1rem; } .planet-name { font-size: 1.5rem; } .timer { font-size: 1.8rem; } }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Aigaane V3 — 49D Vedic Astrology Engine | Soul Map First Architecture">
+    <title>Aigaane V3 · 49D Vedic Kernel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 1.5rem;">
-    <div><div class="logo">🕉 AIGAANE</div><div style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">VEDIC OS · THE SOUL MAP ENGINE</div></div>
-    <div style="font-size: 0.7rem; font-family: monospace; background: rgba(255,215,0,0.1); padding: 0.3rem 0.8rem; border-radius: 20px;" id="locationDisplay">📍 Calibrating...</div>
-  </div>
-
-  <div class="view-toggle">
-    <button class="toggle-btn active" id="viewPersonalBtn">🌸 MY SOUL MAP</button>
-    <button class="toggle-btn" id="viewGlobalBtn">🌍 GLOBAL SANGHA</button>
-  </div>
-
-  <div class="dashboard-grid">
-    <div>
-      <div class="glass-card" id="horaCard">
-        <div class="hora-main">
-          <div class="planet-icon" id="planetIcon">☀️</div>
-          <div class="planet-name" id="planetName">SURYA</div>
-          <div class="frequency-badge" id="frequencyBadge">126.22 Hz · FIRE</div>
-          <div class="progress-bar-bg"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
-          <div class="timer" id="timerDisplay">00:00</div>
-          <div style="font-size: 0.75rem; color: rgba(255,255,255,0.5);">Next: <strong id="nextPlanet">Shukra</strong> · <span id="nextTimeText">in -- min</span></div>
+<div class="app-grid">
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="logo-block">
+            <h1>ĀIGĀANE <span class="badge-49d">v3 · 49D KERNEL</span></h1>
+            <p class="subhead">Quantatech Arithmetic · Soul Map First · Complete Vedic Suite</p>
         </div>
-      </div>
-      <div class="nakshatra-card">
-        🌙 CURRENT NAKSHATRA: <strong id="currentNakshatra">Rohini</strong> · <span id="nakshatraFreq">136.10 Hz</span> · Lord: <span id="nakshatraLord">Moon</span>
-        <div style="font-size: 0.7rem; margin-top: 0.3rem; font-style: italic;" id="nakshatraEssence">"The magnetic red resonance of growth and manifestation."</div>
-      </div>
-      <div class="audio-controls">
-        <button class="audio-btn" id="enableAudioBtn">🎧 ENABLE DRONE</button>
-        <button class="audio-btn" id="disableAudioBtn" style="opacity: 0.5;" disabled>🔇 MUTE</button>
-        <button class="export-btn" id="exportAudioBtn">💾 EXPORT SOUL MAP AUDIO</button>
-      </div>
-      <div class="location-status" id="geoStatus"></div>
-    </div>
-
-    <div>
-      <div class="mandala-container">
-        <h3 style="font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 0.5rem;">🌸 SADHANA MANDALA</h3>
-        <canvas id="streakMandala" width="280" height="280" style="width:100%; max-width:280px; height:auto; aspect-ratio:1/1; cursor:pointer;"></canvas>
-        <div class="share-buttons">
-          <button class="share-btn" id="shareMandalaBtn">📤 SHARE SOUL MAP</button>
-          <button class="share-btn" id="downloadMandalaBtn">💾 DOWNLOAD IMAGE</button>
+        <div class="kernel-stats" id="kernel-stats">
+            <span class="stat"><span class="icon-cube"></span> Σ Dim: <span id="dim-sum">—</span></span>
+            <span class="stat"><span class="icon-wave"></span> Entropy: <span id="anumana-entropy">—</span></span>
+            <span class="stat mono">🔬 Hash: <span id="res-hash">—</span></span>
         </div>
-        <div style="font-size: 0.7rem; margin-top: 0.5rem;" id="streakText">Complete practices to grow your mandala</div>
-      </div>
-      <div class="soulmap-sidebar">
-        <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-          <span>📿 MY SOUL MAP · <span id="savedCount">0</span> saved</span>
-          <span style="font-size: 0.7rem;">Root Nakshatra: <span id="rootNakshatra">Rohini</span></span>
-        </div>
-        <div id="savedList" style="margin-top: 0.6rem; font-size: 0.75rem; color: rgba(255,255,255,0.5);">No practices saved.</div>
-        <div style="margin-top: 0.8rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,215,0,0.1);">
-          <div style="font-size: 0.7rem; color: #FFD700;">🔥 CURRENT STREAK</div>
-          <div id="streakDetails" style="font-size: 0.8rem;">-- days</div>
-          <div id="planetaryBalance" style="font-size: 0.7rem; margin-top: 0.3rem; color: rgba(255,255,255,0.4);"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+    </header>
 
-  <div id="shadowMirror" class="shadow-mirror-card">
-    <div style="font-size: 0.65rem; letter-spacing: 2px; color: #A0522D;">🌑 THE SHADOW WHISPERS</div>
-    <div style="font-size: 0.85rem; font-style: italic; margin: 0.5rem 0;" id="shadowWhisper">The mandala is still forming...</div>
-    <div style="font-size: 0.7rem; margin-top: 0.5rem; color: rgba(255,215,0,0.7);">⚒️ Remedy: <span id="shadowRemedy">Continue your daily sadhana.</span></div>
-  </div>
+    <!-- TABS: 5 TABS -->
+    <nav class="sharp-tabs">
+        <button class="tab-btn active" data-tab="music">🎵 MUSIC & MANTRA</button>
+        <button class="tab-btn" data-tab="astrology">⭐ ASTROLOGY</button>
+        <button class="tab-btn" data-tab="soulmap">🌀 SOUL MAP</button>
+        <button class="tab-btn" data-tab="sanskrit">📜 SANSKRIT ENGINE</button>
+        <button class="tab-btn" data-tab="info">ℹ️ INFO</button>
+    </nav>
 
-  <h3 style="font-size: 0.85rem; font-weight: 500; margin: 1rem 0 0.5rem 0;">🪷 PRACTICES FOR CURRENT HORĀ</h3>
-  <div class="practice-grid" id="practiceGrid"></div>
+    <!-- TAB PANES -->
+    <main class="tab-container">
+        
+        <!-- TAB 1: MUSIC & MANTRA -->
+        <div id="music" class="tab-pane active">
+            <div class="panel-header">
+                <h2><span class="icon-music"></span> Mantra & Music · 49D Resonance Mapping</h2>
+                <p>Frequency dimensions (8-21) map directly to Vedic mantras and swaras.</p>
+            </div>
+            <div id="music-output" class="results-area">
+                <div class="loading-placeholder">Generating from kernel frequency band...</div>
+            </div>
+        </div>
+
+        <!-- TAB 2: ASTROLOGY -->
+        <div id="astrology" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-star"></span> Vedic Astrology · Planetary Positions</h2>
+                <p>Graha positions, Nakshatra, Rashi, and Dosha analysis from your 49D kernel.</p>
+            </div>
+            <div class="form-card">
+                <div class="form-grid">
+                    <div class="input-field"><label>Your Name</label><input type="text" id="user-name" value="Seeker" placeholder="Enter your name"></div>
+                    <div class="input-field"><label>Birth Year</label><input type="number" id="birth-year" value="1990"></div>
+                    <div class="input-field"><label>Birth Month</label><input type="number" id="birth-month" value="6"></div>
+                    <div class="input-field"><label>Birth Day</label><input type="number" id="birth-day" value="15"></div>
+                    <div class="input-field"><label>Birth Hour (0-23)</label><input type="number" id="birth-hour" value="10"></div>
+                    <div class="input-field"><label>Birth Minute</label><input type="number" id="birth-minute" value="30"></div>
+                    <div class="input-field full-width">
+                        <label>📍 Birth Location <span style="font-size:0.7rem;">(Wikipedia style)</span></label>
+                        <input type="text" id="birth-location" value="New Delhi, India" placeholder="City, Country (e.g., Mumbai, India)">
+                        <small style="display:block; font-size:0.65rem; margin-top:4px;">Lat/Lon auto-detected from location name</small>
+                    </div>
+                </div>
+                <button id="recalc-kernel" class="btn-primary"><span class="icon-refresh"></span> Generate Astrology & Soul Map</button>
+            </div>
+            <div id="astrology-output" class="results-area">
+                <div class="loading-placeholder">Enter birth details and click Generate...</div>
+            </div>
+        </div>
+
+        <!-- TAB 3: SOUL MAP -->
+        <div id="soulmap" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-user"></span> Soul Map · 49D Dimensional Profile</h2>
+                <p>Your Ātma Kāraka, Nakṣatra, and life purpose derived from unified 49D arithmetic.</p>
+            </div>
+            <div id="soulmap-output" class="results-area">
+                <div class="loading-placeholder">Enter birth details to generate your Soul Map...</div>
+            </div>
+        </div>
+
+        <!-- TAB 4: SANSKRIT ENGINE -->
+        <div id="sanskrit" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-book"></span> Sanskrit Engine · Phonetic Extraction</h2>
+                <p>Transliteration, Sandhi splitting, and Vedic lexicon.</p>
+            </div>
+            <div class="toolbar">
+                <button class="tool-btn" id="transliterate-btn">🔤 Transliteration</button>
+                <button class="tool-btn" id="sandhi-btn">⚡ Sandhi Splitter</button>
+                <button class="tool-btn" id="lexicon-btn">📖 Jyotish Lexicon</button>
+            </div>
+            <div id="sanskrit-output" class="results-area">
+                <div class="info-card">Select a tool to begin Sanskrit processing.</div>
+            </div>
+        </div>
+
+        <!-- TAB 5: INFO -->
+        <div id="info" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-info"></span> About Aigaane V3</h2>
+                <p>The 49D Arithmetic Kernel · Quantatech Engine · Vedic Wisdom</p>
+            </div>
+            <div class="info-content">
+                <div class="result-card">
+                    <h3>🧠 The 49D Kernel Architecture</h3>
+                    <div class="result-grid">
+                        <div class="result-item"><strong>Dimensions 1-7</strong><br>Root Physical Coordinates<br><small>Spatial-temporal base</small></div>
+                        <div class="result-item"><strong>Dimensions 8-21</strong><br>Frequency Resonance Band<br><small>Vedic mantras & swaras</small></div>
+                        <div class="result-item"><strong>Dimensions 22-49</strong><br>Anumana Predictive Layer<br><small>Entropy & outcomes</small></div>
+                    </div>
+                </div>
+                <div class="result-card">
+                    <h3>📜 About the Engine</h3>
+                    <p>Aigaane V3 is a 49-dimensional Vedic astronomy engine that unifies:</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Jyotish (Vedic Astrology)</li>
+                        <li>Sanskrit phonetics and transliteration</li>
+                        <li>Mantra and musical resonance mapping</li>
+                        <li>Soul Map Ātma Kāraka analysis</li>
+                        <li>49D arithmetic tensor calculations</li>
+                    </ul>
+                </div>
+                <div class="result-card">
+                    <h3>🌍 Location Database</h3>
+                    <p>Supported locations include major cities worldwide. Lat/Lon are automatically calculated from city names.</p>
+                    <p><strong>Examples:</strong> New Delhi, Mumbai, Bangalore, Chennai, Kolkata, Ahmedabad, Pune, Jaipur, London, New York, Tokyo, Sydney</p>
+                </div>
+                <div class="result-card">
+                    <h3>⚡ Technical Specifications</h3>
+                    <div class="result-grid">
+                        <div class="result-item"><strong>Kernel Version</strong><br>3.0.1</div>
+                        <div class="result-item"><strong>Tensor Size</strong><br>49 Dimensions</div>
+                        <div class="result-item"><strong>Hash Function</strong><br>49D Resonance Hash</div>
+                        <div class="result-item"><strong>Entropy Range</strong><br>-15 to 0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>© 2026 Aigaane · 49D Arithmetic Kernel · All outputs derived from unified tensor</p>
+    </footer>
 </div>
 
-<div id="audioExportModal" class="modal"><div class="modal-content"><h3 style="margin-bottom: 1rem;">🎙️ Export Your Soul Map Audio</h3>
-  <div style="margin-bottom: 1rem;"><label style="display: block; margin-bottom: 0.5rem;">Audio Type:</label>
-    <select id="audioTypeSelect" style="width:100%; background:rgba(0,0,0,0.6); border:1px solid rgba(255,215,0,0.3); border-radius:12px; padding:0.5rem; color:white;">
-      <option value="drone">🌊 Pure Drone (8 Planetary Frequencies)</option>
-      <option value="intention">🎯 Intention Resonance (Drone + Modulation)</option>
-    </select>
-  </div>
-  <div style="margin-bottom: 1rem;"><label>Duration (minutes):</label><input type="number" id="audioDuration" value="11" min="1" max="60" style="width:100%; background:rgba(0,0,0,0.6); border:1px solid rgba(255,215,0,0.3); border-radius:12px; padding:0.5rem; color:white;"></div>
-  <div style="display: flex; gap: 1rem;"><button id="generateAudioBtn" style="flex:1; background:rgba(255,215,0,0.2); border:1px solid #FFD700; border-radius:24px; padding:0.75rem; color:#FFD700;">🎧 Generate & Download</button><button id="closeAudioModalBtn" style="background:transparent; border:1px solid rgba(255,255,255,0.3); border-radius:24px; padding:0.75rem;">✕</button></div>
-</div></div>
-
-<div id="shareModal" class="modal"><div class="modal-content"><h3 style="margin-bottom:1rem;">🕉 MY SOUL MAP</h3><canvas id="shareCanvas" width="400" height="400" style="width:100%; max-width:400px; border-radius:24px;"></canvas><div style="margin-top:1rem; display:flex; gap:0.5rem; justify-content:center;"><button class="share-btn" id="modalDownloadBtn">Save Image</button><button class="share-btn" id="closeModalBtn">Close</button></div></div></div>
-
 <script>
-// ============================================================
-// AIGAANE 1.0 — NO unload EVENT (uses pagehide where needed)
-// All event listeners are properly managed with modern standards
-// ============================================================
-const PLANET_DATA = {
-  surya: { name: "Surya", icon: "☀️", element: "Agni", frequency: 126.22, color: "#FFD700", glow: "#FFA500" },
-  chandra: { name: "Chandra", icon: "🌙", element: "Jala", frequency: 136.10, color: "#C0C0C0", glow: "#E8E8E8" },
-  mangala: { name: "Mangala", icon: "🔴", element: "Agni", frequency: 169.34, color: "#DC143C", glow: "#FF4500" },
-  budha: { name: "Budha", icon: "🟢", element: "Prithvi", frequency: 197.54, color: "#32CD32", glow: "#7CFC00" },
-  guru: { name: "Guru", icon: "🟡", element: "Akash", frequency: 216.00, color: "#6366F1", glow: "#8B5CF6" },
-  shukra: { name: "Shukra", icon: "⚪", element: "Jala", frequency: 226.42, color: "#FF69B4", glow: "#FFB6C1" },
-  shani: { name: "Shani", icon: "⚫", element: "Vayu", frequency: 147.85, color: "#2F4F4F", glow: "#4A6A6A" },
-  rahu: { name: "Rahu", icon: "🌑", element: "Shadow", frequency: 204.88, color: "#800080", glow: "#9932CC" },
-  ketu: { name: "Ketu", icon: "🌘", element: "Shadow", frequency: 211.44, color: "#A0522D", glow: "#CD853F" }
-};
-const INTENTIONS = { health: "🌿 Health", wealth: "💰 Wealth", peace: "🕊️ Peace", wisdom: "📿 Wisdom", protection: "🛡️ Protection", liberation: "🕉️ Liberation" };
-const NAKSHATRA_LIST = [
-  { name: "Ashwini", freq: 341.33, lord: "Ketu", essence: "The healer's swift pulse." }, { name: "Bharani", freq: 354.67, lord: "Venus", essence: "The womb of transformation." },
-  { name: "Krittika", freq: 368.00, lord: "Sun", essence: "The purifying flame." }, { name: "Rohini", freq: 136.10, lord: "Moon", essence: "Magnetic growth and manifestation." },
-  { name: "Mrigashira", freq: 528.00, lord: "Mars", essence: "The searching moon-path." }, { name: "Ardra", freq: 341.33, lord: "Rahu", essence: "Clarity through emotional thunder." }
-];
-const PRACTICE_LIBRARY = {
-  surya: [{ title: "Gayatri Mantra", desc: "Universal prayer", freq: "126.22 Hz" }, { title: "Surya Namaskar", desc: "12-posture salutation", freq: "126.22 Hz" }],
-  chandra: [{ title: "Chandra Mantra", desc: "Om Somaya Namah", freq: "136.10 Hz" }, { title: "Moon Meditation", desc: "Connect with emotions", freq: "136.10 Hz" }],
-  mangala: [{ title: "Hanuman Chalisa", desc: "40 verses", freq: "169.34 Hz" }, { title: "Mangala Stotram", desc: "Remove obstacles", freq: "169.34 Hz" }],
-  budha: [{ title: "Budha Mantra", desc: "Om Budhaya Namah", freq: "197.54 Hz" }],
-  guru: [{ title: "Guru Mantra", desc: "Om Gurave Namah", freq: "216.00 Hz" }, { title: "Guru Stotram", desc: "Invoke wisdom", freq: "216.00 Hz" }],
-  shukra: [{ title: "Shukra Mantra", desc: "Om Shukraya Namah", freq: "226.42 Hz" }],
-  shani: [{ title: "Shani Mantra", desc: "Om Shanaye Namah", freq: "147.85 Hz" }],
-  rahu: [{ title: "Rahu Mantra", desc: "Om Rahave Namah", freq: "204.88 Hz" }],
-  ketu: [{ title: "Ketu Mantra", desc: "Om Ketave Namah", freq: "211.44 Hz" }]
-};
-const HORA_SEQUENCE = ["shani", "guru", "mangala", "surya", "shukra", "budha", "chandra"];
-const WEEKDAYS = ["surya", "chandra", "mangala", "budha", "guru", "shukra", "shani"];
+    // Location to Lat/Lon Database (Wikipedia style)
+    const locationDatabase = {
+        // India - Major Cities
+        'new delhi': { lat: 28.6139, lon: 77.2090 },
+        'delhi': { lat: 28.6139, lon: 77.2090 },
+        'mumbai': { lat: 19.0760, lon: 72.8777 },
+        'bombay': { lat: 19.0760, lon: 72.8777 },
+        'bangalore': { lat: 12.9716, lon: 77.5946 },
+        'bengaluru': { lat: 12.9716, lon: 77.5946 },
+        'chennai': { lat: 13.0827, lon: 80.2707 },
+        'kolkata': { lat: 22.5726, lon: 88.3639 },
+        'ahmedabad': { lat: 23.0225, lon: 72.5714 },
+        'pune': { lat: 18.5204, lon: 73.8567 },
+        'jaipur': { lat: 26.9124, lon: 75.7873 },
+        'hyderabad': { lat: 17.3850, lon: 78.4867 },
+        'lucknow': { lat: 26.8467, lon: 80.9462 },
+        'surat': { lat: 21.1702, lon: 72.8311 },
+        'kanpur': { lat: 26.4499, lon: 80.3319 },
+        'nagpur': { lat: 21.1458, lon: 79.0882 },
+        'indore': { lat: 22.7196, lon: 75.8577 },
+        'bhopal': { lat: 23.2599, lon: 77.4126 },
+        'patna': { lat: 25.5941, lon: 85.1376 },
+        'vadodara': { lat: 22.3072, lon: 73.1812 },
+        // International
+        'london': { lat: 51.5074, lon: -0.1278 },
+        'new york': { lat: 40.7128, lon: -74.0060 },
+        'los angeles': { lat: 34.0522, lon: -118.2437 },
+        'chicago': { lat: 41.8781, lon: -87.6298 },
+        'toronto': { lat: 43.6532, lon: -79.3832 },
+        'sydney': { lat: -33.8688, lon: 151.2093 },
+        'melbourne': { lat: -37.8136, lon: 144.9631 },
+        'tokyo': { lat: 35.6762, lon: 139.6503 },
+        'shanghai': { lat: 31.2304, lon: 121.4737 },
+        'beijing': { lat: 39.9042, lon: 116.4074 },
+        'singapore': { lat: 1.3521, lon: 103.8198 },
+        'dubai': { lat: 25.2048, lon: 55.2708 },
+        'istanbul': { lat: 41.0082, lon: 28.9784 },
+        'berlin': { lat: 52.5200, lon: 13.4050 },
+        'paris': { lat: 48.8566, lon: 2.3522 },
+        'rome': { lat: 41.9028, lon: 12.4964 },
+        'cairo': { lat: 30.0444, lon: 31.2357 }
+    };
 
-let soulMap = JSON.parse(localStorage.getItem('aigaane_soulmap_v6')) || { savedItems: [], streakDays: 0, lastPracticeDate: null, mandalaPetals: [] };
-let userLat = 23.0225, userLng = 72.5714, sunriseTime = null, sunsetTime = null;
-let isGlobalView = false, globalParticles = [], animationFrameId = null;
-let audioCtx = null, oscillators = [], gainNodes = [], isAudioEnabled = false;
+    // Get coordinates from location name
+    function getCoordinatesFromLocation(locationName) {
+        if (!locationName || locationName.trim() === '') {
+            return { lat: 28.6139, lon: 77.2090 };
+        }
+        const normalized = locationName.toLowerCase().trim();
+        if (locationDatabase[normalized]) {
+            return locationDatabase[normalized];
+        }
+        for (const [key, value] of Object.entries(locationDatabase)) {
+            if (normalized.includes(key)) {
+                return value;
+            }
+        }
+        return { lat: 28.6139, lon: 77.2090 };
+    }
 
-function getCurrentNakshatra() { const idx = Math.floor((new Date().getHours() * 3600 + new Date().getMinutes() * 60 + new Date().getSeconds()) / 86400 * NAKSHATRA_LIST.length) % NAKSHATRA_LIST.length; return NAKSHATRA_LIST[idx]; }
-function calcSunriseSunset(lat, lon, date = new Date()) {
-  const doy = Math.floor((date - new Date(date.getFullYear(),0,0)) / 86400000);
-  const rad = Math.PI/180, phi = lat*rad, dec = 0.4093 * Math.sin(2*Math.PI/365*(doy-81));
-  const omega = Math.acos(Math.min(0.9999, Math.max(-0.9999, -Math.tan(phi)*Math.tan(dec))));
-  const riseOff = 12 - omega*12/Math.PI, setOff = 12 + omega*12/Math.PI;
-  const rise = new Date(date); rise.setHours(Math.floor(riseOff), Math.floor((riseOff%1)*60), 0);
-  const set = new Date(date); set.setHours(Math.floor(setOff), Math.floor((setOff%1)*60), 0);
-  return { sunrise: rise, sunset: set };
-}
-function getPlanetaryHora(now = new Date()) {
-  let { sunrise, sunset } = (sunriseTime && sunsetTime) ? { sunrise: sunriseTime, sunset: sunsetTime } : calcSunriseSunset(userLat, userLng);
-  const isDay = now >= sunrise && now < sunset;
-  const ruler = WEEKDAYS[now.getDay()], startIdx = HORA_SEQUENCE.indexOf(ruler);
-  let dur, elapsed;
-  if(isDay) { dur = (sunset - sunrise)/12; elapsed = now - sunrise; }
-  else { const nextRise = new Date(sunrise.getTime() + 86400000); dur = (nextRise - sunset)/12; elapsed = now < sunrise ? (now - (sunset - 86400000)) : (now - sunset); }
-  const hrs = Math.floor(elapsed / dur), curIdx = (startIdx + hrs) % 7, nxtIdx = (curIdx + 1) % 7;
-  const msRem = dur - (elapsed % dur);
-  return { current: HORA_SEQUENCE[curIdx], next: HORA_SEQUENCE[nxtIdx], minutesRemaining: Math.floor(msRem/60000), secondsRemaining: Math.floor((msRem%60000)/1000), progress: ((elapsed % dur)/dur)*100 };
-}
-function syncGeo() {
-  if(navigator.geolocation) navigator.geolocation.getCurrentPosition(p => { userLat = p.coords.latitude; userLng = p.coords.longitude; document.getElementById('locationDisplay').innerHTML = `📍 ${userLat.toFixed(2)}°, ${userLng.toFixed(2)}°`; const { sunrise, sunset } = calcSunriseSunset(userLat, userLng); sunriseTime = sunrise; sunsetTime = sunset; updateUI(); }, () => { const { sunrise, sunset } = calcSunriseSunset(userLat, userLng); sunriseTime = sunrise; sunsetTime = sunset; });
-  else { const { sunrise, sunset } = calcSunriseSunset(userLat, userLng); sunriseTime = sunrise; sunsetTime = sunset; }
-}
+    // Update hidden lat/lon fields
+    function updateLocationDisplay() {
+        const locationInput = document.getElementById('birth-location');
+        if (locationInput && locationInput.value) {
+            const coords = getCoordinatesFromLocation(locationInput.value);
+            let latInput = document.getElementById('birth-lat');
+            let lonInput = document.getElementById('birth-lon');
+            if (!latInput) {
+                const formGrid = document.querySelector('#astrology .form-grid');
+                if (formGrid) {
+                    const hiddenLat = document.createElement('input');
+                    hiddenLat.type = 'hidden';
+                    hiddenLat.id = 'birth-lat';
+                    hiddenLat.value = coords.lat;
+                    const hiddenLon = document.createElement('input');
+                    hiddenLon.type = 'hidden';
+                    hiddenLon.id = 'birth-lon';
+                    hiddenLon.value = coords.lon;
+                    formGrid.appendChild(hiddenLat);
+                    formGrid.appendChild(hiddenLon);
+                    latInput = hiddenLat;
+                    lonInput = hiddenLon;
+                }
+            } else {
+                latInput.value = coords.lat;
+                lonInput.value = coords.lon;
+            }
+        }
+    }
 
-function initAudio() { if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-function startDrone() {
-  if(!audioCtx) initAudio(); stopDrone();
-  const planets = ['chandra','guru','mangala','budha','shukra','shani','rahu','ketu'];
-  planets.forEach((p, idx) => {
-    const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
-    osc.type = 'sine'; osc.frequency.value = PLANET_DATA[p].frequency;
-    gain.gain.value = idx===0 ? 0.035 : 0.012;
-    osc.connect(gain); gain.connect(audioCtx.destination); osc.start();
-    oscillators.push(osc); gainNodes.push(gain);
-  });
-  isAudioEnabled = true;
-  document.getElementById('enableAudioBtn').innerHTML = '🎧 DRONE ACTIVE';
-  document.getElementById('disableAudioBtn').disabled = false;
-  document.getElementById('disableAudioBtn').style.opacity = '1';
-}
-function stopDrone() { oscillators.forEach(o => { try{o.stop()}catch(e){} }); oscillators=[]; gainNodes=[]; isAudioEnabled=false; document.getElementById('enableAudioBtn').innerHTML='🎧 ENABLE DRONE'; document.getElementById('disableAudioBtn').disabled=true; document.getElementById('disableAudioBtn').style.opacity='0.5'; }
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            const tabId = btn.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
 
-function savePractice(planetId, title, desc, freq, intention) {
-  const today = new Date().toDateString();
-  soulMap.savedItems.unshift({ id: Date.now(), planet: planetId, title, desc, frequency: freq, intention, savedAt: new Date().toISOString() });
-  if(soulMap.lastPracticeDate !== today) {
-    const yest = new Date(); yest.setDate(yest.getDate()-1);
-    if(soulMap.lastPracticeDate === yest.toDateString()) soulMap.streakDays++;
-    else soulMap.streakDays = 1;
-    soulMap.lastPracticeDate = today;
-    const intentColor = { health:"#32CD32",wealth:"#FFD700",peace:"#87CEEB",wisdom:"#8B5CF6",protection:"#DC143C",liberation:"#A0522D" }[intention];
-    soulMap.mandalaPetals.push({ date: today, planet: planetId, intention: intention || 'peace', color: intentColor || PLANET_DATA[planetId]?.color });
-  }
-  localStorage.setItem('aigaane_soulmap_v6', JSON.stringify(soulMap));
-  updateUIWidgets(); drawMandala(document.getElementById('streakMandala'), 280);
-  showToast(`🪷 "${title}" saved · ${soulMap.streakDays} day streak!`);
-}
-function updateUIWidgets() {
-  document.getElementById('savedCount').innerText = soulMap.savedItems.length;
-  const cont = document.getElementById('savedList');
-  if(soulMap.savedItems.length===0) cont.innerHTML = 'No practices saved. Click "Save to My Map" below.';
-  else cont.innerHTML = soulMap.savedItems.slice(0,3).map(i=>`📿 ${i.title} · ${i.frequency}${i.intention?` · ${i.intention}`:''}`).join('<br>') + (soulMap.savedItems.length>3?`<br><span style="font-size:0.65rem;">+${soulMap.savedItems.length-3} more</span>`:'');
-  document.getElementById('streakDetails').innerHTML = `${soulMap.streakDays || 0} days · ${soulMap.mandalaPetals?.length || 0} total`;
-  document.getElementById('streakText').innerHTML = soulMap.streakDays>0 ? `🔥 ${soulMap.streakDays} day streak!` : 'Start a practice to begin your streak';
-}
-function karmicTension() {
-  const p = soulMap.mandalaPetals || [];
-  if(p.length<4) return { whisper: "The mandala is still forming...", remedy: "Continue daily sadhana." };
-  const stats = p.reduce((a,b)=>{ a[b.planet]=(a[b.planet]||0)+1; return a; }, {});
-  const tot = p.length;
-  if(stats.guru > tot*0.3 && stats.shani < tot*0.1) return { whisper: "You collect maps but never walk the trail.", remedy: "3-day fast from new information. Practice only what you know." };
-  if(stats.chandra > tot*0.3 && stats.mangala < tot*0.1) return { whisper: "Your intuition has no outlet.", remedy: "Complete one procrastinated task today." };
-  if(stats.budha > tot*0.3 && stats.ketu < tot*0.1) return { whisper: "Your words lack liberation.", remedy: "One planetary hour of total silence." };
-  return { whisper: "A perfect circle can be a zero. What are you afraid to change?", remedy: "Break routine. Practice somewhere new." };
-}
-function drawMandala(canvasEl, size) {
-  const ctx = canvasEl.getContext('2d'); canvasEl.width=size; canvasEl.height=size;
-  const ctr = size/2, rad = size*0.4;
-  ctx.clearRect(0,0,size,size);
-  ctx.beginPath(); ctx.arc(ctr,ctr,rad,0,Math.PI*2); ctx.strokeStyle='rgba(255,215,0,0.3)'; ctx.lineWidth=1.5; ctx.stroke();
-  const petals = soulMap.mandalaPetals || [];
-  for(let i=0;i<Math.min(petals.length,27);i++) {
-    const ang = (i/27)*Math.PI*2 - Math.PI/2, pr = rad*0.7;
-    const x1=ctr+Math.cos(ang)*pr, y1=ctr+Math.sin(ang)*pr;
-    const x2=ctr+Math.cos(ang+0.12)*(pr+10), y2=ctr+Math.sin(ang+0.12)*(pr+10);
-    const x3=ctr+Math.cos(ang-0.12)*(pr+10), y3=ctr+Math.sin(ang-0.12)*(pr+10);
-    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.lineTo(x3,y3); ctx.fillStyle = petals[i].color || "#FFD700"; ctx.fill();
-  }
-  ctx.beginPath(); ctx.arc(ctr,ctr,14,0,Math.PI*2); ctx.fillStyle='#FFD700'; ctx.fill(); ctx.fillStyle='#0B0E14'; ctx.font='bold 14px monospace'; ctx.fillText(petals.length,ctr-5,ctr+5);
-}
-function initGlobalParticles() { for(let i=0;i<90;i++) globalParticles.push({ angle:Math.random()*Math.PI*2, dist:50+Math.random()*100, speed:0.002+Math.random()*0.005, size:1+Math.random()*3, color:PLANET_DATA[HORA_SEQUENCE[Math.floor(Math.random()*7)]].color }); }
-function drawGlobal(ctx,ctr,rad) { globalParticles.forEach(p=>{ p.angle+=p.speed; const x=ctr+Math.cos(p.angle)*p.dist, y=ctr+Math.sin(p.angle)*p.dist; ctx.beginPath(); ctx.arc(x,y,p.size,0,Math.PI*2); ctx.fillStyle=p.color; ctx.fill(); }); }
-function showToast(m) { const t=document.createElement('div'); t.innerText=m; t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#FFD700;padding:10px 20px;border-radius:40px;font-size:0.8rem;z-index:9999;border:1px solid rgba(255,215,0,0.3);backdrop-filter:blur(10px);'; document.body.appendChild(t); setTimeout(()=>t.remove(),2000); }
-function createShareCanvas() { const c=document.getElementById('shareCanvas'); c.width=400; c.height=400; drawMandala(c,400); return c; }
-function downloadShare() { const can=createShareCanvas(); const a=document.createElement('a'); a.download=`aigaane_soulmap_${new Date().toISOString().slice(0,10)}.png`; a.href=can.toDataURL(); a.click(); }
-
-let lastPlanet = null;
-function updateUI() {
-  const hora = getPlanetaryHora(new Date()), planet = PLANET_DATA[hora.current], nextP = PLANET_DATA[hora.next], naks = getCurrentNakshatra();
-  document.getElementById('planetIcon').innerHTML = planet.icon;
-  document.getElementById('planetName').innerHTML = planet.name.toUpperCase();
-  document.getElementById('frequencyBadge').innerHTML = `${planet.frequency} Hz · ${planet.element}`;
-  document.getElementById('progressFill').style.width = `${hora.progress}%`;
-  document.getElementById('progressFill').style.backgroundColor = planet.color;
-  document.getElementById('nextPlanet').innerHTML = nextP.name;
-  document.getElementById('nextTimeText').innerHTML = `in ${hora.minutesRemaining} min`;
-  document.getElementById('timerDisplay').innerHTML = `${hora.minutesRemaining.toString().padStart(2,'0')}:${hora.secondsRemaining.toString().padStart(2,'0')}`;
-  document.getElementById('currentNakshatra').innerHTML = naks.name;
-  document.getElementById('nakshatraFreq').innerHTML = `${naks.freq} Hz`;
-  document.getElementById('nakshatraLord').innerHTML = naks.lord;
-  document.getElementById('nakshatraEssence').innerHTML = `"${naks.essence}"`;
-  document.body.style.background = `radial-gradient(ellipse at 50% 30%, ${planet.glow}12, #0B0E14 85%)`;
-  const tension = karmicTension();
-  document.getElementById('shadowWhisper').innerHTML = `"${tension.whisper}"`;
-  document.getElementById('shadowRemedy').innerHTML = tension.remedy;
-  const practices = PRACTICE_LIBRARY[hora.current] || PRACTICE_LIBRARY.surya;
-  document.getElementById('practiceGrid').innerHTML = practices.map(p => `
-    <div class="practice-card">
-      <div class="practice-title">${p.title}</div>
-      <div class="practice-desc">${p.desc}</div>
-      <div class="practice-tag">${p.freq} Hz</div>
-      <div class="intention-buttons">
-        ${Object.entries(INTENTIONS).map(([key,val]) => `<button class="intention-chip" data-intent="${key}" data-title="${p.title}" data-desc="${p.desc}" data-freq="${p.freq}" data-planet="${hora.current}">${val}</button>`).join('')}
-      </div>
-    </div>
-  `).join('');
-  document.querySelectorAll('.intention-chip').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const intent = btn.dataset.intent; savePractice(btn.dataset.planet, btn.dataset.title, btn.dataset.desc, btn.dataset.freq, intent); showToast(`🪷 "${btn.dataset.title}" saved with intention: ${intent}`); }));
-  if(lastPlanet !== hora.current) { const card = document.getElementById('horaCard'); if(card) card.style.boxShadow = `0 0 30px ${planet.color}25`; setTimeout(()=>{if(card) card.style.boxShadow='';},1200); lastPlanet = hora.current; }
-  if(isGlobalView && document.getElementById('streakMandala')) { const ctx = document.getElementById('streakMandala').getContext('2d'); ctx.clearRect(0,0,280,280); drawGlobal(ctx,140,110); }
-}
-
-async function generateAudio(type, durMin) {
-  const sr=44100, durSec=durMin*60, samples=sr*durSec;
-  const offCtx = new OfflineAudioContext(2, samples, sr);
-  const planets = ['chandra','guru','mangala','budha','shukra','shani','rahu','ketu'];
-  planets.forEach((p,idx)=>{
-    const osc = offCtx.createOscillator(), gain = offCtx.createGain();
-    osc.type='sine'; osc.frequency.value = PLANET_DATA[p].frequency;
-    gain.gain.setValueAtTime(0,0); gain.gain.linearRampToValueAtTime(0.03/(idx+1),3); gain.gain.setValueAtTime(0.03/(idx+1),durSec-3); gain.gain.linearRampToValueAtTime(0,durSec);
-    osc.connect(gain); gain.connect(offCtx.destination); osc.start();
-  });
-  const buf = await offCtx.startRendering();
-  const wav = bufferToWav(buf);
-  const url = URL.createObjectURL(wav); const a = document.createElement('a'); a.href=url; a.download=`aigaane_${type}_${Date.now()}.wav`; a.click(); URL.revokeObjectURL(url);
-}
-function bufferToWav(abuffer) {
-  const numCh=abuffer.numberOfChannels, len=abuffer.length*numCh*2+44, buf=new ArrayBuffer(len), view=new DataView(buf);
-  let p=0; const w=(d)=>{ view.setUint32(p,d,true); p+=4; }; const w16=(d)=>{ view.setUint16(p,d,true); p+=2; };
-  w(0x46464952); w(len-8); w(0x45564157); w(0x666D7420); w(16); w16(1); w16(numCh); w(44100); w(44100*numCh*2); w16(numCh*2); w16(16); w(0x64617461); w(len-44);
-  const ch0=abuffer.getChannelData(0), ch1=abuffer.getChannelData(1);
-  for(let i=0;i<abuffer.length;i++){ const s0=Math.max(-1,Math.min(1,ch0[i])); view.setInt16(p,s0<0?s0*0x8000:s0*0x7FFF,true); p+=2; const s1=Math.max(-1,Math.min(1,ch1[i])); view.setInt16(p,s1<0?s1*0x8000:s1*0x7FFF,true); p+=2; }
-  return new Blob([view],{type:"audio/wav"});
-}
-
-// Clean event binding — NO unload listeners
-document.getElementById('enableAudioBtn').onclick = () => { if(!audioCtx) initAudio(); startDrone(); if(audioCtx && audioCtx.state==='suspended') audioCtx.resume(); };
-document.getElementById('disableAudioBtn').onclick = () => stopDrone();
-document.getElementById('exportAudioBtn').onclick = () => document.getElementById('audioExportModal').style.display='flex';
-document.getElementById('closeAudioModalBtn').onclick = () => document.getElementById('audioExportModal').style.display='none';
-document.getElementById('generateAudioBtn').onclick = () => { const t=document.getElementById('audioTypeSelect').value, d=parseInt(document.getElementById('audioDuration').value); generateAudio(t,d); document.getElementById('audioExportModal').style.display='none'; };
-document.getElementById('shareMandalaBtn').onclick = () => { createShareCanvas(); document.getElementById('shareModal').style.display='flex'; };
-document.getElementById('downloadMandalaBtn').onclick = () => downloadShare();
-document.getElementById('modalDownloadBtn').onclick = () => downloadShare();
-document.getElementById('closeModalBtn').onclick = () => document.getElementById('shareModal').style.display='none';
-document.getElementById('viewPersonalBtn').onclick = () => { isGlobalView=false; document.getElementById('viewPersonalBtn').classList.add('active'); document.getElementById('viewGlobalBtn').classList.remove('active'); drawMandala(document.getElementById('streakMandala'),280); };
-document.getElementById('viewGlobalBtn').onclick = () => { isGlobalView=true; document.getElementById('viewGlobalBtn').classList.add('active'); document.getElementById('viewPersonalBtn').classList.remove('active'); if(globalParticles.length===0) initGlobalParticles(); const ctx=document.getElementById('streakMandala').getContext('2d'); ctx.clearRect(0,0,280,280); drawGlobal(ctx,140,110); };
-document.getElementById('streakMandala').onclick = () => { if(!isGlobalView) { createShareCanvas(); document.getElementById('shareModal').style.display='flex'; } };
-window.onclick = (e) => { if(e.target.classList.contains('modal')) e.target.style.display='none'; };
-
-// Use pagehide instead of unload for any cleanup (though none needed here)
-window.addEventListener('pagehide', () => {
-  // Optional: save any pending data (though localStorage is synchronous)
-  // This is bfcache-friendly
-  if(soulMap) localStorage.setItem('aigaane_soulmap_v6', JSON.stringify(soulMap));
-});
-
-syncGeo();
-updateUIWidgets();
-drawMandala(document.getElementById('streakMandala'),280);
-setInterval(updateUI, 1000);
-updateUI();
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async () => {
+        updateLocationDisplay();
+        
+        const locationInput = document.getElementById('birth-location');
+        if (locationInput) {
+            locationInput.addEventListener('change', updateLocationDisplay);
+            locationInput.addEventListener('blur', updateLocationDisplay);
+        }
+        
+        if (window.Quantatech) {
+            await window.Quantatech.init();
+        }
+        
+        const recalcBtn = document.getElementById('recalc-kernel');
+        if (recalcBtn) {
+            recalcBtn.addEventListener('click', () => {
+                updateLocationDisplay();
+                const birth = {
+                    name: document.getElementById('user-name')?.value || 'Seeker',
+                    year: parseInt(document.getElementById('birth-year')?.value || 1990),
+                    month: parseInt(document.getElementById('birth-month')?.value || 6),
+                    day: parseInt(document.getElementById('birth-day')?.value || 15),
+                    hour: parseInt(document.getElementById('birth-hour')?.value || 10),
+                    minute: parseInt(document.getElementById('birth-minute')?.value || 30),
+                    lat: parseFloat(document.getElementById('birth-lat')?.value || 28.6139),
+                    lon: parseFloat(document.getElementById('birth-lon')?.value || 77.2090)
+                };
+                if (window.Quantatech) window.Quantatech.recompute(birth);
+                if (window.MusicMantra) window.MusicMantra.render();
+                if (window.AstrologyEngine) window.AstrologyEngine.render();
+                if (window.SoulMap) window.SoulMap.render();
+            });
+        }
+    });
 </script>
+
+<script src="engine/quantatech.js"></script>
+<script src="tabs/music-mantra.js"></script>
+<script src="tabs/astrology.js"></script>
+<script src="tabs/soul-map.js"></script>
+<script src="tabs/sanskrit.js"></script>
 </body>
 </html>
