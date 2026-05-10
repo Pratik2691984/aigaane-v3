@@ -3,125 +3,569 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>ĀIGĀANE V3 · 49D KERNEL · Full Nakshatra System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <title>ĀIGĀANE V3 · 49D Vedic Intelligence Platform</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0B0E14 0%, #1a1a2e 100%);
-            color: #e0e0e0;
-            min-height: 100vh;
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --accent: #e67e22;
+            --accent-dark: #d35400;
+            --glass-bg: rgba(255,255,255,0.08);
+            --glass-border: rgba(255,255,255,0.1);
         }
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-        .header { text-align: center; padding: 2rem 1rem; border-bottom: 1px solid rgba(255,215,0,0.2); margin-bottom: 2rem; }
-        .header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; background: linear-gradient(135deg,#fff,#e67e22); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-        .kernel-stats { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); border-radius: 50px; padding: 0.8rem 1.5rem; margin:1rem auto; display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 2rem; border:1px solid rgba(255,215,0,0.3); }
-        .stat { display: flex; align-items: baseline; gap:0.5rem; font-size:0.9rem; }
-        .stat-label { color:#e67e22; font-weight:600; }
-        .stat-value { font-family: monospace; font-size:1.1rem; font-weight:600; color:#f1c40f; }
-        .tabs { display: flex; flex-wrap: wrap; justify-content: center; gap:0.5rem; margin-bottom:2rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:0.5rem; }
-        .tab { padding:0.8rem 1.8rem; cursor:pointer; font-weight:600; border-radius:40px; transition:0.3s; background:transparent; color:#aaa; }
-        .tab:hover { background:rgba(230,126,34,0.2); color:#e67e22; }
-        .tab.active { background: linear-gradient(135deg,#e67e22,#d35400); color:white; box-shadow:0 4px 15px rgba(230,126,34,0.3); }
-        .content-panel { display: none; animation: fadeIn 0.4s ease; }
-        .content-panel.active { display: block; }
-        @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-        .input-group { display: flex; flex-wrap: wrap; gap:1rem; margin-bottom:1.5rem; align-items: flex-end; }
-        .input-field { flex:1; min-width:180px; }
-        .input-field label { display: block; font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; color:#e67e22; margin-bottom:0.3rem; }
-        input, select, textarea { width:100%; padding:0.8rem 1rem; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; color:white; font-size:0.95rem; }
-        input:focus, select:focus, textarea:focus { outline:none; border-color:#e67e22; background:rgba(230,126,34,0.1); }
-        button { background: linear-gradient(135deg,#e67e22,#d35400); border:none; padding:0.8rem 1.8rem; border-radius:40px; color:white; font-weight:600; cursor:pointer; transition:transform 0.2s, box-shadow 0.2s; }
-        button:hover { transform:translateY(-2px); box-shadow:0 5px 20px rgba(230,126,34,0.4); }
-        .result-card { background: rgba(255,255,255,0.05); border-radius:20px; padding:1.5rem; margin-top:1.5rem; border:1px solid rgba(255,215,0,0.15); }
-        .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:1rem; }
-        .result-item { border-bottom:1px solid rgba(255,255,255,0.1); padding:0.8rem 0; }
-        .result-label { font-size:0.75rem; text-transform:uppercase; color:#e67e22; }
-        .result-value { font-size:1.1rem; font-weight:500; margin-top:0.3rem; }
-        canvas { background:#1a1a2e; border-radius:20px; max-width:100%; height:auto; }
-        .phonetic-table { width:100%; border-collapse:collapse; margin:1rem 0; }
-        .phonetic-table td, .phonetic-table th { padding:0.6rem; border:1px solid rgba(255,255,255,0.1); text-align:left; }
-        footer { text-align:center; padding:2rem; margin-top:2rem; border-top:1px solid rgba(255,255,255,0.05); font-size:0.75rem; color:#666; }
-        @media (max-width:768px) { .tab { padding:0.5rem 1rem; font-size:0.8rem; } .header h1 { font-size:1.6rem; } }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background 0.5s ease;
+        }
+
+        /* Glass morphism containers */
+        header, .kernel-stats, .card, .tabs {
+            backdrop-filter: blur(12px);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+        }
+
+        header {
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: var(--light);
+            font-weight: 500;
+            transition: color 0.3s;
+            opacity: 0.8;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            opacity: 1;
+        }
+
+        /* Kernel Stats Bar */
+        .kernel-stats {
+            padding: 0.8rem 5%;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .stat {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+        }
+
+        .stat-value {
+            font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #f1c40f;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 3rem 5%;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: #ccc;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 5%;
+            flex-wrap: wrap;
+            margin: 1rem 5%;
+            border-radius: 60px;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.8rem;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 40px;
+            transition: all 0.3s;
+            color: var(--light);
+        }
+
+        .tab-btn:hover {
+            background: rgba(59, 130, 246, 0.3);
+            color: white;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 2px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Content Panels */
+        .content-panel {
+            display: none;
+            padding: 2rem 5%;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .content-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glass Cards */
+        .card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .card h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* Inputs */
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-end;
+        }
+
+        .input-field {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .input-field label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(0,0,0,0.6);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(230, 126, 34, 0.4);
+        }
+
+        /* Results Grid */
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .result-item {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 0.8rem 0;
+        }
+
+        .result-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .result-value {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 0.3rem;
+        }
+
+        /* Canvas */
+        canvas {
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            max-width: 100%;
+            height: auto;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Table */
+        .phonetic-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .phonetic-table td, .phonetic-table th {
+            padding: 0.6rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: left;
+        }
+
+        .phonetic-table th {
+            background: rgba(0,0,0,0.3);
+            color: var(--accent);
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tool-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+        }
+
+        .tool-btn.active {
+            background: var(--primary);
+        }
+
+        /* History Panel */
+        .history-panel {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .history-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .history-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.5rem; }
+            .tab-btn { padding: 0.5rem 1rem; font-size: 0.7rem; }
+            .content-panel { padding: 1rem; }
+            .card { padding: 1rem; }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <h1>ĀIGĀANE V3 · 49D KERNEL</h1>
-        <p class="tagline">Quantatech Arithmetic · Full Nakshatra System · Vedic Suite</p>
-        <div class="kernel-stats" id="kernelStats">
-            <div class="stat"><span class="stat-label">Σ Dim:</span><span class="stat-value" id="sigmaDim">25.48000</span></div>
-            <div class="stat"><span class="stat-label">Entropy:</span><span class="stat-value" id="entropy">-7.00765</span></div>
-            <div class="stat"><span class="stat-label">🔬 Hash:</span><span class="stat-value" id="hashVal">0x4a0cd26d</span></div>
-        </div>
-    </div>
 
-    <div class="tabs">
-        <div class="tab active" data-tab="tab-music">🎵 MUSIC & MANTRA</div>
-        <div class="tab" data-tab="tab-astrology">⭐ ASTROLOGY</div>
-        <div class="tab" data-tab="tab-soulmap">🌀 SOUL MAP</div>
-        <div class="tab" data-tab="tab-sanskrit">📜 SANSKRIT ENGINE</div>
-        <div class="tab" data-tab="tab-info">ℹ️ INFO</div>
-    </div>
+<header>
+    <a href="#" class="logo">ĀIGĀANE V3 · 49D</a>
+    <nav>
+        <a href="#hero">Home</a>
+        <a href="#features">Kernel</a>
+        <a href="#about">Vedic</a>
+        <a href="#contact">Insights</a>
+    </nav>
+</header>
 
-    <!-- ================= TAB 1: MUSIC ================= -->
-    <div id="tab-music" class="content-panel active">
-        <h2>🎵 Music &amp; Mantra · 49D Resonance</h2>
+<!-- 49D Kernel Stats Bar -->
+<div class="kernel-stats" id="kernelStats">
+    <div class="stat"><span class="stat-label">Σ Dim:</span><span class="stat-value" id="sigmaDim">25.48000</span></div>
+    <div class="stat"><span class="stat-label">Entropy:</span><span class="stat-value" id="entropy">-7.00765</span></div>
+    <div class="stat"><span class="stat-label">🔬 Hash:</span><span class="stat-value" id="hashVal">0x4a0cd26d</span></div>
+    <div class="stat"><span class="stat-label">🎵 Hz:</span><span class="stat-value" id="globalFreq">136.1</span></div>
+</div>
+
+<!-- Hero Section -->
+<section class="hero" id="hero">
+    <h1>49D Arithmetic Kernel · Vedic Intelligence</h1>
+    <p>Quantatech engine mapping Nakshatras, Rāgas, and resonance to modern algorithmic structures.</p>
+</section>
+
+<!-- Tabs -->
+<div class="tabs">
+    <button class="tab-btn active" data-tab="tab-music">🎵 Music & Mantra</button>
+    <button class="tab-btn" data-tab="tab-astrology">⭐ Astrology</button>
+    <button class="tab-btn" data-tab="tab-soulmap">🌀 Soul Map</button>
+    <button class="tab-btn" data-tab="tab-sanskrit">📜 Sanskrit Engine</button>
+    <button class="tab-btn" data-tab="tab-info">ℹ️ 49D Kernel</button>
+</div>
+
+<!-- Tab 1: Music & Mantra -->
+<div id="tab-music" class="content-panel active">
+    <div class="card">
+        <h3>🎵 49D Resonance Analysis</h3>
         <div class="input-group">
             <div class="input-field"><label>Mantra / Text</label><input type="text" id="mantraInput" placeholder="e.g., Om Namah Shivaya" value="Rāma"></div>
-            <button id="analyzeMantraBtn">🔊 Analyze Resonance</button>
+            <button id="analyzeMantraBtn">🔊 Analyze & Play</button>
         </div>
-        <div id="musicResult" class="result-card" style="display:none;"><h3>🎼 Resonance Analysis</h3><div id="musicAnalysis"></div></div>
-        <div class="result-card"><h3>📜 About Mantra &amp; Music</h3><p>The 49D kernel maps Sanskrit phonetics to frequency bands. Each Nakshatra has a unique svara (note), raga, and healing focus.</p></div>
+        <div id="musicResult" style="display:none;">
+            <div id="musicAnalysis" class="result-grid"></div>
+        </div>
     </div>
+    <div class="card">
+        <h3>📜 About Mantra &amp; Music</h3>
+        <p>The 49D kernel maps Sanskrit phonetics to frequency bands. Each Nakshatra has a unique svara, raga, and healing focus. Click "Analyze & Play" to hear the resonant frequency.</p>
+    </div>
+</div>
 
-    <!-- ================= TAB 2: ASTROLOGY ================= -->
-    <div id="tab-astrology" class="content-panel">
-        <h2>⭐ Vedic Astrology · 27 Nakshatras</h2>
+<!-- Tab 2: Astrology -->
+<div id="tab-astrology" class="content-panel">
+    <div class="card">
+        <h3>⭐ Vedic Astrology · 27 Nakshatras</h3>
         <div class="input-group">
             <div class="input-field"><label>Your Name</label><input type="text" id="userName" value="Seeker"></div>
             <div class="input-field"><label>Birth Year</label><input type="number" id="birthYear" value="1990"></div>
             <div class="input-field"><label>Birth Month</label><input type="number" id="birthMonth" value="6"></div>
             <div class="input-field"><label>Birth Day</label><input type="number" id="birthDay" value="15"></div>
-            <div class="input-field"><label>📍 Location</label><input type="text" id="birthLocation" value="New Delhi"></div>
+            <div class="input-field"><label>📍 Location</label><input type="text" id="birthLocation" value="Varanasi"></div>
             <button id="generateAstrologyBtn">Generate Nakshatra Report</button>
         </div>
-        <div id="astroFullReport" class="result-card" style="display:none;">
-            <h3>🌟 Nakṣatra &amp; Jyotiṣa Report for <span id="displayName">Seeker</span></h3>
+        <div id="astroFullReport" style="display:none;">
+            <h3 style="color: var(--accent);">🌟 Nakṣatra Report for <span id="displayName">Seeker</span></h3>
             <div id="astrologyGrid" class="result-grid"></div>
         </div>
     </div>
+</div>
 
-    <!-- ================= TAB 3: SOUL MAP ================= -->
-    <div id="tab-soulmap" class="content-panel">
-        <h2>🌀 Soul Map · Yantra from Hash</h2>
-        <div class="input-group"><div class="input-field"><label>Name / Text</label><input type="text" id="soulMapText" value="Rāma"></div><button id="generateSoulMapBtn">🌀 Generate Yantra</button></div>
-        <div id="soulMapResult" class="result-card" style="display:none;"><h3>🕉️ Ātma Kāraka</h3><div id="soulMapGrid"></div></div>
-        <div id="yantraContainer" style="display:none; text-align:center;"><canvas id="yantraCanvas" width="400" height="400" style="max-width:100%; height:auto;"></canvas><button id="exportYantraBtn">📸 Export PNG</button></div>
+<!-- Tab 3: Soul Map -->
+<div id="tab-soulmap" class="content-panel">
+    <div class="card">
+        <h3>🌀 Soul Map · Yantra from Hash</h3>
+        <div class="input-group">
+            <div class="input-field"><label>Name / Text</label><input type="text" id="soulMapText" value="Rāma"></div>
+            <button id="generateSoulMapBtn">🌀 Generate Yantra</button>
+            <button id="saveToHistoryBtn" style="background:#2c3e50;">💾 Save to History</button>
+        </div>
+        <div id="soulMapResult" style="display:none;">
+            <div id="soulMapGrid" class="result-grid"></div>
+        </div>
+        <div id="yantraContainer" style="display:none; text-align:center; margin-top:1rem;">
+            <canvas id="yantraCanvas" width="450" height="450" style="width:100%; max-width:450px; height:auto;"></canvas>
+            <button id="exportYantraBtn" style="margin-top:0.5rem;">📸 Export as PNG</button>
+        </div>
+        <div id="historyPanel" class="history-panel">
+            <h4>📜 Soul Map History</h4>
+            <div id="historyList"></div>
+        </div>
     </div>
+</div>
 
-    <!-- ================= TAB 4: SANSKRIT ENGINE ================= -->
-    <div id="tab-sanskrit" class="content-panel">
-        <h2>📜 Sanskrit Engine · IAST + Devanagari</h2>
-        <div class="input-group"><div class="input-field"><label>Text</label><input type="text" id="translitInput" placeholder="IAST or Devanagari"></div><button id="transliterateBtn">🔄 Convert</button></div>
-        <div class="result-card"><div id="translitResult" style="font-size:1.3rem; font-family:monospace;"></div></div>
-        <div class="result-card"><h3>📖 Jyotish Lexicon (50+ terms)</h3><input type="text" id="lexiconSearch" placeholder="Search"><button id="searchLexiconBtn">Search</button><div id="lexiconResult" style="margin-top:1rem;"></div></div>
-    </div>
-
-    <!-- ================= TAB 5: INFO ================= -->
-    <div id="tab-info" class="content-panel">
-        <h2>ℹ️ 49D Kernel Architecture</h2>
-        <div class="result-grid">
-            <div class="result-item"><div class="result-label">Dimensions 1-7</div><div class="result-value">Spatial-temporal base</div></div>
-            <div class="result-item"><div class="result-label">Dimensions 8-21</div><div class="result-value">Frequency / Śruti band</div></div>
-            <div class="result-item"><div class="result-label">Dimensions 22-49</div><div class="result-value">Anumana predictive layer</div></div>
+<!-- Tab 4: Sanskrit Engine -->
+<div id="tab-sanskrit" class="content-panel">
+    <div class="card">
+        <h3>📜 Sanskrit Engine · IAST ↔ Devanagari</h3>
+        <div class="toolbar">
+            <button class="tool-btn active" data-tool="transliteration">🔤 Transliteration</button>
+            <button class="tool-btn" data-tool="sandhi">⚡ Sandhi Splitter</button>
+            <button class="tool-btn" data-tool="lexicon">📖 Lexicon</button>
+        </div>
+        
+        <div id="transliterationPanel" class="sanskrit-panel">
+            <div class="input-group">
+                <div class="input-field"><label>IAST or Devanagari</label><input type="text" id="translitInput" placeholder="e.g., samskrita or संस्कृत"></div>
+                <button id="transliterateBtn">🔄 Convert</button>
+            </div>
+            <div class="result-item"><div class="result-label">Result</div><div id="translitResult" style="font-size:1.2rem; font-family:monospace;"></div></div>
+        </div>
+        
+        <div id="sandhiPanel" class="sanskrit-panel" style="display:none;">
+            <div class="input-group">
+                <div class="input-field"><label>Sandhi word (e.g., रामायण)</label><input type="text" id="sandhiInput" placeholder="Enter compound word"></div>
+                <button id="splitSandhiBtn">⚡ Split Sandhi</button>
+            </div>
+            <div class="result-item"><div class="result-label">Split Result</div><div id="sandhiResult"></div></div>
+        </div>
+        
+        <div id="lexiconPanel" class="sanskrit-panel" style="display:none;">
+            <div class="input-group">
+                <div class="input-field"><label>Search term</label><input type="text" id="lexiconSearch" placeholder="e.g., graha, rāma, dharma"></div>
+                <button id="searchLexiconBtn">🔍 Search</button>
+            </div>
+            <div id="lexiconResult" style="max-height:300px; overflow-y:auto;"></div>
         </div>
     </div>
     
-    <footer>© 2026 Aigaane · 49D Arithmetic Kernel · Full Nakshatra System</footer>
+    <div class="card">
+        <h3>🔊 Phonetic Reference (IAST)</h3>
+        <table class="phonetic-table">
+            <thead><tr><th>Devanagari</th><th>IAST</th><th>Pronunciation</th></tr></thead>
+            <tbody>
+                <tr><td>अ</td><td>a</td><td>as in rural</td></tr>
+                <tr><td>आ</td><td>ā</td><td>as in father</td></tr>
+                <tr><td>इ</td><td>i</td><td>as in lily</td></tr>
+                <tr><td>ई</td><td>ī</td><td>as in police</td></tr>
+                <tr><td>उ</td><td>u</td><td>as in full</td></tr>
+                <tr><td>ऊ</td><td>ū</td><td>as in rude</td></tr>
+                <tr><td>ऋ</td><td>ṛ</td><td>as in merrily</td></tr>
+                <tr><td>ए</td><td>e</td><td>as in there</td></tr>
+                <tr><td>ऐ</td><td>ai</td><td>as in aisle</td></tr>
+                <tr><td>ओ</td><td>o</td><td>as in go</td></tr>
+                <tr><td>औ</td><td>au</td><td>as in mouse</td></tr>
+                <tr><td>क</td><td>k</td><td>as in kill</td></tr>
+                <tr><td>ख</td><td>kh</td><td>as in inkhorn</td></tr>
+                <tr><td>ग</td><td>g</td><td>as in gun</td></tr>
+                <tr><td>घ</td><td>gh</td><td>as in log-hut</td></tr>
+                <tr><td>ङ</td><td>ṅ</td><td>as in sink</td></tr>
+                <tr><td>च</td><td>c</td><td>as in church</td></tr>
+                <tr><td>छ</td><td>ch</td><td>as in church-hill</td></tr>
+                <tr><td>ज</td><td>j</td><td>as in jet</td></tr>
+                <tr><td>झ</td><td>jh</td><td>as in hedgehog</td></tr>
+                <tr><td>ञ</td><td>ñ</td><td>as in canyon</td></tr>
+                <tr><td>ट</td><td>ṭ</td><td>retroflex t</td></tr>
+                <tr><td>ठ</td><td>ṭh</td><td>aspirated retroflex t</td></tr>
+                <tr><td>ड</td><td>ḍ</td><td>retroflex d</td></tr>
+                <tr><td>ढ</td><td>ḍh</td><td>aspirated retroflex d</td></tr>
+                <tr><td>ण</td><td>ṇ</td><td>retroflex n</td></tr>
+                <tr><td>त</td><td>t</td><td>dental t</td></tr>
+                <tr><td>थ</td><td>th</td><td>aspirated dental t</td></tr>
+                <tr><td>द</td><td>d</td><td>dental d</td></tr>
+                <tr><td>ध</td><td>dh</td><td>aspirated dental d</td></tr>
+                <tr><td>न</td><td>n</td><td>dental n</td></tr>
+                <tr><td>प</td><td>p</td><td>as in put</td></tr>
+                <tr><td>फ</td><td>ph</td><td>as in uphill</td></tr>
+                <tr><td>ब</td><td>b</td><td>as in bear</td></tr>
+                <tr><td>भ</td><td>bh</td><td>as in abhor</td></tr>
+                <tr><td>म</td><td>m</td><td>as in map</td></tr>
+                <tr><td>य</td><td>y</td><td>as in yet</td></tr>
+                <tr><td>र</td><td>r</td><td>as in red</td></tr>
+                <tr><td>ल</td><td>l</td><td>as in hull</td></tr>
+                <tr><td>व</td><td>v</td><td>as in ivy</td></tr>
+                <tr><td>श</td><td>ś</td><td>as in sure</td></tr>
+                <tr><td>ष</td><td>ṣ</td><td>retroflex sh</td></tr>
+                <tr><td>स</td><td>s</td><td>as in sun</td></tr>
+                <tr><td>ह</td><td>h</td><td>as in hear</td></tr>
+                <tr><td>ं</td><td>ṃ</td><td>anusvāra</td></tr>
+                <tr><td>ः</td><td>ḥ</td><td>visarga</td></tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<!-- Tab 5: 49D Kernel Info -->
+<div id="tab-info" class="content-panel">
+    <div class="card">
+        <h3>🧠 49D Kernel Architecture</h3>
+        <div class="result-grid">
+            <div class="result-item"><div class="result-label">Dimensions 1-7</div><div class="result-value">Spatial-temporal base coordinates</div></div>
+            <div class="result-item"><div class="result-label">Dimensions 8-21</div><div class="result-value">Frequency / Śruti resonance band</div></div>
+            <div class="result-item"><div class="result-label">Dimensions 22-49</div><div class="result-value">Anumana predictive layer</div></div>
+        </div>
+    </div>
+    <div class="card">
+        <h3>📜 About the Engine</h3>
+        <p>Aigaane V3 is a 49-dimensional Vedic arithmetic kernel that unifies Jyotish (astrology), Sanskrit phonetics, mantra resonance, and soul mapping. Each input generates a deterministic hash that maps to one of 27 Nakshatras, 9 Navatara phases, and specific raga/frequency recommendations.</p>
+        <p style="margin-top:0.5rem;"><strong>Entropy Range:</strong> -15 to 0 (lower = more concentrated seed mantras)</p>
+        <p><strong>Frequency Mapping:</strong> 108 Hz (base) + hash modulation → unique resonant tone</p>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 ĀIGĀANE V3 · 49D Arithmetic Kernel · Vedic Intelligence Platform</p>
+    <p style="font-size: 0.7rem; margin-top: 5px;">Quantatech · Soul Mapping · Nakshatra Resonance</p>
+</footer>
 
 <script>
     // ==================== 27 NAKSHATRA DATABASE ====================
@@ -159,13 +603,49 @@
 
     // ==================== HELPERS ====================
     function computeHash(str) { let h=0; for(let i=0;i<str.length;i++) h = ((h<<5)-h)+str.charCodeAt(i); return Math.abs(h); }
-    function get49DStats(text){ let h=computeHash(text); let ent=-(text.length*0.7+new Set(text).size); let sigma=25.48+(h%100)/100; return {sigma_dim:sigma.toFixed(5), entropy:ent.toFixed(5), hash:'0x'+h.toString(16).substring(0,8)}; }
-    function updateStats(txt){ let s=get49DStats(txt); document.getElementById('sigmaDim').innerText=s.sigma_dim; document.getElementById('entropy').innerText=s.entropy; document.getElementById('hashVal').innerText=s.hash; }
+    
+    function get49DStats(text){
+        let h=computeHash(text);
+        let ent=-(text.length*0.7+new Set(text).size);
+        let sigma=25.48+(h%100)/100;
+        let freq = 108 + (h % 50);
+        return {sigma_dim:sigma.toFixed(5), entropy:ent.toFixed(5), hash:'0x'+h.toString(16).substring(0,8), frequency: freq};
+    }
+    
+    function updateStats(txt){
+        let s=get49DStats(txt);
+        document.getElementById('sigmaDim').innerText=s.sigma_dim;
+        document.getElementById('entropy').innerText=s.entropy;
+        document.getElementById('hashVal').innerText=s.hash;
+        document.getElementById('globalFreq').innerText=s.frequency;
+        
+        // Dynamic background shift based on entropy
+        let entropyVal = parseFloat(s.entropy);
+        let shiftSpeed = Math.abs(entropyVal) / 20;
+        document.body.style.background = `linear-gradient(135deg, #0f0c29, #302b63, #24243e)`;
+        document.body.style.backgroundSize = `${200 + shiftSpeed * 50}% ${200 + shiftSpeed * 50}%`;
+    }
+
+    // ==================== WEB AUDIO ====================
+    let audioCtx = null;
+    function playFrequency(freq, duration=2){
+        if(audioCtx === null) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let oscillator = audioCtx.createOscillator();
+        let gainNode = audioCtx.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.frequency.value = freq;
+        oscillator.type = 'sine';
+        gainNode.gain.value = 0.3;
+        oscillator.start();
+        gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+        oscillator.stop(audioCtx.currentTime + duration);
+    }
 
     // ==================== ASTROLOGY ====================
     function renderAstrology(){
         let name=document.getElementById('userName').value||"Seeker";
-        let loc=document.getElementById('birthLocation').value||"New Delhi";
+        let loc=document.getElementById('birthLocation').value||"Varanasi";
         let y=parseInt(document.getElementById('birthYear').value)||1990;
         let seed=name+y+loc;
         let hash=computeHash(seed);
@@ -179,7 +659,6 @@
             <div class="result-item"><div class="result-label">Navatara</div><div class="result-value">${NAVATARA[navIdx]}</div></div>
             <div class="result-item"><div class="result-label">Ruling Graha</div><div class="result-value">${n.graha}</div></div>
             <div class="result-item"><div class="result-label">Sugata Rāga</div><div class="result-value">${n.raga}</div></div>
-            <div class="result-item"><div class="result-label">Svara (Frequency)</div><div class="result-value">${n.svara}</div></div>
             <div class="result-item"><div class="result-label">Bīja Mantra</div><div class="result-value">Oṁ ${n.bija.toLowerCase()} ${n.seed.toLowerCase()} namaḥ</div></div>
             <div class="result-item"><div class="result-label">Healing Focus</div><div class="result-value">${n.healing}</div></div>
             <div class="result-item"><div class="result-label">Ratna (Gemstone)</div><div class="result-value">${n.gemstone}</div></div>
@@ -195,32 +674,57 @@
         let hash=computeHash(txt);
         let idx=hash%27;
         let n=NAKSHATRA_DATA[idx];
-        let freq=108+(hash%100);
+        let freq=108+(hash%50);
         document.getElementById('musicResult').style.display='block';
         document.getElementById('musicAnalysis').innerHTML=`
             <div class="result-item"><div class="result-label">Text</div><div class="result-value">${txt}</div></div>
             <div class="result-item"><div class="result-label">49D Hash</div><div class="result-value">0x${hash.toString(16)}</div></div>
             <div class="result-item"><div class="result-label">Nakṣatra</div><div class="result-value">${n.name}</div></div>
             <div class="result-item"><div class="result-label">Sugata Rāga</div><div class="result-value">${n.raga}</div></div>
-            <div class="result-item"><div class="result-label">Recommended Frequency</div><div class="result-value">${freq} Hz</div></div>
+            <div class="result-item"><div class="result-label">Resonant Frequency</div><div class="result-value">${freq} Hz</div></div>
             <div class="result-item"><div class="result-label">Healing Focus</div><div class="result-value">${n.healing}</div></div>
         `;
         updateStats(txt);
+        playFrequency(freq, 3);
     });
 
     // ==================== SOUL MAP ====================
     function drawYantra(hash){
         let c=document.getElementById('yantraCanvas'), ctx=c.getContext('2d');
-        let size=400, cx=size/2;
+        let size=450, cx=size/2;
         c.width=size; c.height=size;
-        ctx.fillStyle='#1a1a2e'; ctx.fillRect(0,0,size,size);
-        ctx.strokeStyle='#e67e22'; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(cx,cx,170,0,Math.PI*2); ctx.stroke();
+        ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fillRect(0,0,size,size);
+        ctx.strokeStyle='#3b82f6'; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(cx,cx,180,0,Math.PI*2); ctx.stroke();
         let seed=hash%360;
-        ctx.strokeStyle='#f1c40f'; ctx.lineWidth=2;
-        for(let i=0;i<6;i++){ let ang=(i*60+seed)*Math.PI/180; let x=cx+120*Math.cos(ang), y=cx+120*Math.sin(ang); ctx.beginPath(); ctx.moveTo(cx,cx); ctx.lineTo(x,y); ctx.stroke(); }
-        ctx.fillStyle='#f1c40f'; ctx.beginPath(); ctx.arc(cx,cx,8,0,Math.PI*2); ctx.fill();
+        ctx.strokeStyle='#e67e22'; ctx.lineWidth=2;
+        for(let i=0;i<6;i++){ let ang=(i*60+seed)*Math.PI/180; let x=cx+140*Math.cos(ang), y=cx+140*Math.sin(ang); ctx.beginPath(); ctx.moveTo(cx,cx); ctx.lineTo(x,y); ctx.stroke(); }
+        ctx.fillStyle='#f1c40f'; ctx.beginPath(); ctx.arc(cx,cx,12,0,Math.PI*2); ctx.fill();
     }
-    document.getElementById('generateSoulMapBtn').addEventListener('click',()=>{
+    
+    // Local Storage History
+    let soulHistory = JSON.parse(localStorage.getItem('aigaane_soul_history') || '[]');
+    function renderHistory(){
+        let container = document.getElementById('historyList');
+        if(!container) return;
+        container.innerHTML = soulHistory.slice(-10).reverse().map(item => 
+            `<div class="history-item" onclick="loadHistoryItem('${item.text}')">
+                <strong>${item.text}</strong> - ${item.nakshatra}<br>
+                <small style="color:#888;">${new Date(item.timestamp).toLocaleString()}</small>
+            </div>`
+        ).join('');
+    }
+    function saveToHistory(text, nakshatra){
+        soulHistory.unshift({text, nakshatra, timestamp: Date.now()});
+        if(soulHistory.length > 20) soulHistory.pop();
+        localStorage.setItem('aigaane_soul_history', JSON.stringify(soulHistory));
+        renderHistory();
+    }
+    window.loadHistoryItem = function(text){
+        document.getElementById('soulMapText').value = text;
+        generateSoulMap();
+    };
+    
+    function generateSoulMap(){
         let txt=document.getElementById('soulMapText').value.trim()||"Rāma";
         let hash=computeHash(txt);
         let idx=hash%27;
@@ -235,58 +739,120 @@
         drawYantra(hash);
         document.getElementById('yantraContainer').style.display='block';
         updateStats(txt);
+        saveToHistory(txt, n.name);
+    }
+    
+    document.getElementById('generateSoulMapBtn').addEventListener('click', generateSoulMap);
+    document.getElementById('saveToHistoryBtn').addEventListener('click', ()=>{
+        let txt=document.getElementById('soulMapText').value.trim()||"Rāma";
+        let hash=computeHash(txt);
+        let idx=hash%27;
+        let n=NAKSHATRA_DATA[idx];
+        saveToHistory(txt, n.name);
+        alert('💾 Saved to Soul Map History');
     });
-    document.getElementById('exportYantraBtn').addEventListener('click',()=>{ let link=document.createElement('a'); link.download='aigaane_yantra.png'; link.href=document.getElementById('yantraCanvas').toDataURL(); link.click(); });
+    document.getElementById('exportYantraBtn').addEventListener('click',()=>{ 
+        let canvas=document.getElementById('yantraCanvas');
+        let link=document.createElement('a');
+        link.download='aigaane_yantra.png';
+        link.href=canvas.toDataURL();
+        link.click();
+    });
+    renderHistory();
 
     // ==================== SANSKRIT ENGINE ====================
-    const iastToDeva={
-        'a':'अ','ā':'आ','i':'इ','ī':'ई','u':'उ','ū':'ऊ','ṛ':'ऋ','ṝ':'ॠ','e':'ए','ai':'ऐ','o':'ओ','au':'औ',
-        'k':'क','kh':'ख','g':'ग','gh':'घ','ṅ':'ङ','c':'च','ch':'छ','j':'ज','jh':'झ','ñ':'ञ','ṭ':'ट','ṭh':'ठ','ḍ':'ड','ḍh':'ढ','ṇ':'ण',
-        't':'त','th':'थ','d':'द','dh':'ध','n':'न','p':'प','ph':'फ','b':'ब','bh':'भ','m':'म','y':'य','r':'र','l':'ल','v':'व',
-        'ś':'श','ṣ':'ष','s':'स','h':'ह','ṃ':'ं','ḥ':'ः'
+    const iastToDeva = {
+        'a':'अ','ā':'आ','i':'इ','ī':'ई','u':'उ','ū':'ऊ','ṛ':'ऋ','ṝ':'ॠ','e':'ए','ai':'ऐ','o':'ओ','au':'औ','ṃ':'ं','ḥ':'ः',
+        'k':'क','kh':'ख','g':'ग','gh':'घ','ṅ':'ङ','c':'च','ch':'छ','j':'ज','jh':'झ','ñ':'ञ',
+        'ṭ':'ट','ṭh':'ठ','ḍ':'ड','ḍh':'ढ','ṇ':'ण','t':'त','th':'थ','d':'द','dh':'ध','n':'न',
+        'p':'प','ph':'फ','b':'ब','bh':'भ','m':'म','y':'य','r':'र','l':'ल','v':'व','ś':'श','ṣ':'ष','s':'स','h':'ह'
     };
-    const devaToIast=Object.fromEntries(Object.entries(iastToDeva).map(([k,v])=>[v,k]));
+    const devaToIast = Object.fromEntries(Object.entries(iastToDeva).map(([k,v])=>[v,k]));
+    
+    function iastToDevanagari(text){
+        let result='', i=0;
+        while(i<text.length){
+            let found=false;
+            for(let len of[2,1]){
+                if(i+len<=text.length && iastToDeva[text.substr(i,len)]){
+                    result+=iastToDeva[text.substr(i,len)]; i+=len; found=true; break;
+                }
+            }
+            if(!found) { result+=text[i]; i++; }
+        }
+        return result;
+    }
+    function devanagariToIast(text){
+        let result='';
+        for(let ch of text) result+=devaToIast[ch]||ch;
+        return result;
+    }
+    
     document.getElementById('transliterateBtn').addEventListener('click',()=>{
         let inp=document.getElementById('translitInput').value.trim();
         if(!inp) return;
         let isDeva=/[\u0900-\u097F]/.test(inp);
-        let out='';
-        if(isDeva){ for(let ch of inp) out+=devaToIast[ch]||ch; }
-        else{
-            let i=0;
-            while(i<inp.length){
-                let found=false;
-                for(let l of[2,1]) if(i+l<=inp.length && iastToDeva[inp.substr(i,l)]){ out+=iastToDeva[inp.substr(i,l)]; i+=l; found=true; break; }
-                if(!found){ out+=inp[i]; i++; }
-            }
-        }
-        document.getElementById('translitResult').innerHTML=out;
+        document.getElementById('translitResult').innerHTML = isDeva ? devanagariToIast(inp) : iastToDevanagari(inp);
     });
-
-    const lexicon={
-        'graha':'Planet','rāma':'Pleasant','kṛṣṇa':'Dark','deva':'God','agni':'Fire','sūrya':'Sun','candra':'Moon','dharma':'Duty','karma':'Action','yoga':'Union','mantra':'Sacred formula','veda':'Knowledge','guru':'Teacher','mokṣa':'Liberation','oṃ':'Primordial sound','nakṣatra':'Lunar mansion','tattva':'Element','chand':'Meter','rasa':'Emotion','svara':'Note','raga':'Melody','yantra':'Geometric meditation'
+    
+    document.getElementById('splitSandhiBtn').addEventListener('click',()=>{
+        let inp=document.getElementById('sandhiInput').value.trim();
+        if(!inp) return;
+        document.getElementById('sandhiResult').innerHTML = `
+            <div><strong>${inp}</strong> → possible splits:</div>
+            <div>• ${inp.slice(0,-2)} + ${inp.slice(-2)}</div>
+            <div>• ${inp.slice(0,-3)} + ${inp.slice(-3)}</div>
+        `;
+    });
+    
+    const lexicon = {
+        'graha':'Planet','rāma':'Pleasant','kṛṣṇa':'Dark','deva':'God','agni':'Fire','sūrya':'Sun','candra':'Moon',
+        'dharma':'Duty','karma':'Action','yoga':'Union','mantra':'Sacred formula','veda':'Knowledge','guru':'Teacher',
+        'mokṣa':'Liberation','oṃ':'Primordial','nakṣatra':'Lunar mansion','tattva':'Element','chand':'Meter','rasa':'Emotion','svara':'Note','raga':'Melody'
     };
     function displayLexicon(term){
         let html='';
-        for(let [w,m] of Object.entries(lexicon)) if(w.includes(term)) html+=`<div><strong>${w}</strong> — ${m}</div>`;
-        if(!html) html='<div>No terms found. Try "graha", "rāma", "karma", "yoga"...</div>';
+        for(let [w,m] of Object.entries(lexicon)) if(w.includes(term)) html+=`<div class="result-item"><strong>${w}</strong> — ${m}</div>`;
+        if(!html) html='<div class="result-item">No terms found. Try "graha", "rāma", "karma"...</div>';
         document.getElementById('lexiconResult').innerHTML=html;
     }
     document.getElementById('searchLexiconBtn').addEventListener('click',()=>displayLexicon(document.getElementById('lexiconSearch').value.trim().toLowerCase()));
     displayLexicon('');
+    
+    // Tool switching
+    document.querySelectorAll('.tool-btn').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+            document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            let tool=btn.getAttribute('data-tool');
+            document.querySelectorAll('.sanskrit-panel').forEach(p=>p.style.display='none');
+            document.getElementById(`${tool}Panel`).style.display='block';
+        });
+    });
+    document.getElementById('transliterationPanel').style.display='block';
+
+    // ==================== GLOBAL STATE OBSERVER ====================
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', (e) => {
+            let globalSeed = Array.from(document.querySelectorAll('input')).map(i => i.value).join('');
+            updateStats(globalSeed || "AIGAANE");
+        });
+    });
+
+    // ==================== TAB SWITCHING ====================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.content-panel').forEach(panel => panel.classList.remove('active'));
+            document.getElementById(btn.getAttribute('data-tab')).classList.add('active');
+        });
+    });
 
     // ==================== INIT ====================
     updateStats("AIGAANE");
     renderAstrology();
     document.getElementById('astroFullReport').style.display='block';
-
-    // ==================== TAB SWITCHING ====================
-    document.querySelectorAll('.tab').forEach(t=>{ t.addEventListener('click',()=>{
-        document.querySelectorAll('.tab').forEach(tab=>tab.classList.remove('active'));
-        t.classList.add('active');
-        document.querySelectorAll('.content-panel').forEach(p=>p.classList.remove('active'));
-        document.getElementById(t.getAttribute('data-tab')).classList.add('active');
-    });});
 </script>
 </body>
 </html>
