@@ -1,0 +1,32 @@
+﻿{
+  "version": "1.0",
+  "nakshatras": [
+    {"index":1,"name":"Ashwini","svara":"Ni (komal)","raga":"Bhairav","chand":"Vasantatilaka","bija":"A","seed":"Asva"},
+    {"index":2,"name":"Bharani","svara":"Ma (tivra)","raga":"Todi","chand":"Shikharini","bija":"I","seed":"Isa"},
+    {"index":3,"name":"Krittika","svara":"Ga (suddha)","raga":"Marwa","chand":"Mandakranta","bija":"U","seed":"Ulka"},
+    {"index":4,"name":"Rohini","svara":"Re (komal)","raga":"Khamaj","chand":"Vasantatilaka","bija":"AI","seed":"Ena"},
+    {"index":5,"name":"Mrigashira","svara":"Sa (suddha)","raga":"Bageshree","chand":"Upajati","bija":"E","seed":"Mriga"},
+    {"index":6,"name":"Ardra","svara":"Dha (komal)","raga":"Malkauns","chand":"Shardulavikridita","bija":"O","seed":"Rudra"},
+    {"index":7,"name":"Punarvasu","svara":"Pa (suddha)","raga":"Yaman","chand":"Vasantatilaka","bija":"AU","seed":"Aditi"},
+    {"index":8,"name":"Pushya","svara":"Ni (komal)","raga":"Darbari","chand":"Upajati","bija":"AM","seed":"Brhaspati"},
+    {"index":9,"name":"Ashlesha","svara":"Ga (suddha)","raga":"Bhimpalasi","chand":"Mandakranta","bija":"AH","seed":"Naga"},
+    {"index":10,"name":"Magha","svara":"Re (komal)","raga":"Bhairav","chand":"Shikharini","bija":"KA","seed":"Pitr"},
+    {"index":11,"name":"Purva Phalguni","svara":"Ma (tivra)","raga":"Khamaj","chand":"Vasantatilaka","bija":"KHA","seed":"Bhaga"},
+    {"index":12,"name":"Uttara Phalguni","svara":"Sa (suddha)","raga":"Bhoop","chand":"Upajati","bija":"GA","seed":"Aryaman"},
+    {"index":13,"name":"Hasta","svara":"Dha (komal)","raga":"Yaman","chand":"Mandakranta","bija":"GHA","seed":"Savitr"},
+    {"index":14,"name":"Chitra","svara":"Ni (komal)","raga":"Brindavani Sarang","chand":"Shikharini","bija":"CA","seed":"Visva"},
+    {"index":15,"name":"Swati","svara":"Pa (suddha)","raga":"Hamsadhwani","chand":"Vasantatilaka","bija":"CHA","seed":"Vayu"},
+    {"index":16,"name":"Vishakha","svara":"Ga (suddha)","raga":"Shankara","chand":"Upajati","bija":"JA","seed":"Indra"},
+    {"index":17,"name":"Anuradha","svara":"Re (komal)","raga":"Malkauns","chand":"Mandakranta","bija":"JHA","seed":"Mitra"},
+    {"index":18,"name":"Jyeshtha","svara":"Ma (tivra)","raga":"Darbari","chand":"Shikharini","bija":"NA","seed":"Indra"},
+    {"index":19,"name":"Mula","svara":"Sa (suddha)","raga":"Malkauns","chand":"Vasantatilaka","bija":"TA","seed":"Nirriti"},
+    {"index":20,"name":"Purva Ashadha","svara":"Dha (komal)","raga":"Khamaj","chand":"Upajati","bija":"THA","seed":"Apa"},
+    {"index":21,"name":"Uttara Ashadha","svara":"Ni (komal)","raga":"Bhoop","chand":"Mandakranta","bija":"DA","seed":"Visve"},
+    {"index":22,"name":"Shravana","svara":"Pa (suddha)","raga":"Yaman","chand":"Shikharini","bija":"DHA","seed":"Vishnu"},
+    {"index":23,"name":"Dhanishtha","svara":"Ga (suddha)","raga":"Brindavani Sarang","chand":"Vasantatilaka","bija":"NA","seed":"Vasu"},
+    {"index":24,"name":"Shatabhisha","svara":"Re (komal)","raga":"Bhairav","chand":"Upajati","bija":"TA","seed":"Varuna"},
+    {"index":25,"name":"Purva Bhadrapada","svara":"Ma (tivra)","raga":"Desh","chand":"Mandakranta","bija":"THA","seed":"Aja"},
+    {"index":26,"name":"Uttara Bhadrapada","svara":"Sa (suddha)","raga":"Darbari","chand":"Shikharini","bija":"DA","seed":"Ahir"},
+    {"index":27,"name":"Revati","svara":"Dha (komal)","raga":"Bhimpalasi","chand":"Vasantatilaka","bija":"DHA","seed":"Pusan"}
+  ]
+}

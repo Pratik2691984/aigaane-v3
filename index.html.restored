@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Aigaane V3 — 49D Vedic Astrology Engine | Soul Map First Architecture">
+    <title>Aigaane V3 · 49D Vedic Kernel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-grid">
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="logo-block">
+            <h1>ĀIGĀANE <span class="badge-49d">v3 · 49D KERNEL</span></h1>
+            <p class="subhead">Quantatech Arithmetic · Soul Map First · Complete Vedic Suite</p>
+        </div>
+        <div class="kernel-stats" id="kernel-stats">
+            <span class="stat"><span class="icon-cube"></span> Σ Dim: <span id="dim-sum">—</span></span>
+            <span class="stat"><span class="icon-wave"></span> Entropy: <span id="anumana-entropy">—</span></span>
+            <span class="stat mono">🔬 Hash: <span id="res-hash">—</span></span>
+        </div>
+    </header>
+
+    <!-- TABS: 5 TABS -->
+    <nav class="sharp-tabs">
+        <button class="tab-btn active" data-tab="music">🎵 MUSIC & MANTRA</button>
+        <button class="tab-btn" data-tab="astrology">⭐ ASTROLOGY</button>
+        <button class="tab-btn" data-tab="soulmap">🌀 SOUL MAP</button>
+        <button class="tab-btn" data-tab="sanskrit">📜 SANSKRIT ENGINE</button>
+        <button class="tab-btn" data-tab="info">ℹ️ INFO</button>
+    </nav>
+
+    <!-- TAB PANES -->
+    <main class="tab-container">
+        
+        <!-- TAB 1: MUSIC & MANTRA -->
+        <div id="music" class="tab-pane active">
+            <div class="panel-header">
+                <h2><span class="icon-music"></span> Mantra & Music · 49D Resonance Mapping</h2>
+                <p>Frequency dimensions (8-21) map directly to Vedic mantras and swaras.</p>
+            </div>
+            <div id="music-output" class="results-area">
+                <div class="loading-placeholder">Generating from kernel frequency band...</div>
+            </div>
+        </div>
+
+        <!-- TAB 2: ASTROLOGY -->
+        <div id="astrology" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-star"></span> Vedic Astrology · Planetary Positions</h2>
+                <p>Graha positions, Nakshatra, Rashi, and Dosha analysis from your 49D kernel.</p>
+            </div>
+            <div class="form-card">
+                <div class="form-grid">
+                    <div class="input-field"><label>Your Name</label><input type="text" id="user-name" value="Seeker" placeholder="Enter your name"></div>
+                    <div class="input-field"><label>Birth Year</label><input type="number" id="birth-year" value="1990"></div>
+                    <div class="input-field"><label>Birth Month</label><input type="number" id="birth-month" value="6"></div>
+                    <div class="input-field"><label>Birth Day</label><input type="number" id="birth-day" value="15"></div>
+                    <div class="input-field"><label>Birth Hour (0-23)</label><input type="number" id="birth-hour" value="10"></div>
+                    <div class="input-field"><label>Birth Minute</label><input type="number" id="birth-minute" value="30"></div>
+                    <div class="input-field full-width">
+                        <label>📍 Birth Location <span style="font-size:0.7rem;">(Wikipedia style)</span></label>
+                        <input type="text" id="birth-location" value="New Delhi, India" placeholder="City, Country (e.g., Mumbai, India)">
+                        <small style="display:block; font-size:0.65rem; margin-top:4px;">Lat/Lon auto-detected from location name</small>
+                    </div>
+                </div>
+                <button id="recalc-kernel" class="btn-primary"><span class="icon-refresh"></span> Generate Astrology & Soul Map</button>
+            </div>
+            <div id="astrology-output" class="results-area">
+                <div class="loading-placeholder">Enter birth details and click Generate...</div>
+            </div>
+        </div>
+
+        <!-- TAB 3: SOUL MAP -->
+        <div id="soulmap" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-user"></span> Soul Map · 49D Dimensional Profile</h2>
+                <p>Your Ātma Kāraka, Nakṣatra, and life purpose derived from unified 49D arithmetic.</p>
+            </div>
+            <div id="soulmap-output" class="results-area">
+                <div class="loading-placeholder">Enter birth details to generate your Soul Map...</div>
+            </div>
+        </div>
+
+        <!-- TAB 4: SANSKRIT ENGINE -->
+        <div id="sanskrit" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-book"></span> Sanskrit Engine · Phonetic Extraction</h2>
+                <p>Transliteration, Sandhi splitting, and Vedic lexicon.</p>
+            </div>
+            <div class="toolbar">
+                <button class="tool-btn" id="transliterate-btn">🔤 Transliteration</button>
+                <button class="tool-btn" id="sandhi-btn">⚡ Sandhi Splitter</button>
+                <button class="tool-btn" id="lexicon-btn">📖 Jyotish Lexicon</button>
+            </div>
+            <div id="sanskrit-output" class="results-area">
+                <div class="info-card">Select a tool to begin Sanskrit processing.</div>
+            </div>
+        </div>
+
+        <!-- TAB 5: INFO -->
+        <div id="info" class="tab-pane">
+            <div class="panel-header">
+                <h2><span class="icon-info"></span> About Aigaane V3</h2>
+                <p>The 49D Arithmetic Kernel · Quantatech Engine · Vedic Wisdom</p>
+            </div>
+            <div class="info-content">
+                <div class="result-card">
+                    <h3>🧠 The 49D Kernel Architecture</h3>
+                    <div class="result-grid">
+                        <div class="result-item"><strong>Dimensions 1-7</strong><br>Root Physical Coordinates<br><small>Spatial-temporal base</small></div>
+                        <div class="result-item"><strong>Dimensions 8-21</strong><br>Frequency Resonance Band<br><small>Vedic mantras & swaras</small></div>
+                        <div class="result-item"><strong>Dimensions 22-49</strong><br>Anumana Predictive Layer<br><small>Entropy & outcomes</small></div>
+                    </div>
+                </div>
+                <div class="result-card">
+                    <h3>📜 About the Engine</h3>
+                    <p>Aigaane V3 is a 49-dimensional Vedic astronomy engine that unifies:</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Jyotish (Vedic Astrology)</li>
+                        <li>Sanskrit phonetics and transliteration</li>
+                        <li>Mantra and musical resonance mapping</li>
+                        <li>Soul Map Ātma Kāraka analysis</li>
+                        <li>49D arithmetic tensor calculations</li>
+                    </ul>
+                </div>
+                <div class="result-card">
+                    <h3>🌍 Location Database</h3>
+                    <p>Supported locations include major cities worldwide. Lat/Lon are automatically calculated from city names.</p>
+                    <p><strong>Examples:</strong> New Delhi, Mumbai, Bangalore, Chennai, Kolkata, Ahmedabad, Pune, Jaipur, London, New York, Tokyo, Sydney</p>
+                </div>
+                <div class="result-card">
+                    <h3>⚡ Technical Specifications</h3>
+                    <div class="result-grid">
+                        <div class="result-item"><strong>Kernel Version</strong><br>3.0.1</div>
+                        <div class="result-item"><strong>Tensor Size</strong><br>49 Dimensions</div>
+                        <div class="result-item"><strong>Hash Function</strong><br>49D Resonance Hash</div>
+                        <div class="result-item"><strong>Entropy Range</strong><br>-15 to 0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>© 2026 Aigaane · 49D Arithmetic Kernel · All outputs derived from unified tensor</p>
+    </footer>
+</div>
+
+<script>
+    // Location to Lat/Lon Database (Wikipedia style)
+    const locationDatabase = {
+        // India - Major Cities
+        'new delhi': { lat: 28.6139, lon: 77.2090 },
+        'delhi': { lat: 28.6139, lon: 77.2090 },
+        'mumbai': { lat: 19.0760, lon: 72.8777 },
+        'bombay': { lat: 19.0760, lon: 72.8777 },
+        'bangalore': { lat: 12.9716, lon: 77.5946 },
+        'bengaluru': { lat: 12.9716, lon: 77.5946 },
+        'chennai': { lat: 13.0827, lon: 80.2707 },
+        'kolkata': { lat: 22.5726, lon: 88.3639 },
+        'ahmedabad': { lat: 23.0225, lon: 72.5714 },
+        'pune': { lat: 18.5204, lon: 73.8567 },
+        'jaipur': { lat: 26.9124, lon: 75.7873 },
+        'hyderabad': { lat: 17.3850, lon: 78.4867 },
+        'lucknow': { lat: 26.8467, lon: 80.9462 },
+        'surat': { lat: 21.1702, lon: 72.8311 },
+        'kanpur': { lat: 26.4499, lon: 80.3319 },
+        'nagpur': { lat: 21.1458, lon: 79.0882 },
+        'indore': { lat: 22.7196, lon: 75.8577 },
+        'bhopal': { lat: 23.2599, lon: 77.4126 },
+        'patna': { lat: 25.5941, lon: 85.1376 },
+        'vadodara': { lat: 22.3072, lon: 73.1812 },
+        // International
+        'london': { lat: 51.5074, lon: -0.1278 },
+        'new york': { lat: 40.7128, lon: -74.0060 },
+        'los angeles': { lat: 34.0522, lon: -118.2437 },
+        'chicago': { lat: 41.8781, lon: -87.6298 },
+        'toronto': { lat: 43.6532, lon: -79.3832 },
+        'sydney': { lat: -33.8688, lon: 151.2093 },
+        'melbourne': { lat: -37.8136, lon: 144.9631 },
+        'tokyo': { lat: 35.6762, lon: 139.6503 },
+        'shanghai': { lat: 31.2304, lon: 121.4737 },
+        'beijing': { lat: 39.9042, lon: 116.4074 },
+        'singapore': { lat: 1.3521, lon: 103.8198 },
+        'dubai': { lat: 25.2048, lon: 55.2708 },
+        'istanbul': { lat: 41.0082, lon: 28.9784 },
+        'berlin': { lat: 52.5200, lon: 13.4050 },
+        'paris': { lat: 48.8566, lon: 2.3522 },
+        'rome': { lat: 41.9028, lon: 12.4964 },
+        'cairo': { lat: 30.0444, lon: 31.2357 }
+    };
+
+    // Get coordinates from location name
+    function getCoordinatesFromLocation(locationName) {
+        if (!locationName || locationName.trim() === '') {
+            return { lat: 28.6139, lon: 77.2090 };
+        }
+        const normalized = locationName.toLowerCase().trim();
+        if (locationDatabase[normalized]) {
+            return locationDatabase[normalized];
+        }
+        for (const [key, value] of Object.entries(locationDatabase)) {
+            if (normalized.includes(key)) {
+                return value;
+            }
+        }
+        return { lat: 28.6139, lon: 77.2090 };
+    }
+
+    // Update hidden lat/lon fields
+    function updateLocationDisplay() {
+        const locationInput = document.getElementById('birth-location');
+        if (locationInput && locationInput.value) {
+            const coords = getCoordinatesFromLocation(locationInput.value);
+            let latInput = document.getElementById('birth-lat');
+            let lonInput = document.getElementById('birth-lon');
+            if (!latInput) {
+                const formGrid = document.querySelector('#astrology .form-grid');
+                if (formGrid) {
+                    const hiddenLat = document.createElement('input');
+                    hiddenLat.type = 'hidden';
+                    hiddenLat.id = 'birth-lat';
+                    hiddenLat.value = coords.lat;
+                    const hiddenLon = document.createElement('input');
+                    hiddenLon.type = 'hidden';
+                    hiddenLon.id = 'birth-lon';
+                    hiddenLon.value = coords.lon;
+                    formGrid.appendChild(hiddenLat);
+                    formGrid.appendChild(hiddenLon);
+                    latInput = hiddenLat;
+                    lonInput = hiddenLon;
+                }
+            } else {
+                latInput.value = coords.lat;
+                lonInput.value = coords.lon;
+            }
+        }
+    }
+
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            const tabId = btn.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async () => {
+        updateLocationDisplay();
+        
+        const locationInput = document.getElementById('birth-location');
+        if (locationInput) {
+            locationInput.addEventListener('change', updateLocationDisplay);
+            locationInput.addEventListener('blur', updateLocationDisplay);
+        }
+        
+        if (window.Quantatech) {
+            await window.Quantatech.init();
+        }
+        
+        const recalcBtn = document.getElementById('recalc-kernel');
+        if (recalcBtn) {
+            recalcBtn.addEventListener('click', () => {
+                updateLocationDisplay();
+                const birth = {
+                    name: document.getElementById('user-name')?.value || 'Seeker',
+                    year: parseInt(document.getElementById('birth-year')?.value || 1990),
+                    month: parseInt(document.getElementById('birth-month')?.value || 6),
+                    day: parseInt(document.getElementById('birth-day')?.value || 15),
+                    hour: parseInt(document.getElementById('birth-hour')?.value || 10),
+                    minute: parseInt(document.getElementById('birth-minute')?.value || 30),
+                    lat: parseFloat(document.getElementById('birth-lat')?.value || 28.6139),
+                    lon: parseFloat(document.getElementById('birth-lon')?.value || 77.2090)
+                };
+                if (window.Quantatech) window.Quantatech.recompute(birth);
+                if (window.MusicMantra) window.MusicMantra.render();
+                if (window.AstrologyEngine) window.AstrologyEngine.render();
+                if (window.SoulMap) window.SoulMap.render();
+            });
+        }
+    });
+</script>
+
+<script src="engine/quantatech.js"></script>
+<script src="tabs/music-mantra.js"></script>
+<script src="tabs/astrology.js"></script>
+<script src="tabs/soul-map.js"></script>
+<script src="tabs/sanskrit.js"></script>
+</body>
+</html>

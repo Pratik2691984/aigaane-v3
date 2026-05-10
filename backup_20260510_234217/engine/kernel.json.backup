@@ -1,0 +1,29 @@
+{
+  "version": "3.0",
+  "dimensions": {
+    "root_physical": { "range": "1-7", "description": "Spatial-temporal base coordinates" },
+    "frequency_resonance": { "range": "8-21", "description": "Vedic frequency mapping to swaras" },
+    "anumana_predictive": { "range": "22-49", "description": "Predictive outcomes & entropy" }
+  },
+  "vedic_entries": [
+    { "id": 1, "name": "Gayatri Mantra", "deity": "Savitr", "mantra": "ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि धियो यो नः प्रचोदयात्", "nakshatra": "Rohini", "resonance_base": 0.782, "frequency_dim": 12 },
+    { "id": 2, "name": "Maha Mrityunjaya", "deity": "Shiva", "mantra": "ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्", "nakshatra": "Ardra", "resonance_base": 0.654, "frequency_dim": 9 },
+    { "id": 3, "name": "Om Namah Shivaya", "deity": "Shiva", "mantra": "ॐ नमः शिवाय", "nakshatra": "Mrigashira", "resonance_base": 0.543, "frequency_dim": 15 },
+    { "id": 4, "name": "Ganapati Atharvashirsha", "deity": "Ganesha", "mantra": "ॐ गं गणपतये नमः", "nakshatra": "Ashwini", "resonance_base": 0.891, "frequency_dim": 18 },
+    { "id": 5, "name": "Shreem Mantra", "deity": "Lakshmi", "mantra": "ॐ श्रीं ह्रीं क्लीं ऐं सौः", "nakshatra": "Rohini", "resonance_base": 0.721, "frequency_dim": 10 },
+    { "id": 6, "name": "Durga Bija", "deity": "Durga", "mantra": "ॐ ऐं ह्रीं क्लीं चामुण्डायै विच्चे", "nakshatra": "Chitra", "resonance_base": 0.634, "frequency_dim": 14 },
+    { "id": 7, "name": "Surya Gayatri", "deity": "Surya", "mantra": "ॐ आदित्याय विद्महे दिवाकराय धीमहि", "nakshatra": "Krittika", "resonance_base": 0.678, "frequency_dim": 7 },
+    { "id": 8, "name": "Vishnu Ashtakshara", "deity": "Vishnu", "mantra": "ॐ नमो भगवते वासुदेवाय", "nakshatra": "Shravana", "resonance_base": 0.712, "frequency_dim": 11 },
+    { "id": 9, "name": "Saraswati Bija", "deity": "Saraswati", "mantra": "ॐ ऐं सरस्वत्यै नमः", "nakshatra": "Hasta", "resonance_base": 0.745, "frequency_dim": 13 },
+    { "id": 10, "name": "Hanuman Chalisa Core", "deity": "Hanuman", "mantra": "ॐ हनुमते नमः", "nakshatra": "Mula", "resonance_base": 0.823, "frequency_dim": 16 }
+  ],
+  "lexicon": [
+    { "term": "Graha", "meaning": "Planet; celestial influencer" },
+    { "term": "Rashi", "meaning": "Zodiac sign; 12 divisions" },
+    { "term": "Nakshatra", "meaning": "Lunar mansion; 27 divisions" },
+    { "term": "Lagna", "meaning": "Ascendant; rising sign" },
+    { "term": "Kundli", "meaning": "Birth chart" },
+    { "term": "Dosha", "meaning": "Planetary affliction" },
+    { "term": "Yoga", "meaning": "Auspicious combination" }
+  ]
+}

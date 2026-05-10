@@ -1,0 +1,843 @@
+{
+  "version": "1.0",
+  "description": "Nakshatra-driven creative mapping for Chand, Kavita, Raga, Lyrics",
+  "nakshatras": [
+    {
+      "index": 1,
+      "name": "Ashwini",
+      "chand": {
+        "meter": "Vasantatilaka",
+        "syllable_pattern": "S S G S G G",
+        "total_syllables": 12,
+        "style": "swift, energetic",
+        "gana": "Deva"
+      },
+      "kavita": {
+        "rasa": "Veera (heroism)",
+        "theme": "swift beginnings, healing journeys",
+        "imagery": ["horse head", "dawn", "chariot", "swift movement"],
+        "tone": "urgent, hopeful"
+      },
+      "raga": {
+        "primary": "Bhairav",
+        "time": "dawn",
+        "vadi_swara": "Ma (tivra)",
+        "tattva": "Agni (Fire)",
+        "mood": "gravely heroic"
+      },
+      "lyrics": {
+        "bija_phoneme": "A",
+        "pada_sound": "a, ā",
+        "phoneme_class": "open vowels",
+        "seed_words": ["aśva", "agni", "aruna", "āyu"],
+        "example_line": "Aśvaḥ śīghraḥ prabhātam āyāti"
+      }
+    },
+    {
+      "index": 2,
+      "name": "Bharani",
+      "chand": {
+        "meter": "Shikharini",
+        "syllable_pattern": "G G G S G S G G G",
+        "total_syllables": 17,
+        "style": "heavy, broken, intense",
+        "gana": "Rakshasa"
+      },
+      "kavita": {
+        "rasa": "Bhayanaka (fear) / Karuna (sorrow)",
+        "theme": "transformation, release of attachments",
+        "imagery": ["yoni", "earth", "womb", "death", "rebirth"],
+        "tone": "heavy, cathartic"
+      },
+      "raga": {
+        "primary": "Todi",
+        "time": "late morning",
+        "vadi_swara": "Ga (śuddha)",
+        "tattva": "Prithvi (Earth)",
+        "mood": "serious, contemplative"
+      },
+      "lyrics": {
+        "bija_phoneme": "Ī",
+        "pada_sound": "ī, i",
+        "phoneme_class": "long palatal",
+        "seed_words": ["īśā", "īpsā", "īra", "īśvara"],
+        "example_line": "Īśā mṛtyuḥ ca janma ca"
+      }
+    },
+    {
+      "index": 3,
+      "name": "Krittika",
+      "chand": {
+        "meter": "Mandākrāntā",
+        "syllable_pattern": "G S G S G S G S G",
+        "total_syllables": 15,
+        "style": "flowing, purifying",
+        "gana": "Rakshasa"
+      },
+      "kavita": {
+        "rasa": "Adbhuta (wonder)",
+        "theme": "purification, sharp clarity",
+        "imagery": ["flame", "knife", "cutting", "fire", "smoke"],
+        "tone": "intense, clarifying"
+      },
+      "raga": {
+        "primary": "Marwa",
+        "time": "sunset",
+        "vadi_swara": "Re (komal)",
+        "tattva": "Agni (Fire)",
+        "mood": "sharp, intense beauty"
+      },
+      "lyrics": {
+        "bija_phoneme": "U",
+        "pada_sound": "u, ū",
+        "phoneme_class": "labials",
+        "seed_words": ["ulkā", "uṣas", "ujjvala", "ūrjā"],
+        "example_line": "Ulkā pataṅgī iva khe bhrāmati"
+      }
+    },
+    {
+      "index": 4,
+      "name": "Rohini",
+      "chand": {
+        "meter": "Vasantatilaka",
+        "syllable_pattern": "S S G S G G",
+        "total_syllables": 12,
+        "style": "smooth, lyrical, flowing",
+        "gana": "Deva"
+      },
+      "kavita": {
+        "rasa": "Shringara (love)",
+        "theme": "nurturing, growth, sensual beauty",
+        "imagery": ["chariot", "crescent moon", "bull", "growth", "tenderness"],
+        "tone": "soft, nurturing, romantic"
+      },
+      "raga": {
+        "primary": "Khamaj",
+        "time": "late night",
+        "vadi_swara": "Ga (śuddha)",
+        "tattva": "Apas (Water)",
+        "mood": "romantic, tender"
+      },
+      "lyrics": {
+        "bija_phoneme": "AI",
+        "pada_sound": "ai, e",
+        "phoneme_class": "diphthongs",
+        "seed_words": ["ena", "eṣā", "aindra", "eṅgudī"],
+        "example_line": "Ena candrā rātriṁ vilāsayati"
+      }
+    },
+    {
+      "index": 5,
+      "name": "Mrigashira",
+      "chand": {
+        "meter": "Upajati",
+        "syllable_pattern": "G G S G G G",
+        "total_syllables": 11,
+        "style": "mixed, conversational",
+        "gana": "Deva"
+      },
+      "kavita": {
+        "rasa": "Shringara (curiosity)",
+        "theme": "seeking, searching, soft exploration",
+        "imagery": ["deer head", "forest", "seeking", "moonlight", "curiosity"],
+        "tone": "gentle, inquisitive"
+      },
+      "raga": {
+        "primary": "Bageshree",
+        "time": "late night",
+        "vadi_swara": "Ma (śuddha)",
+        "tattva": "Apas (Water)",
+        "mood": "devotional, searching"
+      },
+      "lyrics": {
+        "bija_phoneme": "Ē",
+        "pada_sound": "ē, e",
+        "phoneme_class": "diphthongs",
+        "seed_words": ["mṛga", "mṛgaśirā", "eṣaṇa", "ekākī"],
+        "example_line": "Mṛgaś cakorīṁ candramasi paśyati"
+      }
+    },
+    {
+      "index": 6,
+      "name": "Ardra",
+      "chand": {
+        "meter": "Shārdūlavikrīḍita",
+        "syllable_pattern": "G G S G G S G G G",
+        "total_syllables": 19,
+        "style": "dramatic, powerful, stormy",
+        "gana": "Rakshasa"
+      },
+      "kavita": {
+        "rasa": "Raudra (anger/storm)",
+        "theme": "transformation through destruction",
+        "imagery": ["teardrop", "jewel", "storm", "lightning", "tears"],
+        "tone": "intense, cathartic, stormy"
+      },
+      "raga": {
+        "primary": "Malkauns",
+        "time": "late night",
+        "vadi_swara": "Ma (śuddha)",
+        "tattva": "Akasha (Ether)",
+        "mood": "intense, meditative"
+      },
+      "lyrics": {
+        "bija_phoneme": "O",
+        "pada_sound": "o, au",
+        "phoneme_class": "diphthongs",
+        "seed_words": ["rudra", "raudra", "aśru", "agni"],
+        "example_line": "Rudrasya nṛtyaṁ jagad bhayāvaham"
+      }
+    },
+    {
+      "index": 7,
+      "name": "Punarvasu",
+      "chand": {
+        "meter": "Vasantatilaka",
+        "syllable_pattern": "S S G S G G",
+        "total_syllables": 12,
+        "style": "joyful, abundant, flowing",
+        "gana": "Deva"
+      },
+      "kavita": {
+        "rasa": "Hasya (joy/laughter)",
+        "theme": "return, renewal, abundance",
+        "imagery": ["quiver of arrows", "return", "rain", "growth", "light"],
+        "tone": "optimistic, joyful"
+      },
+      "raga": {
+        "primary": "Yaman",
+        "time": "evening",
+        "vadi_swara": "Ga (śuddha)",
+        "tattva": "Akasha (Ether)",
+        "mood": "joyful, expansive"
+      },
+      "lyrics": {
+        "bija_phoneme": "AU",
+        "pada_sound": "au, o",
+        "phoneme_class": "diphthongs",
+        "seed_words": ["aditi", "aum", "ojas", "auriśa"],
+        "example_line": "Aditiḥ śaraṇaṁ mama jīvane"
+      }
+    },
+    {
+      "index": 8,
+      "name": "Pushya",
+      "chand": {
+        "meter": "Upajati",
+        "syllable_pattern": "G G S G G G",
+        "total_syllables": 11,
+        "style": "nourishing, wise, stable",
+        "gana": "Deva"
+      },
+      "kavita": {
+        "rasa": "Shanta (peace)",
+        "theme": "nourishment, wisdom, protection",
+        "imagery": ["cow udder", "flower", "nourishment", "circle", "completion"],
+        "tone": "peaceful, wise, nourishing"
+      },
+      "raga": {
+        "primary": "Darbari",
+        "time": "midnight",
+        "vadi_swara": "Re (komal)",
+        "tattva": "Prithvi (Earth)",
+        "mood": "regal, serious"
+      },
+      "lyrics": {
+        "bija_phoneme": "AM",
+        "pada_sound": "am, aṁ",
+        "phoneme_class": "nasal",
+        "seed_words": ["bṛhaspati", "ambikā", "amṛta", "ambara"],
+        "example_line": "Amṛtaṁ vahati jīvanaṁ prati"
+      }
+    },
+    {
+      "index": 9,
+      "name": "Ashlesha",
+      "chand": {
+        "meter": "Mandākrāntā",
+        "syllable_pattern": "G S G S G S G S G",
+        "total_syllables": 15,
+        "style": "serpentine, coiled, mysterious",
+        "gana": "Rakshasa"
+      },
+      "kavita": {
+        "rasa": "Bhayanaka (fear)",
+        "theme": "kundalini, mystery, transformation",
+        "imagery": ["serpent", "coiled", "knot", "mystery", "wisdom"],
+        "tone": "mysterious, intense"
+      },
+      "raga": {
+        "primary": "Bhimpalasi",
+        "time": "late afternoon",
+        "vadi_swara": "Ma (śuddha)",
+        "tattva": "Apas (Water)",
+        "mood": "devotional, introspective"
+      },
+      "lyrics": {
+        "bija_phoneme": "AH",
+        "pada_sound": "aḥ, ha",
+        "phoneme_class": "aspirate",
+        "seed_words": ["nāga", "nāgendra", "āśleṣa", "ahī"],
+        "example_line": "Nāgī nṛtyati kuṇḍalinī śanaiḥ"
+      }
+    },
+    {
+      "index": 10,
+      "name": "Magha",
+      "chand": {
+        "meter": "Shikharini",
+        "syllable_pattern": "G G G S G S G G G",
+        "total_syllables": 17,
+        "style": "heavy, ancestral, broken",
+        "gana": "Rakshasa"
+      },
+      "kavita": {
+        "rasa": "Karuna (sorrow)",
+        "theme": "ancestors, legacy, pride's emptiness",
+        "imagery": ["palanquin", "throne", "empty procession", "dust", "ashes"],
+        "tone": "solemn, ancestral, powerful"
+      },
+      "raga": {
+        "primary": "Bhairav",
+        "time": "dawn",
+        "vadi_swara": "Ma (tivra)",
+        "tattva": "Akasha (Ether)",
+        "mood": "grave, contemplative"
+      },
+      "lyrics": {
+        "bija_phoneme": "KA",
+        "pada_sound": "ka, kha",
+        "phoneme_class": "guttural",
+        "seed_words": ["pitṛ", "karma", "garbha", "khaga"],
+        "example_line": "Karma garvaś ca ghaṭo bhavaḥ"
+      }
+    },
+    {
+      "index": 11,
+      "name": "Purva Phalguni",
+      "chand": {
+        "meter": "Vasantatilaka",
+        "syllable_pattern": "S S G S G G",
+        "total_syllables": 12,
+        "style": "romantic, passionate",
+        "gana": "Manushya"
+      },
+      "kavita": {
+        "rasa": "Shringara (passion)",
+        "theme": "love, passion, fertility",
+        "imagery": ["legs of bed", "hammock", "union", "passion", "pleasure"],
+        "tone": "sensual, passionate"
+      },
+      "raga": {
+        "primary": "Khamaj",
+        "time": "late night",
+        "vadi_swara": "Ga (śuddha)",
+        "tattva": "Apas (Water)",
+        "mood": "romantic"
+      },
+      "lyrics": {
+        "bija_phoneme": "KHA",
+        "pada_sound": "kha, ga",
+        "phoneme_class": "guttural",
+        "seed_words": ["bhaga", "khanitra", "khalati", "garbha"],
+        "example_line": "Bhagasya khelā madhurā himālaye"
+      }
+    },
+    {
+      "index": 12,
+      "name": "Uttara Phalguni",
+      "chand": {
+        "meter": "Upajati",
+        "syllable_pattern": "G G S G G G",
+        "total_syllables": 11,
+        "style": "leadership, victorious",
+        "gana": "Manushya"
+      },
+      "kavita": {
+        "rasa": "Veera (heroism)",
+        "theme": "victory, leadership, patronage",
+        "imagery": ["bed", "lion", "throne", "victory", "honor"],
+        "tone": "noble, victorious"
+      },
+      "raga": {
+        "primary": "Bhoop",
+        "time": "evening",
+        "vadi_swara": "Pa (śuddha)",
+        "tattva": "Prithvi (Earth)",
+        "mood": "heroic, regal"
+      },
+      "lyrics": {
+        "bija_phoneme": "GA",
+        "pada_sound": "ga, gha",
+        "phoneme_class": "guttural",
+        "seed_words": ["aryaman", "gāyatrī", "gaja", "ghoṣa"],
+        "example_line": "Gajendra mokṣaṁ kathayanti yoginaḥ"
+      }
+    },
+    {
+      "index": 13,
+      "name": "Hasta",
+      "chand": {
+        "meter": "Mandākrāntā",
+        "syllable_pattern": "G S G S G S G S G",
+        "total_syllables": 15,
+        "style": "skilled, creative, healing",
+        "gana": "Deva"
+      },
+      "kavita": {
+        "rasa": "Adbhuta (wonder)",
+        "theme": "skill, creativity, healing arts",
+        "imagery": ["hand", "fist", "mudra", "skill", "craftsmanship"],
+        "tone": "creative, skillful"
+      },
+      "raga": {
+        "primary": "Yaman",
+        "time": "evening",
+        "vadi_swara": "Ga (śuddha)",
+        "tattva": "Akasha (Ether)",
+        "mood": "creative, expansive"
+      },
+      "lyrics": {
+        "bija_phoneme": "GHA",
+        "pada_sound": "gha, ṅa",
+        "phoneme_class": "guttural nasal",
+        "seed_words": ["savitṛ", "ghaṭa", "ghoṣa", "aṅga"],
+        "example_line": "Ghaṭaṁ ghaṭayati karau kārukaḥ"
+      }
+    },
+    {
+      "index": 14,
+      "name": "Chitra",
+      "chand": {
+        "meter": "Shikharini",
+        "syllable_pattern": "G G G S G S G G G",
+        "total_syllables": 17,
+        "style": "creative, brilliant, intense",
+        "gana": "Rakshasa"
+      },
+      "kavita": {
+        "rasa": "Adbhuta (wonder)",
+        "theme": "art, architecture, brilliant creation",
+        "imagery": ["jewel", "pearl", "bright", "art", "illusion"],
+        "tone": "brilliant, creative"
+      },
+      "raga": {
+        "primary": "Brindavani Sarang",
+        "time": "afternoon",
+        "vadi_swara": "Re (śuddha)",
+        "tattva": "Agni (Fire)",
+        "mood": "creative, vibrant"
+      },
+      "lyrics": {
+        "bija_phoneme": "CA",
+        "pada_sound": "ca, cha",
+        "phoneme_class": "palatal",
+        "seed_words": ["viśva", "citra", "cakra", "chāyā"],
+        "example_line": "Citrakāro viśvaṁ likhati raṗasaḥ"
+      }
+    },
+    {
+      "index": 15,
+      "name": "Swati",
+      "chand": {
+        "meter": "Vasantatilaka",
+        "syllable_pattern": "S S G S G G",
+        "total_syllables": 12,
+        "style": "independent, free, airy",
+        "gana": "Deva"
+      },
+      "kavita": {
+        "rasa": "Veera (heroism) / Shanta (peace)",
+        "theme": "freedom, movement, independence",
+        "imagery": ["coral", "sword", "wind", "rain", "dance"],
+        "tone": "free, independent"
+      },
+      "raga": {
+        "primary": "Hamsadhwani",
+        "time": "early evening",
+        "vadi_swara": "Pa (śuddha)",
+        "tattva": "Vayu (Air)",
+        "mood": "light, uplifting"
+      },
+      "lyrics": {
+        "bija_phoneme": "CHA",
+        "pada_sound": "cha, ja",
+        "phoneme_class": "palatal",
+        "seed_words": ["vāyu", "chala", "jala", "jaṭā"],
+        "example_line": "Chalati vāyuḥ saha mṛgaḥ khe"
+      }
+    },
+    {
+      "index": 16,
+      "name": "Vishakha",
+      "chand": {
+        "meter": "Upajati",
+        "syllable_pattern": "G G S G G G",
+        "total_syllables": 11,
+        "style": "determined, powerful, dual",
+        "gana": "Rakshasa"
+      },
+      "kavita": {
+        "rasa": "Veera (determination)",
+        "theme": "determination, power, dual forces",
+        "imagery": ["triumphal arch", "potter's wheel", "target", "piercing", "victory"],
+        "tone": "powerful, determined"
+      },
+      "raga": {
+        "primary": "Shankara",
+        "time": "morning",
+        "vadi_swara": "Ma (śuddha)",
+        "tattva": "Agni (Fire)",
+        "mood": "powerful, intense"
+      },
+      "lyrics": {
+        "bija_phoneme": "JA",
+        "pada_sound": "ja, jha",
+        "phoneme_class": "palatal",
+        "seed_words": ["indra", "jaya", "jhaṭṭi", "jāgara"],
+        "example_line": "Jayati viśvaṁ indrasya śaktibhiḥ"
+      }
+    },
+    {
+      "index": 17,
+      "name": "Anuradha",
+      "chand": {
+        "meter": "Mandākrāntā",
+        "syllable_pattern": "G S G S G S G S G",
+        "total_syllables": 15,
+        "style": "friendship, loyalty, balanced",
+        "gana": "Deva"
+      },
+      "kavita": {
+        "rasa": "Shringara (friendship)",
+        "theme": "friendship, loyalty, devotion",
+        "imagery": ["lotus", "star", "friendship", "gathering", "celebration"],
+        "tone": "devoted, balanced"
+      },
+      "raga": {
+        "primary": "Malkauns",
+        "time": "late night",
+        "vadi_swara": "Ma (śuddha)",
+        "tattva": "Akasha (Ether)",
+        "mood": "devotional"
+      },
+      "lyrics": {
+        "bija_phoneme": "JHA",
+        "pada_sound": "jha, ña",
+        "phoneme_class": "palatal",
+        "seed_words": ["mitra", "jhaṣa", "jhaṅkāra", "mitraṇam"],
+        "example_line": "Jhaṅkāro mitratāṁ vahati sarvadā"
+      }
+    },
+    {
+      "index": 18,
+      "name": "Jyeshtha",
+      "chand": {
+        "meter": "Shikharini",
+        "syllable_pattern": "G G G S G S G G G",
+        "total_syllables": 17,
+        "style": "elder, powerful, protective",
+        "gana": "Rakshasa"
+      },
+      "kavita": {
+        "rasa": "Raudra (power) / Veera (elder)",
+        "theme": "eldest, protection, power, wisdom",
+        "imagery": ["umbrella", "earring", "senior", "guardian", "cobra"],
+        "tone": "powerful, protective"
+      },
+      "raga": {
+        "primary": "Darbari",
+        "time": "midnight",
+        "vadi_swara": "Re (komal)",
+        "tattva": "Prithvi (Earth)",
+        "mood": "regal, serious"
+      },
+      "lyrics": {
+        "bija_phoneme": "ÑA",
+        "pada_sound": "ña, ṭa",
+        "phoneme_class": "palatal nasal",
+        "seed_words": ["indra", "jyeṣṭha", "ña", "ṭaṅka"],
+        "example_line": "Jyeṣṭha indro devatānām īśvaraḥ"
+      }
+    },
+    {
+      "index": 19,
+      "name": "Mula",
+      "chand": {
+        "meter": "Vasantatilaka",
+        "syllable_pattern": "S S G S G G",
+        "total_syllables": 12,
+        "style": "root-breaking, intense, transformative",
+        "gana": "Rakshasa"
+      },
+      "kavita": {
+        "rasa": "Raudra (destruction) / Bhayanaka",
+        "theme": "root transformation, destruction of illusion",
+        "imagery": ["roots", "tail of lion", "uprooting", "destruction", "void"],
+        "tone": "intense, transformative"
+      },
+      "raga": {
+        "primary": "Malkauns",
+        "time": "late night",
+        "vadi_swara": "Ma (śuddha)",
+        "tattva": "Akasha (Ether)",
+        "mood": "intense, meditative"
+      },
+      "lyrics": {
+        "bija_phoneme": "ṬA",
+        "pada_sound": "ṭa, ṭha",
+        "phoneme_class": "retroflex",
+        "seed_words": ["nirṛti", "mūla", "ṭaṅka", "ṭhaṇṭhaṇa"],
+        "example_line": "Mūlaṁ chindhi nirṛteḥ bhayam"
+      }
+    },
+    {
+      "index": 20,
+      "name": "Purva Ashadha",
+      "chand": {
+        "meter": "Upajati",
+        "syllable_pattern": "G G S G G G",
+        "total_syllables": 11,
+        "style": "purifying, flowing, victorious",
+        "gana": "Manushya"
+      },
+      "kavita": {
+        "rasa": "Veera (victory) / Shanta (peace)",
+        "theme": "purification, victory, flow",
+        "imagery": ["winnowing basket", "fan", "water", "purification", "victory"],
+        "tone": "purifying, victorious"
+      },
+      "raga": {
+        "primary": "Khamaj",
+        "time": "late night",
+        "vadi_swara": "Ga (śuddha)",
+        "tattva": "Apas (Water)",
+        "mood": "romantic, purifying"
+      },
+      "lyrics": {
+        "bija_phoneme": "ṬHA",
+        "pada_sound": "ṭha, ḍa",
+        "phoneme_class": "retroflex",
+        "seed_words": ["apa", "ṭha", "āpa", "ḍa", "jala"],
+        "example_line": "Āpaḥ punanti pūrveṇa jalasya"
+      }
+    },
+    {
+      "index": 21,
+      "name": "Uttara Ashadha",
+      "chand": {
+        "meter": "Mandākrāntā",
+        "syllable_pattern": "G S G S G S G S G",
+        "total_syllables": 15,
+        "style": "universal, victorious, expansive",
+        "gana": "Manushya"
+      },
+      "kavita": {
+        "rasa": "Veera (universal victory)",
+        "theme": "universal victory, completion, integration",
+        "imagery": ["elephant tusk", "world", "victory", "universe", "integration"],
+        "tone": "expansive, victorious"
+      },
+      "raga": {
+        "primary": "Bhoop",
+        "time": "evening",
+        "vadi_swara": "Pa (śuddha)",
+        "tattva": "Prithvi (Earth)",
+        "mood": "heroic, universal"
+      },
+      "lyrics": {
+        "bija_phoneme": "ḌA",
+        "pada_sound": "ḍa, ḍha",
+        "phoneme_class": "retroflex",
+        "seed_words": ["viśve", "da", "ḍa", "dhā", "aśvina"],
+        "example_line": "Viśvedevāḥ sarve śaraṇaṁ mama"
+      }
+    },
+    {
+      "index": 22,
+      "name": "Shravana",
+      "chand": {
+        "meter": "Shikharini",
+        "syllable_pattern": "G G G S G S G G G",
+        "total_syllables": 17,
+        "style": "listening, learning, powerful",
+        "gana": "Deva"
+      },
+      "kavita": {
+        "rasa": "Shanta (peace) / Adbhuta (wonder)",
+        "theme": "listening, learning, wisdom",
+        "imagery": ["ear", "trident", "hearing", "sound", "om"],
+        "tone": "wise, receptive"
+      },
+      "raga": {
+        "primary": "Yaman",
+        "time": "evening",
+        "vadi_swara": "Ga (śuddha)",
+        "tattva": "Akasha (Ether)",
+        "mood": "peaceful, expansive"
+      },
+      "lyrics": {
+        "bija_phoneme": "ḌHA",
+        "pada_sound": "ḍha, ṇa",
+        "phoneme_class": "retroflex",
+        "seed_words": ["viṣṇu", "śravaṇa", "ḍha", "ṇa", "śrotra"],
+        "example_line": "Śrotraṁ viṣṇoḥ śravaṇaṁ paramam"
+      }
+    },
+    {
+      "index": 23,
+      "name": "Dhanishtha",
+      "chand": {
+        "meter": "Vasantatilaka",
+        "syllable_pattern": "S S G S G G",
+        "total_syllables": 12,
+        "style": "wealthy, abundant, musical",
+        "gana": "Rakshasa"
+      },
+      "kavita": {
+        "rasa": "Veera (wealth/abundance)",
+        "theme": "wealth, abundance, music",
+        "imagery": ["drum", "flute", "music", "wealth", "treasure"],
+        "tone": "rich, abundant"
+      },
+      "raga": {
+        "primary": "Brindavani Sarang",
+        "time": "afternoon",
+        "vadi_swara": "Re (śuddha)",
+        "tattva": "Agni (Fire)",
+        "mood": "joyful, abundant"
+      },
+      "lyrics": {
+        "bija_phoneme": "ṆA",
+        "pada_sound": "ṇa, ta",
+        "phoneme_class": "retroflex nasal",
+        "seed_words": ["vasu", "dhanu", "ṇa", "tāla"],
+        "example_line": "Dhanuṣā vasavo nṛtyanti jane"
+      }
+    },
+    {
+      "index": 24,
+      "name": "Shatabhisha",
+      "chand": {
+        "meter": "Upajati",
+        "syllable_pattern": "G G S G G G",
+        "total_syllables": 11,
+        "style": "mysterious, healing, circular",
+        "gana": "Rakshasa"
+      },
+      "kavita": {
+        "rasa": "Adbhuta (mystery) / Bhayanaka",
+        "theme": "healing, mystery, circle",
+        "imagery": ["circle", "flower", "healing", "stars", "thousand"],
+        "tone": "mysterious, healing"
+      },
+      "raga": {
+        "primary": "Bhairav",
+        "time": "dawn",
+        "vadi_swara": "Ma (tivra)",
+        "tattva": "Akasha (Ether)",
+        "mood": "grave, mysterious"
+      },
+      "lyrics": {
+        "bija_phoneme": "TA",
+        "pada_sound": "ta, tha",
+        "phoneme_class": "dental",
+        "seed_words": ["varuṇa", "tāra", "ta", "jala"],
+        "example_line": "Tārāṇāṁ varuṇo jālaṁ vahati"
+      }
+    },
+    {
+      "index": 25,
+      "name": "Purva Bhadrapada",
+      "chand": {
+        "meter": "Mandākrāntā",
+        "syllable_pattern": "G S G S G S G S G",
+        "total_syllables": 15,
+        "style": "intense, spiritual, fiery",
+        "gana": "Manushya"
+      },
+      "kavita": {
+        "rasa": "Raudra (fire) / Adbhuta",
+        "theme": "spiritual fire, awakening, burning",
+        "imagery": ["sword", "fire", "legs of cot", "sacrifice", "burning"],
+        "tone": "intense, spiritual"
+      },
+      "raga": {
+        "primary": "Desh",
+        "time": "late night",
+        "vadi_swara": "Re (śuddha)",
+        "tattva": "Agni (Fire)",
+        "mood": "devotional, intense"
+      },
+      "lyrics": {
+        "bija_phoneme": "THA",
+        "pada_sound": "tha, da",
+        "phoneme_class": "dental",
+        "seed_words": ["aja", "thā", "ajā", "dāha"],
+        "example_line": "Aja ekapādaḥ agniḥ jvalati"
+      }
+    },
+    {
+      "index": 26,
+      "name": "Uttara Bhadrapada",
+      "chand": {
+        "meter": "Shikharini",
+        "syllable_pattern": "G G G S G S G G G",
+        "total_syllables": 17,
+        "style": "deep, stable, profound",
+        "gana": "Manushya"
+      },
+      "kavita": {
+        "rasa": "Shanta (deep peace)",
+        "theme": "depth, stability, cosmic order",
+        "imagery": ["twin feet", "serpent", "depth", "ocean", "stability"],
+        "tone": "deep, profound, stable"
+      },
+      "raga": {
+        "primary": "Darbari",
+        "time": "midnight",
+        "vadi_swara": "Re (komal)",
+        "tattva": "Prithvi (Earth)",
+        "mood": "deep, regal"
+      },
+      "lyrics": {
+        "bija_phoneme": "DA",
+        "pada_sound": "da, dha",
+        "phoneme_class": "dental",
+        "seed_words": ["ahir", "dāruṇa", "da", "adhi"],
+        "example_line": "Ahir budhnyaḥ gāmbhīryaṁ vahati"
+      }
+    },
+    {
+      "index": 27,
+      "name": "Revati",
+      "chand": {
+        "meter": "Vasantatilaka",
+        "syllable_pattern": "S S G S G G",
+        "total_syllables": 12,
+        "style": "nourishing, protecting, gentle",
+        "gana": "Deva"
+      },
+      "kavita": {
+        "rasa": "Shanta (peace) / Karuna (compassion)",
+        "theme": "protection, guidance, nourishment",
+        "imagery": ["drum", "cow", "food", "journey", "shelter"],
+        "tone": "gentle, protective, nourishing"
+      },
+      "raga": {
+        "primary": "Bhimpalasi",
+        "time": "late afternoon",
+        "vadi_swara": "Ma (śuddha)",
+        "tattva": "Apas (Water)",
+        "mood": "devotional, gentle"
+      },
+      "lyrics": {
+        "bija_phoneme": "DHA",
+        "pada_sound": "dha, na",
+        "phoneme_class": "dental",
+        "seed_words": ["pūṣan", "dha", "nāvika", "dhanya"],
+        "example_line": "Dhanyo'smi pūṣṇā pathi nīyamānaḥ"
+      }
+    }
+  ]
+}

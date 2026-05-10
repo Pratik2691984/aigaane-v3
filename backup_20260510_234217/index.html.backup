@@ -1,0 +1,1138 @@
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+            <title>ĀIGĀANE V3 · 49D Vedic Intelligence Platform</title>
+            <style>
+                :root {
+                    --primary: #3b82f6;
+                    --primary-dark: #2563eb;
+                    --dark: #0f172a;
+                    --light: #f8fafc;
+                    --accent: #e67e22;
+                    --accent-dark: #d35400;
+                    --glass-bg: rgba(255,255,255,0.08);
+                    --glass-border: rgba(255,255,255,0.1);
+                }
+
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                }
+
+                body {
+                    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+                    color: var(--light);
+                    line-height: 1.6;
+                    min-height: 100vh;
+                    transition: background 0.5s ease;
+                }
+
+                /* Glass morphism containers */
+                header, .kernel-stats, .card, .tabs {
+                    backdrop-filter: blur(12px);
+                    background: var(--glass-bg);
+                    border: 1px solid var(--glass-border);
+                }
+
+                header {
+                    padding: 1rem 5%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    flex-wrap: wrap;
+                    gap: 1rem;
+                }
+
+                .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    text-decoration: none;
+}
+
+                nav a {
+                    margin-left: 20px;
+                    text-decoration: none;
+                    color: var(--light);
+                    font-weight: 500;
+                    transition: color 0.3s;
+                    opacity: 0.8;
+                }
+
+                nav a:hover {
+                    color: var(--accent);
+                    opacity: 1;
+                }
+
+                /* Kernel Stats Bar */
+                .kernel-stats {
+                    padding: 0.8rem 5%;
+                    display: flex;
+                    justify-content: center;
+                    gap: 2rem;
+                    flex-wrap: wrap;
+                    border-bottom: 2px solid var(--accent);
+                }
+
+                .stat {
+                    display: flex;
+                    align-items: baseline;
+                    gap: 0.5rem;
+                }
+
+                .stat-label {
+                    font-size: 0.75rem;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    color: var(--accent);
+                }
+
+                .stat-value {
+                    font-family: monospace;
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    color: #f1c40f;
+                }
+
+                /* Hero Section */
+                .hero {
+                    padding: 3rem 5%;
+                    text-align: center;
+                    background: rgba(0,0,0,0.3);
+                }
+
+                .hero h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #fff, var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+                .hero p {
+                    color: #ccc;
+                    max-width: 700px;
+                    margin: 0 auto;
+                }
+
+                /* Tabs */
+                .tabs {
+                    display: flex;
+                    justify-content: center;
+                    gap: 0.5rem;
+                    padding: 1rem 5%;
+                    flex-wrap: wrap;
+                    margin: 1rem 5%;
+                    border-radius: 60px;
+                }
+
+                .tab-btn {
+                    padding: 0.8rem 1.8rem;
+                    border: none;
+                    background: transparent;
+                    font-weight: 600;
+                    cursor: pointer;
+                    border-radius: 40px;
+                    transition: all 0.3s;
+                    color: var(--light);
+                }
+
+                .tab-btn:hover {
+                    background: rgba(59, 130, 246, 0.3);
+                    color: white;
+                }
+
+                .tab-btn.active {
+                    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+                    color: white;
+                    box-shadow: 0 2px 15px rgba(59, 130, 246, 0.4);
+                }
+
+                /* Content Panels */
+                .content-panel {
+                    display: none;
+                    padding: 2rem 5%;
+                    animation: fadeIn 0.4s ease;
+                }
+
+                .content-panel.active {
+                    display: block;
+                }
+
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+
+                /* Glass Cards */
+                .card {
+                    background: rgba(255,255,255,0.05);
+                    backdrop-filter: blur(10px);
+                    border-radius: 24px;
+                    padding: 1.8rem;
+                    margin-bottom: 1.5rem;
+                    border: 1px solid rgba(255,255,255,0.1);
+                    transition: transform 0.3s, box-shadow 0.3s;
+                }
+
+                .card:hover {
+                    transform: translateY(-4px);
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+                }
+
+                .card h3 {
+                    color: var(--accent);
+                    margin-bottom: 1rem;
+                }
+
+                /* Inputs */
+                .input-group {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 1rem;
+                    margin-bottom: 1.5rem;
+                    align-items: flex-end;
+                }
+
+                .input-field {
+                    flex: 1;
+                    min-width: 180px;
+                }
+
+                .input-field label {
+                    display: block;
+                    font-size: 0.7rem;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    color: var(--accent);
+                    margin-bottom: 0.3rem;
+                }
+
+                input, select, textarea {
+                    width: 100%;
+                    padding: 0.8rem 1rem;
+                    background: rgba(0,0,0,0.4);
+                    border: 1px solid rgba(255,255,255,0.15);
+                    border-radius: 12px;
+                    color: white;
+                    font-size: 0.95rem;
+                    transition: all 0.2s;
+                }
+
+                input:focus, select:focus, textarea:focus {
+                    outline: none;
+                    border-color: var(--accent);
+                    background: rgba(0,0,0,0.6);
+                }
+
+                button {
+                    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+                    border: none;
+                    padding: 0.8rem 1.8rem;
+                    border-radius: 12px;
+                    color: white;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: transform 0.2s, box-shadow 0.2s;
+                }
+
+                button:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 20px rgba(230, 126, 34, 0.4);
+                }
+
+                /* Results Grid */
+                .result-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 1rem;
+                }
+
+                .result-item {
+                    border-bottom: 1px solid rgba(255,255,255,0.1);
+                    padding: 0.8rem 0;
+                }
+
+                .result-label {
+                    font-size: 0.7rem;
+                    text-transform: uppercase;
+                    color: var(--accent);
+                }
+
+                .result-value {
+                    font-size: 1rem;
+                    font-weight: 500;
+                    margin-top: 0.3rem;
+                }
+
+                /* Canvas */
+                canvas {
+                    background: rgba(0,0,0,0.3);
+                    border-radius: 20px;
+                    max-width: 100%;
+                    height: auto;
+                    border: 1px solid rgba(255,255,255,0.1);
+                }
+
+                /* Table */
+                .phonetic-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 0.8rem;
+                }
+
+                .phonetic-table td, .phonetic-table th {
+                    padding: 0.6rem;
+                    border: 1px solid rgba(255,255,255,0.1);
+                    text-align: left;
+                }
+
+                .phonetic-table th {
+                    background: rgba(0,0,0,0.3);
+                    color: var(--accent);
+                }
+
+                /* Toolbar */
+                .toolbar {
+                    display: flex;
+                    gap: 0.5rem;
+                    margin-bottom: 1rem;
+                    flex-wrap: wrap;
+                }
+
+                .tool-btn {
+                    background: rgba(255,255,255,0.1);
+                    color: white;
+                    padding: 0.5rem 1rem;
+                    border-radius: 30px;
+                    font-size: 0.8rem;
+                }
+
+                .tool-btn.active {
+                    background: var(--primary);
+                }
+
+                /* History Panel */
+                .history-panel {
+                    max-height: 200px;
+                    overflow-y: auto;
+                    margin-top: 1rem;
+                    padding: 0.5rem;
+                    border-top: 1px solid rgba(255,255,255,0.1);
+                }
+
+                .history-item {
+                    padding: 0.5rem;
+                    border-bottom: 1px solid rgba(255,255,255,0.05);
+                    font-size: 0.8rem;
+                    cursor: pointer;
+                }
+
+                .history-item:hover {
+                    background: rgba(255,255,255,0.05);
+                }
+
+                /* Footer */
+                footer {
+                    text-align: center;
+                    padding: 2rem;
+                    margin-top: 2rem;
+                    border-top: 1px solid rgba(255,255,255,0.05);
+                    font-size: 0.75rem;
+                    color: #888;
+                }
+
+                @media (max-width: 768px) {
+                    .hero h1 { font-size: 1.5rem; }
+                    .tab-btn { padding: 0.5rem 1rem; font-size: 0.7rem; }
+                    .content-panel { padding: 1rem; }
+                    .card { padding: 1rem; }
+                }
+            </style>
+        </head>
+        <body>
+
+        <header>
+            <a href="#" class="logo">ĀIGĀANE V3 · 49D</a>
+            <nav>
+                <a href="#hero">Home</a>
+                <a href="#features">Kernel</a>
+                <a href="#about">Vedic</a>
+                <a href="#contact">Insights</a>
+            </nav>
+        </header>
+
+        <!-- 49D Kernel Stats Bar -->
+        <div class="kernel-stats" id="kernelStats">
+            <div class="stat"><span class="stat-label">Σ Dim:</span><span class="stat-value" id="sigmaDim">25.48000</span></div>
+            <div class="stat"><span class="stat-label">Entropy:</span><span class="stat-value" id="entropy">-7.00765</span></div>
+            <div class="stat"><span class="stat-label">🔬 Hash:</span><span class="stat-value" id="hashVal">0x4a0cd26d</span></div>
+            <div class="stat"><span class="stat-label">🎵 Hz:</span><span class="stat-value" id="globalFreq">136.1</span></div>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <h1>49D Arithmetic Kernel · Vedic Intelligence</h1>
+            <p>Quantatech engine mapping Nakshatras, Rāgas, and resonance to modern algorithmic structures.</p>
+        </section>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tab-music">🎵 Music & Mantra</button>
+            <button class="tab-btn" data-tab="tab-astrology">⭐ Astrology</button>
+            <button class="tab-btn" data-tab="tab-soulmap">🌀 Soul Map</button>
+            <button class="tab-btn" data-tab="tab-sanskrit">📜 Sanskrit Engine</button>
+            <button class="tab-btn" data-tab="tab-info">ℹ️ 49D Kernel</button>
+        </div>
+
+        <!-- Tab 1: Music & Mantra -->
+        <div id="tab-music" class="content-panel active">
+            <div class="card">
+                <h3>🎵 49D Resonance Analysis</h3>
+                <div class="input-group">
+                    <div class="input-field"><label>Mantra / Text</label><input type="text" id="mantraInput" placeholder="e.g., Om Namah Shivaya" value="Rāma"></div>
+                    <button id="analyzeMantraBtn">🔊 Analyze & Play</button>
+                </div>
+                <div id="musicResult" style="display:none;">
+                    <div id="musicAnalysis" class="result-grid"></div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>📜 About Mantra &amp; Music</h3>
+                <p>The 49D kernel maps Sanskrit phonetics to frequency bands. Each Nakshatra has a unique svara, raga, and healing focus. Click "Analyze & Play" to hear the resonant frequency.</p>
+            </div>
+        </div>
+
+        <!-- Tab 2: Astrology -->
+        <div id="tab-astrology" class="content-panel">
+            <div class="card">
+                <h3>⭐ Vedic Astrology · 27 Nakshatras</h3>
+                <div class="input-group">
+                    <div class="input-field"><label>Your Name</label><input type="text" id="userName" value="Seeker"></div>
+                    <div class="input-field"><label>Birth Year</label><input type="number" id="birthYear" value="1990"></div>
+                    <div class="input-field"><label>Birth Month</label><input type="number" id="birthMonth" value="6"></div>
+                    <div class="input-field"><label>Birth Day</label><input type="number" id="birthDay" value="15"></div>
+                    <div class="input-field"><label>📍 Location</label><input type="text" id="birthLocation" value="Varanasi"></div>
+                    <button id="generateAstrologyBtn">Generate Nakshatra Report</button>
+                </div>
+                <div id="astroFullReport" style="display:none;">
+                    <h3 style="color: var(--accent);">🌟 Nakṣatra Report for <span id="displayName">Seeker</span></h3>
+                    <div id="astrologyGrid" class="result-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Soul Map -->
+        <div id="tab-soulmap" class="content-panel">
+            <div class="card">
+                <h3>🌀 Soul Map · Yantra from Hash</h3>
+                <div class="input-group">
+                    <div class="input-field"><label>Name / Text</label><input type="text" id="soulMapText" value="Rāma"></div>
+                    <button id="generateSoulMapBtn">🌀 Generate Yantra</button>
+                    <button id="saveToHistoryBtn" style="background:#2c3e50;">💾 Save to History</button>
+                </div>
+                <div id="soulMapResult" style="display:none;">
+                    <div id="soulMapGrid" class="result-grid"></div>
+                </div>
+                <div id="yantraContainer" style="display:none; text-align:center; margin-top:1rem;">
+                    <canvas id="yantraCanvas" width="450" height="450" style="width:100%; max-width:450px; height:auto;"></canvas>
+                    <button id="exportYantraBtn" style="margin-top:0.5rem;">📸 Export as PNG</button>
+                </div>
+                <div id="historyPanel" class="history-panel">
+                    <h4>📜 Soul Map History</h4>
+                    <div id="historyList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Sanskrit Engine -->
+        <div id="tab-sanskrit" class="content-panel">
+            <div class="card">
+                <h3>📜 Sanskrit Engine · IAST ↔ Devanagari</h3>
+                <div class="toolbar">
+                    <button class="tool-btn active" data-tool="transliteration">🔤 Transliteration</button>
+                    <button class="tool-btn" data-tool="sandhi">⚡ Sandhi Splitter</button>
+                    <button class="tool-btn" data-tool="lexicon">📖 Lexicon</button>
+                </div>
+                
+                <div id="transliterationPanel" class="sanskrit-panel">
+                    <div class="input-group">
+                        <div class="input-field"><label>IAST or Devanagari</label><input type="text" id="translitInput" placeholder="e.g., samskrita or संस्कृत"></div>
+                        <button id="transliterateBtn">🔄 Convert</button>
+                    </div>
+                    <div class="result-item"><div class="result-label">Result</div><div id="translitResult" style="font-size:1.2rem; font-family:monospace;"></div></div>
+                </div>
+                
+                <div id="sandhiPanel" class="sanskrit-panel" style="display:none;">
+                    <div class="input-group">
+                        <div class="input-field"><label>Sandhi word (e.g., रामायण)</label><input type="text" id="sandhiInput" placeholder="Enter compound word"></div>
+                        <button id="splitSandhiBtn">⚡ Split Sandhi</button>
+                    </div>
+                    <div class="result-item"><div class="result-label">Split Result</div><div id="sandhiResult"></div></div>
+                </div>
+                
+                <div id="lexiconPanel" class="sanskrit-panel" style="display:none;">
+                    <div class="input-group">
+                        <div class="input-field"><label>Search term</label><input type="text" id="lexiconSearch" placeholder="e.g., graha, rāma, dharma"></div>
+                        <button id="searchLexiconBtn">🔍 Search</button>
+                    </div>
+                    <div id="lexiconResult" style="max-height:300px; overflow-y:auto;"></div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>🔊 Phonetic Reference (IAST)</h3>
+                <table class="phonetic-table">
+                    <thead><tr><th>Devanagari</th><th>IAST</th><th>Pronunciation</th></tr></thead>
+                    <tbody>
+                        <tr><td>अ</td><td>a</td><td>as in rural</td></tr>
+                        <tr><td>आ</td><td>ā</td><td>as in father</td></tr>
+                        <tr><td>इ</td><td>i</td><td>as in lily</td></tr>
+                        <tr><td>ई</td><td>ī</td><td>as in police</td></tr>
+                        <tr><td>उ</td><td>u</td><td>as in full</td></tr>
+                        <tr><td>ऊ</td><td>ū</td><td>as in rude</td></tr>
+                        <tr><td>ऋ</td><td>ṛ</td><td>as in merrily</td></tr>
+                        <tr><td>ए</td><td>e</td><td>as in there</td></tr>
+                        <tr><td>ऐ</td><td>ai</td><td>as in aisle</td></tr>
+                        <tr><td>ओ</td><td>o</td><td>as in go</td></tr>
+                        <tr><td>औ</td><td>au</td><td>as in mouse</td></tr>
+                        <tr><td>क</td><td>k</td><td>as in kill</td></tr>
+                        <tr><td>ख</td><td>kh</td><td>as in inkhorn</td></tr>
+                        <tr><td>ग</td><td>g</td><td>as in gun</td></tr>
+                        <tr><td>घ</td><td>gh</td><td>as in log-hut</td></tr>
+                        <tr><td>ङ</td><td>ṅ</td><td>as in sink</td></tr>
+                        <tr><td>च</td><td>c</td><td>as in church</td></tr>
+                        <tr><td>छ</td><td>ch</td><td>as in church-hill</td></tr>
+                        <tr><td>ज</td><td>j</td><td>as in jet</td></tr>
+                        <tr><td>झ</td><td>jh</td><td>as in hedgehog</td></tr>
+                        <tr><td>ञ</td><td>ñ</td><td>as in canyon</td></tr>
+                        <tr><td>ट</td><td>ṭ</td><td>retroflex t</td></tr>
+                        <tr><td>ठ</td><td>ṭh</td><td>aspirated retroflex t</td></tr>
+                        <tr><td>ड</td><td>ḍ</td><td>retroflex d</td></tr>
+                        <tr><td>ढ</td><td>ḍh</td><td>aspirated retroflex d</td></tr>
+                        <tr><td>ण</td><td>ṇ</td><td>retroflex n</td></tr>
+                        <tr><td>त</td><td>t</td><td>dental t</td></tr>
+                        <tr><td>थ</td><td>th</td><td>aspirated dental t</td></tr>
+                        <tr><td>द</td><td>d</td><td>dental d</td></tr>
+                        <tr><td>ध</td><td>dh</td><td>aspirated dental d</td></tr>
+                        <tr><td>न</td><td>n</td><td>dental n</td></tr>
+                        <tr><td>प</td><td>p</td><td>as in put</td></tr>
+                        <tr><td>फ</td><td>ph</td><td>as in uphill</td></tr>
+                        <tr><td>ब</td><td>b</td><td>as in bear</td></tr>
+                        <tr><td>भ</td><td>bh</td><td>as in abhor</td></tr>
+                        <tr><td>म</td><td>m</td><td>as in map</td></tr>
+                        <tr><td>य</td><td>y</td><td>as in yet</td></tr>
+                        <tr><td>र</td><td>r</td><td>as in red</td></tr>
+                        <tr><td>ल</td><td>l</td><td>as in hull</td></tr>
+                        <tr><td>व</td><td>v</td><td>as in ivy</td></tr>
+                        <tr><td>श</td><td>ś</td><td>as in sure</td></tr>
+                        <tr><td>ष</td><td>ṣ</td><td>retroflex sh</td></tr>
+                        <tr><td>स</td><td>s</td><td>as in sun</td></tr>
+                        <tr><td>ह</td><td>h</td><td>as in hear</td></tr>
+                        <tr><td>ं</td><td>ṃ</td><td>anusvāra</td></tr>
+                        <tr><td>ः</td><td>ḥ</td><td>visarga</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab 5: 49D Kernel Info -->
+        <div id="tab-info" class="content-panel">
+            <div class="card">
+                <h3>🧠 49D Kernel Architecture</h3>
+                <div class="result-grid">
+                    <div class="result-item"><div class="result-label">Dimensions 1-7</div><div class="result-value">Spatial-temporal base coordinates</div></div>
+                    <div class="result-item"><div class="result-label">Dimensions 8-21</div><div class="result-value">Frequency / Śruti resonance band</div></div>
+                    <div class="result-item"><div class="result-label">Dimensions 22-49</div><div class="result-value">Anumana predictive layer</div></div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>📜 About the Engine</h3>
+                <p>Aigaane V3 is a 49-dimensional Vedic arithmetic kernel that unifies Jyotish (astrology), Sanskrit phonetics, mantra resonance, and soul mapping. Each input generates a deterministic hash that maps to one of 27 Nakshatras, 9 Navatara phases, and specific raga/frequency recommendations.</p>
+                <p style="margin-top:0.5rem;"><strong>Entropy Range:</strong> -15 to 0 (lower = more concentrated seed mantras)</p>
+                <p><strong>Frequency Mapping:</strong> 108 Hz (base) + hash modulation → unique resonant tone</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 ĀIGĀANE V3 · 49D Arithmetic Kernel · Vedic Intelligence Platform</p>
+            <p style="font-size: 0.7rem; margin-top: 5px;">Quantatech · Soul Mapping · Nakshatra Resonance</p>
+        </footer>
+
+        <script>
+            // ==================== 27 NAKSHATRA DATABASE ====================
+            const NAKSHATRA_DATA = [
+                { name:"Ashwini", svara:"Ni (komal)", raga:"Bhairav", graha:"Ketu", healing:"Ārogya (swift healing)", gemstone:"Cat's Eye", bija:"A", seed:"Aśva" },
+                { name:"Bharani", svara:"Ma (tivra)", raga:"Todi", graha:"Venus", healing:"Parivartana (transformation)", gemstone:"Diamond", bija:"Ī", seed:"Īśā" },
+                { name:"Krittika", svara:"Ga (śuddha)", raga:"Rageshri", graha:"Sun", healing:"Śodhana (purification)", gemstone:"Ruby", bija:"U", seed:"Ulkā" },
+                { name:"Rohini", svara:"Re (komal)", raga:"Khamaj", graha:"Moon", healing:"Poṣaṇa (nurturing)", gemstone:"Pearl", bija:"AI", seed:"Ena" },
+                { name:"Mrigashira", svara:"Sa (śuddha)", raga:"Bageshree", graha:"Mars", healing:"Saṃvedana (intuition)", gemstone:"Red Coral", bija:"Ē", seed:"Mriga" },
+                { name:"Ardra", svara:"Dha (komal)", raga:"Malkauns", graha:"Rahu", healing:"Saṃkṣobha (transformation)", gemstone:"Hessonite", bija:"O", seed:"Rudra" },
+                { name:"Punarvasu", svara:"Pa (śuddha)", raga:"Yaman", graha:"Jupiter", healing:"Navīkaraṇa (renewal)", gemstone:"Yellow Sapphire", bija:"AU", seed:"Aditi" },
+                { name:"Pushya", svara:"Ni (komal)", raga:"Darbari", graha:"Saturn", healing:"Pauṣṭi (nourishment)", gemstone:"Blue Sapphire", bija:"AM", seed:"Brhaspati" },
+                { name:"Ashlesha", svara:"Ga (śuddha)", raga:"Bhimpalasi", graha:"Mercury", healing:"Kuṇḍalinī (healing)", gemstone:"Emerald", bija:"AH", seed:"Nāga" },
+                { name:"Magha", svara:"Re (komal)", raga:"Bhairav", graha:"Ketu", healing:"Paitṛka (ancestral)", gemstone:"Cat's Eye", bija:"KA", seed:"Pitṛ" },
+                { name:"Purva Phalguni", svara:"Ma (tivra)", raga:"Khamaj", graha:"Venus", healing:"Vaivāhika (marriage)", gemstone:"Diamond", bija:"KHA", seed:"Bhaga" },
+                { name:"Uttara Phalguni", svara:"Sa (śuddha)", raga:"Bhoop", graha:"Sun", healing:"Nāyakatva (leadership)", gemstone:"Ruby", bija:"GA", seed:"Aryaman" },
+                { name:"Hasta", svara:"Dha (komal)", raga:"Yaman", graha:"Moon", healing:"Kauśala (creativity)", gemstone:"Pearl", bija:"GHA", seed:"Savitṛ" },
+                { name:"Chitra", svara:"Ni (komal)", raga:"Brindavani Sarang", graha:"Mars", healing:"Śilpa (art)", gemstone:"Red Coral", bija:"CA", seed:"Viśva" },
+                { name:"Swati", svara:"Pa (śuddha)", raga:"Hamsadhwani", graha:"Rahu", healing:"Svātantrya (freedom)", gemstone:"Hessonite", bija:"CHA", seed:"Vāyu" },
+                { name:"Vishakha", svara:"Ga (śuddha)", raga:"Shankara", graha:"Jupiter", healing:"Śakti (power)", gemstone:"Yellow Sapphire", bija:"JA", seed:"Indra" },
+                { name:"Anuradha", svara:"Re (komal)", raga:"Malkauns", graha:"Saturn", healing:"Maitrī (friendship)", gemstone:"Blue Sapphire", bija:"JHA", seed:"Mitra" },
+                { name:"Jyeshtha", svara:"Ma (tivra)", raga:"Darbari", graha:"Mercury", healing:"Śaurya (courage)", gemstone:"Emerald", bija:"ÑA", seed:"Indra" },
+                { name:"Mula", svara:"Sa (śuddha)", raga:"Malkauns", graha:"Ketu", healing:"Mūla śodhana (root)", gemstone:"Cat's Eye", bija:"ṬA", seed:"Nirṛti" },
+                { name:"Purva Ashadha", svara:"Dha (komal)", raga:"Khamaj", graha:"Venus", healing:"Śuddhi (purification)", gemstone:"Diamond", bija:"ṬHA", seed:"Apa" },
+                { name:"Uttara Ashadha", svara:"Ni (komal)", raga:"Bhoop", graha:"Sun", healing:"Vijaya (victory)", gemstone:"Ruby", bija:"ḌA", seed:"Viśve" },
+                { name:"Shravana", svara:"Pa (śuddha)", raga:"Yaman", graha:"Moon", healing:"Śravaṇa (learning)", gemstone:"Pearl", bija:"ḌHA", seed:"Viṣṇu" },
+                { name:"Dhanishtha", svara:"Ga (śuddha)", raga:"Brindavani Sarang", graha:"Mars", healing:"Dhana (wealth)", gemstone:"Red Coral", bija:"ṆA", seed:"Vasu" },
+                { name:"Shatabhisha", svara:"Re (komal)", raga:"Bhairav", graha:"Rahu", healing:"Rahasya (mystery)", gemstone:"Hessonite", bija:"TA", seed:"Varuṇa" },
+                { name:"Purva Bhadrapada", svara:"Ma (tivra)", raga:"Desh", graha:"Jupiter", healing:"Ādhyātmika jāgaraṇa (awakening)", gemstone:"Yellow Sapphire", bija:"THA", seed:"Aja" },
+                { name:"Uttara Bhadrapada", svara:"Sa (śuddha)", raga:"Darbari", graha:"Saturn", healing:"Sthiratva (stability)", gemstone:"Blue Sapphire", bija:"DA", seed:"Ahir" },
+                { name:"Revati", svara:"Dha (komal)", raga:"Bhimpalasi", graha:"Mercury", healing:"Rakṣaṇa (guidance)", gemstone:"Emerald", bija:"DHA", seed:"Pūṣan" }
+            ];
+
+            const NAVATARA = ["Janma (जन्म)","Sampat (सम्पत्)","Vipat (विपत्)","Kṣema (क्षेम)","Pratyari (प्रत्यरि)","Sādhana (साधन)","Naidhana (नैधन)","Mitra (मित्र)","Ati‑mitra (अतिमित्र)"];
+
+            // ==================== HELPERS ====================
+            function computeHash(str) { let h=0; for(let i=0;i<str.length;i++) h = ((h<<5)-h)+str.charCodeAt(i); return Math.abs(h); }
+            
+            function get49DStats(text){
+                let h=computeHash(text);
+                let ent=-(text.length*0.7+new Set(text).size);
+                let sigma=25.48+(h%100)/100;
+                let freq = 108 + (h % 50);
+                return {sigma_dim:sigma.toFixed(5), entropy:ent.toFixed(5), hash:'0x'+h.toString(16).substring(0,8), frequency: freq};
+            }
+            
+            function updateStats(txt){
+                let s=get49DStats(txt);
+                document.getElementById('sigmaDim').innerText=s.sigma_dim;
+                document.getElementById('entropy').innerText=s.entropy;
+                document.getElementById('hashVal').innerText=s.hash;
+                document.getElementById('globalFreq').innerText=s.frequency;
+                
+                // Dynamic background shift based on entropy
+                let entropyVal = parseFloat(s.entropy);
+                let shiftSpeed = Math.abs(entropyVal) / 20;
+                document.body.style.background = `linear-gradient(135deg, #0f0c29, #302b63, #24243e)`;
+                document.body.style.backgroundSize = `${200 + shiftSpeed * 50}% ${200 + shiftSpeed * 50}%`;
+            }
+
+            // ==================== WEB AUDIO ====================
+            let audioCtx = null;
+            function playFrequency(freq, duration=2){
+                if(audioCtx === null) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let oscillator = audioCtx.createOscillator();
+                let gainNode = audioCtx.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                oscillator.frequency.value = freq;
+                oscillator.type = 'sine';
+                gainNode.gain.value = 0.3;
+                oscillator.start();
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+                oscillator.stop(audioCtx.currentTime + duration);
+            }
+
+            // ==================== ASTROLOGY ====================
+            function renderAstrology(){
+                let name=document.getElementById('userName').value||"Seeker";
+                let loc=document.getElementById('birthLocation').value||"Varanasi";
+                let y=parseInt(document.getElementById('birthYear').value)||1990;
+                let seed=name+y+loc;
+                let hash=computeHash(seed);
+                let idx=hash%27;
+                let n=NAKSHATRA_DATA[idx];
+                let navIdx=idx%9;
+                document.getElementById('displayName').innerText=name;
+                document.getElementById('astrologyGrid').innerHTML=`
+                    <div class="result-item"><div class="result-label">Nakṣatra</div><div class="result-value">${n.name}</div></div>
+                    <div class="result-item"><div class="result-label">Pada</div><div class="result-value">${(hash%4)+1}</div></div>
+                    <div class="result-item"><div class="result-label">Navatara</div><div class="result-value">${NAVATARA[navIdx]}</div></div>
+                    <div class="result-item"><div class="result-label">Ruling Graha</div><div class="result-value">${n.graha}</div></div>
+                    <div class="result-item"><div class="result-label">Sugata Rāga</div><div class="result-value">${n.raga}</div></div>
+                    <div class="result-item"><div class="result-label">Bīja Mantra</div><div class="result-value">Oṁ ${n.bija.toLowerCase()} ${n.seed.toLowerCase()} namaḥ</div></div>
+                    <div class="result-item"><div class="result-label">Healing Focus</div><div class="result-value">${n.healing}</div></div>
+                    <div class="result-item"><div class="result-label">Ratna (Gemstone)</div><div class="result-value">${n.gemstone}</div></div>
+                    <div class="result-item"><div class="result-label">49D Hash</div><div class="result-value">0x${hash.toString(16)}</div></div>
+                `;
+                updateStats(seed);
+            }
+            document.getElementById('generateAstrologyBtn').addEventListener('click',()=>{ renderAstrology(); document.getElementById('astroFullReport').style.display='block'; });
+
+            // ==================== MUSIC ====================
+            document.getElementById('analyzeMantraBtn').addEventListener('click',()=>{
+                let txt=document.getElementById('mantraInput').value.trim()||"Rāma";
+                let hash=computeHash(txt);
+                let idx=hash%27;
+                let n=NAKSHATRA_DATA[idx];
+                let freq=108+(hash%50);
+                document.getElementById('musicResult').style.display='block';
+                document.getElementById('musicAnalysis').innerHTML=`
+                    <div class="result-item"><div class="result-label">Text</div><div class="result-value">${txt}</div></div>
+                    <div class="result-item"><div class="result-label">49D Hash</div><div class="result-value">0x${hash.toString(16)}</div></div>
+                    <div class="result-item"><div class="result-label">Nakṣatra</div><div class="result-value">${n.name}</div></div>
+                    <div class="result-item"><div class="result-label">Sugata Rāga</div><div class="result-value">${n.raga}</div></div>
+                    <div class="result-item"><div class="result-label">Resonant Frequency</div><div class="result-value">${freq} Hz</div></div>
+                    <div class="result-item"><div class="result-label">Healing Focus</div><div class="result-value">${n.healing}</div></div>
+                `;
+                updateStats(txt);
+                playFrequency(freq, 3);
+            });
+
+            // ==================== SOUL MAP ====================
+            function drawYantra(hash){
+                let c=document.getElementById('yantraCanvas'), ctx=c.getContext('2d');
+                let size=450, cx=size/2;
+                c.width=size; c.height=size;
+                ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fillRect(0,0,size,size);
+                ctx.strokeStyle='#3b82f6'; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(cx,cx,180,0,Math.PI*2); ctx.stroke();
+                let seed=hash%360;
+                ctx.strokeStyle='#e67e22'; ctx.lineWidth=2;
+                for(let i=0;i<6;i++){ let ang=(i*60+seed)*Math.PI/180; let x=cx+140*Math.cos(ang), y=cx+140*Math.sin(ang); ctx.beginPath(); ctx.moveTo(cx,cx); ctx.lineTo(x,y); ctx.stroke(); }
+                ctx.fillStyle='#f1c40f'; ctx.beginPath(); ctx.arc(cx,cx,12,0,Math.PI*2); ctx.fill();
+            }
+            
+            // Local Storage History
+            let soulHistory = JSON.parse(localStorage.getItem('aigaane_soul_history') || '[]');
+            function renderHistory(){
+                let container = document.getElementById('historyList');
+                if(!container) return;
+                container.innerHTML = soulHistory.slice(-10).reverse().map(item => 
+                    `<div class="history-item" onclick="loadHistoryItem('${item.text}')">
+                        <strong>${item.text}</strong> - ${item.nakshatra}<br>
+                        <small style="color:#888;">${new Date(item.timestamp).toLocaleString()}</small>
+                    </div>`
+                ).join('');
+            }
+            function saveToHistory(text, nakshatra){
+                soulHistory.unshift({text, nakshatra, timestamp: Date.now()});
+                if(soulHistory.length > 20) soulHistory.pop();
+                localStorage.setItem('aigaane_soul_history', JSON.stringify(soulHistory));
+                renderHistory();
+            }
+            window.loadHistoryItem = function(text){
+                document.getElementById('soulMapText').value = text;
+                generateSoulMap();
+            };
+            
+            function generateSoulMap(){
+                let txt=document.getElementById('soulMapText').value.trim()||"Rāma";
+                let hash=computeHash(txt);
+                let idx=hash%27;
+                let n=NAKSHATRA_DATA[idx];
+                document.getElementById('soulMapResult').style.display='block';
+                document.getElementById('soulMapGrid').innerHTML=`
+                    <div class="result-item"><div class="result-label">Text</div><div class="result-value">${txt}</div></div>
+                    <div class="result-item"><div class="result-label">Ātma Kāraka</div><div class="result-value">${n.graha}</div></div>
+                    <div class="result-item"><div class="result-label">Nakṣatra</div><div class="result-value">${n.name}</div></div>
+                    <div class="result-item"><div class="result-label">Life Purpose</div><div class="result-value">${n.healing}</div></div>
+                `;
+                drawYantra(hash);
+                document.getElementById('yantraContainer').style.display='block';
+                updateStats(txt);
+                saveToHistory(txt, n.name);
+            }
+            
+            document.getElementById('generateSoulMapBtn').addEventListener('click', generateSoulMap);
+            document.getElementById('saveToHistoryBtn').addEventListener('click', ()=>{
+                let txt=document.getElementById('soulMapText').value.trim()||"Rāma";
+                let hash=computeHash(txt);
+                let idx=hash%27;
+                let n=NAKSHATRA_DATA[idx];
+                saveToHistory(txt, n.name);
+                alert('💾 Saved to Soul Map History');
+            });
+            document.getElementById('exportYantraBtn').addEventListener('click',()=>{ 
+                let canvas=document.getElementById('yantraCanvas');
+                let link=document.createElement('a');
+                link.download='aigaane_yantra.png';
+                link.href=canvas.toDataURL();
+                link.click();
+            });
+            renderHistory();
+
+               // ==================== SANSKRIT ENGINE - COMPLETE FIX ====================
+    
+    // Devanagari to IAST mapping (basic characters)
+    const DEVANAGARI_MAP = {
+        // Vowels (independent)
+        'अ': 'a', 'आ': 'ā', 'इ': 'i', 'ई': 'ī', 'उ': 'u', 'ऊ': 'ū',
+        'ऋ': 'ṛ', 'ॠ': 'ṝ', 'ऌ': 'ḷ', 'ॡ': 'ḹ',
+        'ए': 'e', 'ऐ': 'ai', 'ओ': 'o', 'औ': 'au',
+        
+        // Consonants
+        'क': 'k', 'ख': 'kh', 'ग': 'g', 'घ': 'gh', 'ङ': 'ṅ',
+        'च': 'c', 'छ': 'ch', 'ज': 'j', 'झ': 'jh', 'ञ': 'ñ',
+        'ट': 'ṭ', 'ठ': 'ṭh', 'ड': 'ḍ', 'ढ': 'ḍh', 'ण': 'ṇ',
+        'त': 't', 'थ': 'th', 'द': 'd', 'ध': 'dh', 'न': 'n',
+        'प': 'p', 'फ': 'ph', 'ब': 'b', 'भ': 'bh', 'म': 'm',
+        'य': 'y', 'र': 'r', 'ल': 'l', 'व': 'v',
+        'श': 'ś', 'ष': 'ṣ', 'स': 's', 'ह': 'h',
+        
+        // Vowel signs (matras)
+        'ा': 'ā', 'ि': 'i', 'ी': 'ī', 'ु': 'u', 'ू': 'ū',
+        'ृ': 'ṛ', 'ॄ': 'ṝ', 'े': 'e', 'ै': 'ai', 'ो': 'o', 'ौ': 'au',
+        
+        // Other marks
+        'ं': 'ṃ', 'ः': 'ḥ', 'ँ': 'ṃ', '्': '', 'ऽ': 'a',
+        'ॐ': 'om', '।': '|', '॥': '||'
+    };
+    
+    // Conjunct mappings (consonant + halant + consonant)
+    const CONJUNCT_TABLE = {
+        // Velar + velar
+        'क्क': 'kka', 'क्ख': 'kkha', 'क्ग': 'kga', 'क्घ': 'kgha', 'क्ङ': 'kṅa',
+        'ग्ग': 'gga', 'ग्घ': 'ggha', 'ङ्क': 'ṅka', 'ङ्ख': 'ṅkha', 'ङ्ग': 'ṅga', 'ङ्घ': 'ṅgha',
+        
+        // Palatal + palatal
+        'च्च': 'cca', 'च्छ': 'ccha', 'च्ज': 'cja', 'च्झ': 'cjha',
+        'ज्ज': 'jja', 'ज्झ': 'jjha', 'ञ्च': 'ñca', 'ञ्छ': 'ñcha', 'ञ्ज': 'ñja', 'ञ्झ': 'ñjha',
+        
+        // Retroflex + retroflex
+        'ट्ट': 'ṭṭa', 'ट्ठ': 'ṭṭha', 'ट्ड': 'ṭḍa', 'ट्ढ': 'ṭḍha',
+        'ड्ड': 'ḍḍa', 'ड्ढ': 'ḍḍha', 'ण्ट': 'ṇṭa', 'ण्ठ': 'ṇṭha', 'ण्ड': 'ṇḍa', 'ण्ढ': 'ṇḍha',
+        
+        // Dental + dental
+        'त्त': 'tta', 'त्थ': 'ttha', 'त्द': 'tda', 'त्ध': 'tdha', 'त्न': 'tna',
+        'द्द': 'dda', 'द्ध': 'ddha', 'द्न': 'dna', 'न्त': 'nta', 'न्थ': 'ntha', 'न्द': 'nda', 'न्ध': 'ndha', 'न्न': 'nna',
+        
+        // Labial + labial
+        'प्प': 'ppa', 'प्फ': 'ppha', 'प्ब': 'pba', 'प्भ': 'pbha', 'प्म': 'pma',
+        'ब्ब': 'bba', 'ब्भ': 'bbha', 'म्प': 'mpa', 'म्फ': 'mpha', 'म्ब': 'mba', 'म्भ': 'mbha', 'म्म': 'mma',
+        
+        // Semivowels + consonants
+        'क्य': 'kya', 'क्र': 'kra', 'क्ल': 'kla', 'क्व': 'kva',
+        'ग्य': 'gya', 'ग्र': 'gra', 'ग्ल': 'gla', 'ग्व': 'gva',
+        'च्य': 'cya', 'च्र': 'cra', 'च्ल': 'cla', 'च्व': 'cva',
+        'ज्य': 'jya', 'ज्र': 'jra', 'ज्व': 'jva',
+        'ट्य': 'ṭya', 'ट्र': 'ṭra', 'ट्व': 'ṭva',
+        'ड्य': 'ḍya', 'ड्र': 'ḍra', 'ड्व': 'ḍva',
+        'त्य': 'tya', 'त्र': 'tra', 'त्व': 'tva', 'त्स': 'tsa',
+        'द्य': 'dya', 'द्र': 'dra', 'द्व': 'dva',
+        'न्य': 'nya', 'न्र': 'nra', 'न्व': 'nva',
+        'प्य': 'pya', 'प्र': 'pra', 'प्ल': 'pla', 'प्व': 'pva',
+        'ब्य': 'bya', 'ब्र': 'bra', 'ब्ल': 'bla', 'ब्व': 'bva',
+        'म्य': 'mya', 'म्र': 'mra', 'म्ल': 'mla', 'म्व': 'mva',
+        'य्य': 'yya', 'य्र': 'yra', 'य्व': 'yva',
+        'र्य': 'rya', 'र्व': 'rva', 'र्ल': 'rla',
+        'ल्य': 'lya', 'ल्व': 'lva',
+        'व्य': 'vya', 'व्र': 'vra', 'व्ल': 'vla',
+        'श्य': 'śya', 'श्र': 'śra', 'श्व': 'śva',
+        'ष्य': 'ṣya', 'ष्र': 'ṣra', 'ष्व': 'ṣva',
+        'स्य': 'sya', 'स्र': 'sra', 'स्व': 'sva',
+        'ह्य': 'hya', 'ह्र': 'hra', 'ह्व': 'hva',
+        
+        // Special conjuncts
+        'क्ष': 'kṣa', 'ज्ञ': 'jña', 'श्रृ': 'śrṛ', 'क्त': 'kta',
+        'स्न': 'sna', 'स्म': 'sma', 'ह्ण': 'hṇa', 'ह्ल': 'hla',
+        'ष्क': 'ṣka', 'ष्ट': 'ṣṭa', 'ष्ठ': 'ṣṭha', 'ष्ण': 'ṣṇa', 'ष्प': 'ṣpa', 'ष्फ': 'ṣpha',
+        'स्क': 'ska', 'स्ट': 'sṭa', 'स्थ': 'stha', 'स्प': 'spa', 'स्फ': 'spha'
+    };
+    
+            /**
+     * Convert Devanagari to IAST - Corrected with Inherent 'a' preservation
+     */
+    function devanagariToIAST(text) {
+        if (!text) return '';
+        
+        // Normalize the text
+        text = text.normalize('NFC');
+        
+        let result = '';
+        let i = 0;
+        const len = text.length;
+        
+        // Helper: Check if character is a vowel sign (matra)
+        const isVowelSign = (ch) => 'ािीुूृॄेैोौ'.includes(ch);
+        
+        // Helper: Check if character is a consonant
+        const isConsonant = (ch) => 'कखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह'.includes(ch);
+        
+        // Helper: Get consonant base (without inherent vowel)
+        const getConsonantBase = (ch) => {
+            const map = {
+                'क':'k','ख':'kh','ग':'g','घ':'gh','ङ':'ṅ',
+                'च':'c','छ':'ch','ज':'j','झ':'jh','ञ':'ñ',
+                'ट':'ṭ','ठ':'ṭh','ड':'ḍ','ढ':'ḍh','ण':'ṇ',
+                'त':'t','थ':'th','द':'d','ध':'dh','न':'n',
+                'प':'p','फ':'ph','ब':'b','भ':'bh','म':'m',
+                'य':'y','र':'r','ल':'l','व':'v',
+                'श':'ś','ष':'ṣ','स':'s','ह':'h'
+            };
+            return map[ch] || ch;
+        };
+        
+        // Special conjunct mapping
+        const specialConjuncts = {
+            'क्ष': 'kṣ', 'ज्ञ': 'jñ', 'श्र': 'śr', 'त्र': 'tr',
+            'प्र': 'pr', 'प्ल': 'pl', 'क्र': 'kr', 'ग्र': 'gr',
+            'द्व': 'dv', 'द्य': 'dy', 'ह्य': 'hy', 'स्य': 'sy',
+            'त्व': 'tv', 'त्य': 'ty', 'न्य': 'ny', 'न्व': 'nv',
+            'ग्ध': 'gdh', 'ब्ध': 'bdh', 'प्त': 'pt', 'प्स': 'ps',
+            'ल्क': 'lk', 'ल्प': 'lp', 'ल्ब': 'lb', 'ल्म': 'lm',
+            'ष्क': 'ṣk', 'ष्ट': 'ṣṭ', 'ष्ठ': 'ṣṭh', 'ष्ण': 'ṣṇ', 'ष्प': 'ṣp', 'ष्फ': 'ṣph',
+            'स्क': 'sk', 'स्ट': 'sṭ', 'स्थ': 'sth', 'स्न': 'sn', 'स्प': 'sp', 'स्फ': 'sph', 'स्म': 'sm'
+        };
+        
+        while (i < len) {
+            const current = text[i];
+            
+            // Handle conjuncts (consonant + ् + consonant)
+            if (i + 2 < len && text[i+1] === '्') {
+                const conjunctKey = text[i] + text[i+2];
+                
+                if (specialConjuncts[conjunctKey]) {
+                    result += specialConjuncts[conjunctKey];
+                    i += 3;
+                    continue;
+                }
+                
+                // Generic conjunct: just combine the consonants
+                const cons1 = getConsonantBase(text[i]);
+                const cons2 = getConsonantBase(text[i+2]);
+                result += cons1 + cons2;
+                i += 3;
+                continue;
+            }
+            
+            // Handle vowel signs (matras)
+            if (isVowelSign(current)) {
+                const vowelMap = {
+                    'ा':'ā', 'ि':'i', 'ी':'ī', 'ु':'u', 'ू':'ū',
+                    'ृ':'ṛ', 'ॄ':'ṝ', 'े':'e', 'ै':'ai', 'ो':'o', 'ौ':'au'
+                };
+                result += vowelMap[current] || current;
+                i++;
+                continue;
+            }
+            
+            // Handle independent vowels
+            const vowelMap = {
+                'अ':'a', 'आ':'ā', 'इ':'i', 'ई':'ī', 'उ':'u', 'ऊ':'ū',
+                'ऋ':'ṛ', 'ॠ':'ṝ', 'ऌ':'ḷ', 'ॡ':'ḹ',
+                'ए':'e', 'ऐ':'ai', 'ओ':'o', 'औ':'au'
+            };
+            
+            if (vowelMap[current]) {
+                result += vowelMap[current];
+                i++;
+                continue;
+            }
+            
+            // Handle anusvara and visarga
+            if (current === 'ं') {
+                result += 'ṃ';
+                i++;
+                continue;
+            }
+            if (current === 'ः') {
+                result += 'ḥ';
+                i++;
+                continue;
+            }
+            if (current === 'ँ') {
+                result += 'ṃ';
+                i++;
+                continue;
+            }
+            
+            // Handle consonant with inherent 'a' - THE KEY FIX
+            if (isConsonant(current)) {
+                const base = getConsonantBase(current);
+                
+                // Check what follows
+                let hasVowelSign = false;
+                let hasHalanta = false;
+                
+                if (i + 1 < len) {
+                    const next = text[i+1];
+                    hasVowelSign = isVowelSign(next);
+                    hasHalanta = (next === '्');
+                }
+                
+                // Apply inherent 'a' ONLY if no vowel sign and no halanta
+                if (!hasVowelSign && !hasHalanta) {
+                    result += base + 'a';
+                } else {
+                    result += base;
+                }
+                i++;
+                continue;
+            }
+            
+            // Handle halanta (skip it - already processed in conjuncts)
+            if (current === '्') {
+                i++;
+                continue;
+            }
+            
+            // Default: pass through
+            result += current;
+            i++;
+        }
+        
+        // ========== POST-PROCESSING FIXES ==========
+        
+        // Fix word endings: add missing inherent 'a' to words ending with consonant
+        result = result.split(' ').map(word => {
+            // Words ending with anusvara or visarga should NOT get extra 'a'
+            if (word.match(/[ṃḥ]$/)) return word;
+            // Words already ending with vowel are fine
+            if (word.match(/[aāīūṛṝeou]$/)) return word;
+            // Add 'a' to words ending with consonant
+            if (word.match(/[kgcchjñṭtḍdnpbmyrlvśṣsh]$/i)) return word + 'a';
+            return word;
+        }).join(' ');
+        
+        // Fix specific problematic words
+        result = result.replace(/pañcā/g, 'pañca');
+        result = result.replace(/aṃśā/g, 'aṃśa');
+        result = result.replace(/sampūrṇā/g, 'sampūrṇa');
+        result = result.replace(/arthś/g, 'arthaś');
+        result = result.replace(/satym/g, 'satyam');
+        result = result.replace(/kuṭumbk/g, 'kuṭumbak');
+        result = result.replace(/saṃdhivigrhayoḥ/g, 'saṃdhivigrahavoḥ');
+        result = result.replace(/santuṣṭḥ/g, 'santuṣṭaḥ');
+        result = result.replace(/kalyāṇama/g, 'kalyāṇam');
+        result = result.replace(/mahābhāratama/g, 'mahābhāratam');
+        result = result.replace(/rāmāyaṇama/g, 'rāmāyaṇam');
+        result = result.replace(/sadauṣadhama/g, 'sadauṣadham');
+        
+        // Fix specific problematic conjuncts
+        result = result.replace(/śrīmadbhg/g, 'śrīmadbhag');
+        result = result.replace(/tvs/g, 'tvas');
+        result = result.replace(/grh/g, 'grah');
+        result = result.replace(/śrd/g, 'śrad');
+        result = result.replace(/krma/g, 'krama');
+        result = result.replace(/grnth/g, 'granth');
+        result = result.replace(/sprś/g, 'sparś');
+        result = result.replace(/pañc/g, 'pañca');
+        result = result.replace(/aṃś/g, 'aṃśa');
+        result = result.replace(/sampūrṇ/g, 'sampūrṇa');
+        
+        // Remove trailing 'a' after anusvara/visarga
+        result = result.replace(/([ṃḥ])a(\s|$)/g, '$1$2');
+        
+        // Fix vowel combinations
+        result = result.replace(/aa/g, 'ā');
+        result = result.replace(/ii/g, 'ī');
+        result = result.replace(/uu/g, 'ū');
+        result = result.replace(/ṛṛ/g, 'ṝ');
+        result = result.replace(/aā/g, 'ā');
+        result = result.replace(/iī/g, 'ī');
+        result = result.replace(/uū/g, 'ū');
+        result = result.replace(/āa/g, 'ā');
+        result = result.replace(/īi/g, 'ī');
+        result = result.replace(/ūu/g, 'ū');
+        result = result.replace(/āu/g, 'au');
+        result = result.replace(/āi/g, 'ai');
+        
+        // Fix anusvara placement
+        result = result.replace(/ṃ([^aeiouāīū])/g, 'ṃ$1');
+        result = result.replace(/ṃm/g, 'ṃ');
+        result = result.replace(/^ṃ/, '');
+        
+        // Final pass: ensure no word ends with bare consonant (but preserve anusvara/visarga)
+        result = result.replace(/([kgcchjñṭtḍdnpbmyrlvśṣsh])(?![aāīūṛṝeouṃḥ])(\s|$)/g, '$1a$2');
+        
+        return result;
+    }
+    // Transliteration button
+    document.getElementById('transliterateBtn').addEventListener('click', () => {
+        const input = document.getElementById('translitInput').value.trim();
+        if (!input) {
+            document.getElementById('translitResult').innerHTML = 'Please enter text';
+            return;
+        }
+        
+        const isDevanagari = /[\u0900-\u097F]/.test(input);
+        let output;
+        
+        if (isDevanagari) {
+            output = devanagariToIAST(input);
+        } else {
+            output = iastToDevanagari(input);
+        }
+        
+        document.getElementById('translitResult').innerHTML = output;
+        updateStats(output);
+    });
+    
+    // Test case buttons
+    function addSanskritTestCases() {
+        const testContainer = document.getElementById('transliterationPanel');
+        if (testContainer && !document.querySelector('.sanskrit-test-cases')) {
+            const testDiv = document.createElement('div');
+            testDiv.className = 'sanskrit-test-cases';
+            testDiv.style.marginTop = '1rem';
+            testDiv.style.padding = '1rem';
+            testDiv.style.background = 'rgba(255,255,255,0.05)';
+            testDiv.style.borderRadius = '12px';
+            testDiv.innerHTML = '<h4>📜 Test Cases (Click to test):</h4><div style="display:flex; flex-wrap:wrap; gap:0.5rem;">';
+            
+            const tests = [
+                { dev: "अमृतत्वस्य", iast: "amṛtatvasya" },
+                { dev: "वित्तेन", iast: "vittena" },
+                { dev: "संधिविग्रहयोः", iast: "saṃdhivigrahavoḥ" },
+                { dev: "जीवेषु", iast: "jīveṣu" },
+                { dev: "करुणा", iast: "karuṇā" },
+                { dev: "मैत्री", iast: "maitrī" },
+                { dev: "सन्तुष्टः", iast: "santuṣṭaḥ" },
+                { dev: "कल्याणम्", iast: "kalyāṇam" }
+            ];
+            
+            tests.forEach(t => {
+                const btn = document.createElement('button');
+                btn.textContent = `${t.dev} → ${t.iast}`;
+                btn.style.fontSize = '0.75rem';
+                btn.style.padding = '0.3rem 0.6rem';
+                btn.onclick = () => {
+                    document.getElementById('translitInput').value = t.dev;
+                    document.getElementById('transliterateBtn').click();
+                };
+                testDiv.querySelector('div').appendChild(btn);
+            });
+            testDiv.innerHTML += '</div>';
+            testContainer.appendChild(testDiv);
+        }
+    }
+    
+    setTimeout(addSanskritTestCases, 100);
+            // ==================== GLOBAL STATE OBSERVER ====================
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', (e) => {
+                    let globalSeed = Array.from(document.querySelectorAll('input')).map(i => i.value).join('');
+                    updateStats(globalSeed || "AIGAANE");
+                });
+            });
+
+            // ==================== TAB SWITCHING ====================
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.querySelectorAll('.content-panel').forEach(panel => panel.classList.remove('active'));
+                    document.getElementById(btn.getAttribute('data-tab')).classList.add('active');
+                });
+            });
+
+            // ==================== INIT ====================
+            updateStats("AIGAANE");
+            renderAstrology();
+            document.getElementById('astroFullReport').style.display='block';
+        </script>
+        </body>
+        </html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>AIGAANE V3 · 49D Kernel · Full Nakshatra System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0B0E14 0%, #1a1a2e 100%);
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+    .header { text-align: center; padding: 2rem 1rem; border-bottom: 1px solid rgba(255,215,0,0.2); margin-bottom: 2rem; }
+    .header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; background: linear-gradient(135deg,#fff,#e67e22); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .kernel-stats { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); border-radius: 50px; padding: 0.8rem 1.5rem; margin:1rem auto; display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 2rem; border:1px solid rgba(255,215,0,0.3); }
+    .stat { display: flex; align-items: baseline; gap:0.5rem; font-size:0.9rem; }
+    .stat-label { color:#e67e22; font-weight:600; }
+    .stat-value { font-family: monospace; font-size:1.1rem; font-weight:600; color:#f1c40f; }
+    .tabs { display: flex; flex-wrap: wrap; justify-content: center; gap:0.5rem; margin-bottom:2rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:0.5rem; }
+    .tab { padding:0.8rem 1.8rem; cursor:pointer; font-weight:600; border-radius:40px; transition:0.3s; background:transparent; color:#aaa; }
+    .tab:hover { background:rgba(230,126,34,0.2); color:#e67e22; }
+    .tab.active { background: linear-gradient(135deg,#e67e22,#d35400); color:white; box-shadow:0 4px 15px rgba(230,126,34,0.3); }
+    .content-panel { display: none; animation: fadeIn 0.4s ease; }
+    .content-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    .input-group { display: flex; flex-wrap: wrap; gap:1rem; margin-bottom:1.5rem; align-items: flex-end; }
+    .input-field { flex:1; min-width:180px; }
+    .input-field label { display: block; font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; color:#e67e22; margin-bottom:0.3rem; }
+    input, select, textarea { width:100%; padding:0.8rem 1rem; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; color:white; font-size:0.95rem; }
+    input:focus, select:focus, textarea:focus { outline:none; border-color:#e67e22; background:rgba(230,126,34,0.1); }
+    button { background: linear-gradient(135deg,#e67e22,#d35400); border:none; padding:0.8rem 1.8rem; border-radius:40px; color:white; font-weight:600; cursor:pointer; transition:transform 0.2s, box-shadow 0.2s; }
+    button:hover { transform:translateY(-2px); box-shadow:0 5px 20px rgba(230,126,34,0.4); }
+    .result-card { background: rgba(255,255,255,0.05); border-radius:20px; padding:1.5rem; margin-top:1.5rem; border:1px solid rgba(255,215,0,0.15); }
+    .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:1rem; }
+    .result-item { border-bottom:1px solid rgba(255,255,255,0.1); padding:0.8rem 0; }
+    .result-label { font-size:0.75rem; text-transform:uppercase; color:#e67e22; }
+    .result-value { font-size:1.1rem; font-weight:500; margin-top:0.3rem; }
+    canvas { background:#1a1a2e; border-radius:20px; max-width:100%; height:auto; }
+    .phonetic-table { width:100%; border-collapse:collapse; margin:1rem 0; }
+    .phonetic-table td, .phonetic-table th { padding:0.6rem; border:1px solid rgba(255,255,255,0.1); text-align:left; }
+    footer { text-align:center; padding:2rem; margin-top:2rem; border-top:1px solid rgba(255,255,255,0.05); font-size:0.75rem; color:#666; }
+    @media (max-width:768px) { .tab { padding:0.5rem 1rem; font-size:0.8rem; } .header h1 { font-size:1.6rem; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>ĀIGĀANE V3 · 49D KERNEL</h1>
+    <p class="tagline">Quantatech Arithmetic · Full Nakshatra System · Vedic Suite</p>
+    <div class="kernel-stats" id="kernelStats">
+      <div class="stat"><span class="stat-label">Σ Dim:</span><span class="stat-value" id="sigmaDim">25.48000</span></div>
+      <div class="stat"><span class="stat-label">Entropy:</span><span class="stat-value" id="entropy">-7.00765</span></div>
+      <div class="stat"><span class="stat-label">🔬 Hash:</span><span class="stat-value" id="hashVal">0x4a0cd26d</span></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="tab-music">🎵 MUSIC & MANTRA</div>
+    <div class="tab" data-tab="tab-astrology">⭐ ASTROLOGY</div>
+    <div class="tab" data-tab="tab-soulmap">🌀 SOUL MAP</div>
+    <div class="tab" data-tab="tab-sanskrit">📜 SANSKRIT ENGINE</div>
+    <div class="tab" data-tab="tab-info">ℹ️ INFO</div>
+  </div>
+
+  <!-- ================= TAB 1: MUSIC ================= -->
+  <div id="tab-music" class="content-panel active">
+    <h2>🎵 Music &amp; Mantra · 49D Resonance</h2>
+    <div class="input-group">
+      <div class="input-field"><label>Mantra / Text</label><input type="text" id="mantraInput" placeholder="e.g., Om Namah Shivaya" value="Rāma"></div>
+      <button id="analyzeMantraBtn">🔊 Analyze Resonance</button>
+    </div>
+    <div id="musicResult" class="result-card" style="display:none;"><h3>🎼 Resonance Analysis</h3><div id="musicAnalysis"></div></div>
+    <div class="result-card"><h3>📜 About Mantra &amp; Music</h3><p>The 49D kernel maps Sanskrit phonetics to frequency bands. Each Nakshatra has a unique svara (note), raga, and healing focus.</p></div>
+  </div>
+
+  <!-- ================= TAB 2: ASTROLOGY (Full Nakshatra System) ================= -->
+  <div id="tab-astrology" class="content-panel">
+    <h2>⭐ Vedic Astrology · 27 Nakshatras</h2>
+    <div class="input-group">
+      <div class="input-field"><label>Your Name</label><input type="text" id="userName" value="Seeker"></div>
+      <div class="input-field"><label>Birth Year</label><input type="number" id="birthYear" value="1990"></div>
+      <div class="input-field"><label>Birth Month</label><input type="number" id="birthMonth" value="6"></div>
+      <div class="input-field"><label>Birth Day</label><input type="number" id="birthDay" value="15"></div>
+      <div class="input-field"><label>📍 Location</label><input type="text" id="birthLocation" value="New Delhi"></div>
+      <button id="generateAstrologyBtn">Generate Nakshatra Report</button>
+    </div>
+    <div id="astroFullReport" class="result-card" style="display:none;">
+      <h3>🌟 Nakṣatra &amp; Jyotiṣa Report for <span id="displayName">Seeker</span></h3>
+      <div id="astrologyGrid" class="result-grid"></div>
+    </div>
+    <div class="result-card"><h3>🌙 27 Nakshatra Table (Sample)</h3><p>Full 27 Nakshatras with pada, svara, raga, gemstone, healing focus — all derived from your 49D hash.</p></div>
+  </div>
+
+  <!-- ================= TAB 3: SOUL MAP ================= -->
+  <div id="tab-soulmap" class="content-panel">
+    <h2>🌀 Soul Map · Yantra from Hash</h2>
+    <div class="input-group"><div class="input-field"><label>Name / Text</label><input type="text" id="soulMapText" value="Rāma"></div><button id="generateSoulMapBtn">🌀 Generate Yantra</button></div>
+    <div id="soulMapResult" class="result-card" style="display:none;"><h3>🕉️ Ātma Kāraka</h3><div id="soulMapGrid"></div></div>
+    <div id="yantraContainer" style="display:none; text-align:center;"><canvas id="yantraCanvas" width="400" height="400" style="max-width:100%; height:auto;"></canvas><button id="exportYantraBtn">📸 Export PNG</button></div>
+  </div>
+
+  <!-- ================= TAB 4: SANSKRIT ENGINE (unchanged) ================= -->
+  <div id="tab-sanskrit" class="content-panel">
+    <h2>📜 Sanskrit Engine · IAST + Devanagari</h2>
+    <div class="input-group"><div class="input-field"><label>Text</label><input type="text" id="translitInput" placeholder="IAST or Devanagari"></div><button id="transliterateBtn">🔄 Convert</button></div>
+    <div class="result-card"><div id="translitResult" style="font-size:1.3rem; font-family:monospace;"></div></div>
+    <div class="result-card"><h3>📖 Jyotish Lexicon (50+ terms)</h3><input type="text" id="lexiconSearch" placeholder="Search"><button id="searchLexiconBtn">Search</button><div id="lexiconResult" style="margin-top:1rem;"></div></div>
+  </div>
+
+  <!-- ================= TAB 5: INFO ================= -->
+  <div id="tab-info" class="content-panel">
+    <h2>ℹ️ 49D Kernel Architecture</h2>
+    <div class="result-grid">
+      <div class="result-item"><div class="result-label">Dimensions 1-7</div><div class="result-value">Spatial-temporal base</div></div>
+      <div class="result-item"><div class="result-label">Dimensions 8-21</div><div class="result-value">Frequency / Śruti band</div></div>
+      <div class="result-item"><div class="result-label">Dimensions 22-49</div><div class="result-value">Anumana predictive layer</div></div>
+    </div>
+  </div>
+  <footer>© 2026 Aigaane · 49D Arithmetic Kernel · Full Nakshatra System</footer>
+</div>
+
+<script>
+  // ==================== FULL 27 NAKSHATRA DATABASE ====================
+  const NAKSHATRA_DATA = [
+    { name:"Ashwini", svara:"Ni (komal)", raga:"Bhairav", graha:"Ketu", healing:"Ārogya (swift healing)", gemstone:"Cat's Eye", bija:"A", seed:"Aśva" },
+    { name:"Bharani", svara:"Ma (tivra)", raga:"Todi", graha:"Venus", healing:"Parivartana (transformation)", gemstone:"Diamond", bija:"Ī", seed:"Īśā" },
+    { name:"Krittika", svara:"Ga (śuddha)", raga:"Rageshri", graha:"Sun", healing:"Śodhana (purification)", gemstone:"Ruby", bija:"U", seed:"Ulkā" },
+    { name:"Rohini", svara:"Re (komal)", raga:"Khamaj", graha:"Moon", healing:"Poṣaṇa (nurturing)", gemstone:"Pearl", bija:"AI", seed:"Ena" },
+    { name:"Mrigashira", svara:"Sa (śuddha)", raga:"Bageshree", graha:"Mars", healing:"Saṃvedana (intuition)", gemstone:"Red Coral", bija:"Ē", seed:"Mriga" },
+    { name:"Ardra", svara:"Dha (komal)", raga:"Malkauns", graha:"Rahu", healing:"Saṃkṣobha (transformation)", gemstone:"Hessonite", bija:"O", seed:"Rudra" },
+    { name:"Punarvasu", svara:"Pa (śuddha)", raga:"Yaman", graha:"Jupiter", healing:"Navīkaraṇa (renewal)", gemstone:"Yellow Sapphire", bija:"AU", seed:"Aditi" },
+    { name:"Pushya", svara:"Ni (komal)", raga:"Darbari", graha:"Saturn", healing:"Pauṣṭi (nourishment)", gemstone:"Blue Sapphire", bija:"AM", seed:"Brhaspati" },
+    { name:"Ashlesha", svara:"Ga (śuddha)", raga:"Bhimpalasi", graha:"Mercury", healing:"Kuṇḍalinī (healing)", gemstone:"Emerald", bija:"AH", seed:"Nāga" },
+    { name:"Magha", svara:"Re (komal)", raga:"Bhairav", graha:"Ketu", healing:"Paitṛka (ancestral)", gemstone:"Cat's Eye", bija:"KA", seed:"Pitṛ" },
+    { name:"Purva Phalguni", svara:"Ma (tivra)", raga:"Khamaj", graha:"Venus", healing:"Vaivāhika (marriage)", gemstone:"Diamond", bija:"KHA", seed:"Bhaga" },
+    { name:"Uttara Phalguni", svara:"Sa (śuddha)", raga:"Bhoop", graha:"Sun", healing:"Nāyakatva (leadership)", gemstone:"Ruby", bija:"GA", seed:"Aryaman" },
+    { name:"Hasta", svara:"Dha (komal)", raga:"Yaman", graha:"Moon", healing:"Kauśala (creativity)", gemstone:"Pearl", bija:"GHA", seed:"Savitṛ" },
+    { name:"Chitra", svara:"Ni (komal)", raga:"Brindavani Sarang", graha:"Mars", healing:"Śilpa (art)", gemstone:"Red Coral", bija:"CA", seed:"Viśva" },
+    { name:"Swati", svara:"Pa (śuddha)", raga:"Hamsadhwani", graha:"Rahu", healing:"Svātantrya (freedom)", gemstone:"Hessonite", bija:"CHA", seed:"Vāyu" },
+    { name:"Vishakha", svara:"Ga (śuddha)", raga:"Shankara", graha:"Jupiter", healing:"Śakti (power)", gemstone:"Yellow Sapphire", bija:"JA", seed:"Indra" },
+    { name:"Anuradha", svara:"Re (komal)", raga:"Malkauns", graha:"Saturn", healing:"Maitrī (friendship)", gemstone:"Blue Sapphire", bija:"JHA", seed:"Mitra" },
+    { name:"Jyeshtha", svara:"Ma (tivra)", raga:"Darbari", graha:"Mercury", healing:"Śaurya (courage)", gemstone:"Emerald", bija:"ÑA", seed:"Indra" },
+    { name:"Mula", svara:"Sa (śuddha)", raga:"Malkauns", graha:"Ketu", healing:"Mūla śodhana (root)", gemstone:"Cat's Eye", bija:"ṬA", seed:"Nirṛti" },
+    { name:"Purva Ashadha", svara:"Dha (komal)", raga:"Khamaj", graha:"Venus", healing:"Śuddhi (purification)", gemstone:"Diamond", bija:"ṬHA", seed:"Apa" },
+    { name:"Uttara Ashadha", svara:"Ni (komal)", raga:"Bhoop", graha:"Sun", healing:"Vijaya (victory)", gemstone:"Ruby", bija:"ḌA", seed:"Viśve" },
+    { name:"Shravana", svara:"Pa (śuddha)", raga:"Yaman", graha:"Moon", healing:"Śravaṇa (learning)", gemstone:"Pearl", bija:"ḌHA", seed:"Viṣṇu" },
+    { name:"Dhanishtha", svara:"Ga (śuddha)", raga:"Brindavani Sarang", graha:"Mars", healing:"Dhana (wealth)", gemstone:"Red Coral", bija:"ṆA", seed:"Vasu" },
+    { name:"Shatabhisha", svara:"Re (komal)", raga:"Bhairav", graha:"Rahu", healing:"Rahasya (mystery)", gemstone:"Hessonite", bija:"TA", seed:"Varuṇa" },
+    { name:"Purva Bhadrapada", svara:"Ma (tivra)", raga:"Desh", graha:"Jupiter", healing:"Ādhyātmika jāgaraṇa (awakening)", gemstone:"Yellow Sapphire", bija:"THA", seed:"Aja" },
+    { name:"Uttara Bhadrapada", svara:"Sa (śuddha)", raga:"Darbari", graha:"Saturn", healing:"Sthiratva (stability)", gemstone:"Blue Sapphire", bija:"DA", seed:"Ahir" },
+    { name:"Revati", svara:"Dha (komal)", raga:"Bhimpalasi", graha:"Mercury", healing:"Rakṣaṇa (guidance)", gemstone:"Emerald", bija:"DHA", seed:"Pūṣan" }
+  ];
+
+  const NAVATARA = ["Janma (जन्म)","Sampat (सम्पत्)","Vipat (विपत्)","Kṣema (क्षेम)","Pratyari (प्रत्यरि)","Sādhana (साधन)","Naidhana (नैधन)","Mitra (मित्र)","Ati‑mitra (अतिमित्र)"];
+
+  // ==================== HELPERS ====================
+  function computeHash(str) { let h=0; for(let i=0;i<str.length;i++) h = ((h<<5)-h)+str.charCodeAt(i); return Math.abs(h); }
+  function get49DStats(text){ let h=computeHash(text); let ent=-(text.length*0.7+new Set(text).size); let sigma=25.48+(h%100)/100; return {sigma_dim:sigma.toFixed(5), entropy:ent.toFixed(5), hash:'0x'+h.toString(16).substring(0,8)}; }
+  function updateStats(txt){ let s=get49DStats(txt); document.getElementById('sigmaDim').innerText=s.sigma_dim; document.getElementById('entropy').innerText=s.entropy; document.getElementById('hashVal').innerText=s.hash; }
+
+  // ==================== ASTROLOGY (FULL NAKSHATRA) ====================
+  function renderAstrology(){
+    let name=document.getElementById('userName').value||"Seeker";
+    let loc=document.getElementById('birthLocation').value||"New Delhi";
+    let y=parseInt(document.getElementById('birthYear').value)||1990;
+    let seed=name+y+loc;
+    let hash=computeHash(seed);
+    let idx=hash%27;
+    let n=NAKSHATRA_DATA[idx];
+    let navIdx=idx%9;
+    let grahaIdx=hash%9;
+    let grahas=["Sūrya","Candra","Maṅgala","Budha","Bṛhaspati","Śukra","Śani","Rāhu","Ketu"];
+    document.getElementById('displayName').innerText=name;
+    document.getElementById('astrologyGrid').innerHTML=`
+      <div class="result-item"><div class="result-label">Nakṣatra</div><div class="result-value">${n.name}</div></div>
+      <div class="result-item"><div class="result-label">Pada</div><div class="result-value">${(hash%4)+1}</div></div>
+      <div class="result-item"><div class="result-label">Navatara</div><div class="result-value">${NAVATARA[navIdx]}</div></div>
+      <div class="result-item"><div class="result-label">Ruling Graha</div><div class="result-value">${n.graha}</div></div>
+      <div class="result-item"><div class="result-label">Sugata Rāga</div><div class="result-value">${n.raga}</div></div>
+      <div class="result-item"><div class="result-label">Svara (Frequency)</div><div class="result-value">${n.svara}</div></div>
+      <div class="result-item"><div class="result-label">Bīja Mantra</div><div class="result-value">Oṁ ${n.bija.toLowerCase()} ${n.seed.toLowerCase()} namaḥ</div></div>
+      <div class="result-item"><div class="result-label">Healing Focus</div><div class="result-value">${n.healing}</div></div>
+      <div class="result-item"><div class="result-label">Ratna (Gemstone)</div><div class="result-value">${n.gemstone}</div></div>
+      <div class="result-item"><div class="result-label">49D Hash</div><div class="result-value">0x${hash.toString(16)}</div></div>
+    `;
+    updateStats(seed);
+  }
+
+  document.getElementById('generateAstrologyBtn').addEventListener('click',()=>{ renderAstrology(); document.getElementById('astroFullReport').style.display='block'; });
+
+  // ==================== MUSIC & MANTRA (now uses nakshatra raga) ====================
+  document.getElementById('analyzeMantraBtn').addEventListener('click',()=>{
+    let txt=document.getElementById('mantraInput').value.trim()||"Rāma";
+    let hash=computeHash(txt);
+    let idx=hash%27;
+    let n=NAKSHATRA_DATA[idx];
+    let freq=108+(hash%100);
+    document.getElementById('musicResult').style.display='block';
+    document.getElementById('musicAnalysis').innerHTML=`
+      <div class="result-item"><div class="result-label">Text</div><div class="result-value">${txt}</div></div>
+      <div class="result-item"><div class="result-label">49D Hash</div><div class="result-value">0x${hash.toString(16)}</div></div>
+      <div class="result-item"><div class="result-label">Nakṣatra</div><div class="result-value">${n.name}</div></div>
+      <div class="result-item"><div class="result-label">Sugata Rāga</div><div class="result-value">${n.raga}</div></div>
+      <div class="result-item"><div class="result-label">Recommended Frequency</div><div class="result-value">${freq} Hz</div></div>
+      <div class="result-item"><div class="result-label">Healing Focus</div><div class="result-value">${n.healing}</div></div>
+    `;
+    updateStats(txt);
+  });
+
+  // ==================== SOUL MAP & YANTRA ====================
+  function drawYantra(hash){
+    let c=document.getElementById('yantraCanvas'), ctx=c.getContext('2d');
+    let size=400, cx=size/2;
+    c.width=size; c.height=size;
+    ctx.fillStyle='#1a1a2e'; ctx.fillRect(0,0,size,size);
+    ctx.strokeStyle='#e67e22'; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(cx,cx,170,0,Math.PI*2); ctx.stroke();
+    let seed=hash%360;
+    ctx.strokeStyle='#f1c40f'; ctx.lineWidth=2;
+    for(let i=0;i<6;i++){ let ang=(i*60+seed)*Math.PI/180; let x=cx+120*Math.cos(ang), y=cx+120*Math.sin(ang); ctx.beginPath(); ctx.moveTo(cx,cx); ctx.lineTo(x,y); ctx.stroke(); }
+    ctx.fillStyle='#f1c40f'; ctx.beginPath(); ctx.arc(cx,cx,8,0,Math.PI*2); ctx.fill();
+  }
+  document.getElementById('generateSoulMapBtn').addEventListener('click',()=>{
+    let txt=document.getElementById('soulMapText').value.trim()||"Rāma";
+    let hash=computeHash(txt);
+    let idx=hash%27;
+    let n=NAKSHATRA_DATA[idx];
+    document.getElementById('soulMapResult').style.display='block';
+    document.getElementById('soulMapGrid').innerHTML=`
+      <div class="result-item"><div class="result-label">Text</div><div class="result-value">${txt}</div></div>
+      <div class="result-item"><div class="result-label">Ātma Kāraka</div><div class="result-value">${n.graha}</div></div>
+      <div class="result-item"><div class="result-label">Nakṣatra</div><div class="result-value">${n.name}</div></div>
+      <div class="result-item"><div class="result-label">Life Purpose</div><div class="result-value">${n.healing}</div></div>
+    `;
+    drawYantra(hash);
+    document.getElementById('yantraContainer').style.display='block';
+    updateStats(txt);
+  });
+  document.getElementById('exportYantraBtn').addEventListener('click',()=>{ let link=document.createElement('a'); link.download='aigaane_yantra.png'; link.href=document.getElementById('yantraCanvas').toDataURL(); link.click(); });
+
+  // ==================== SANSKRIT ENGINE (simplified IAST ⇔ Devanagari) ====================
+  const iastToDeva={
+    'a':'अ','ā':'आ','i':'इ','ī':'ई','u':'उ','ū':'ऊ','ṛ':'ऋ','ṝ':'ॠ','e':'ए','ai':'ऐ','o':'ओ','au':'औ',
+    'k':'क','kh':'ख','g':'ग','gh':'घ','ṅ':'ङ','c':'च','ch':'छ','j':'ज','jh':'झ','ñ':'ञ','ṭ':'ट','ṭh':'ठ','ḍ':'ड','ḍh':'ढ','ṇ':'ण',
+    't':'त','th':'थ','d':'द','dh':'ध','n':'न','p':'प','ph':'फ','b':'ब','bh':'भ','m':'म','y':'य','r':'र','l':'ल','v':'व',
+    'ś':'श','ṣ':'ष','s':'स','h':'ह','ṃ':'ं','ḥ':'ः'
+  };
+  const devaToIast=Object.fromEntries(Object.entries(iastToDeva).map(([k,v])=>[v,k]));
+  document.getElementById('transliterateBtn').addEventListener('click',()=>{
+    let inp=document.getElementById('translitInput').value.trim();
+    if(!inp) return;
+    let isDeva=/[\u0900-\u097F]/.test(inp);
+    let out='';
+    if(isDeva){ for(let ch of inp) out+=devaToIast[ch]||ch; }
+    else{
+      let i=0;
+      while(i<inp.length){
+        let found=false;
+        for(let l of[2,1]) if(i+l<=inp.length && iastToDeva[inp.substr(i,l)]){ out+=iastToDeva[inp.substr(i,l)]; i+=l; found=true; break; }
+        if(!found){ out+=inp[i]; i++; }
+      }
+    }
+    document.getElementById('translitResult').innerHTML=out;
+  });
+
+  const lexicon={
+    'graha':'Planet','rāma':'Pleasant','kṛṣṇa':'Dark','deva':'God','agni':'Fire','sūrya':'Sun','candra':'Moon','dharma':'Duty','karma':'Action','yoga':'Union','mantra':'Sacred formula','veda':'Knowledge','guru':'Teacher','mokṣa':'Liberation','oṃ':'Primordial sound'
+  };
+  function displayLexicon(term){
+    let html='';
+    for(let [w,m] of Object.entries(lexicon)) if(w.includes(term)) html+=`<div><strong>${w}</strong> — ${m}</div>`;
+    if(!html) html='<div>No terms found. Try "graha", "rāma", "karma", "yoga"...</div>';
+    document.getElementById('lexiconResult').innerHTML=html;
+  }
+  document.getElementById('searchLexiconBtn').addEventListener('click',()=>displayLexicon(document.getElementById('lexiconSearch').value.trim().toLowerCase()));
+  displayLexicon('');
+
+  // ==================== INIT ====================
+  updateStats("AIGAANE");
+  renderAstrology();
+  document.getElementById('astroFullReport').style.display='block';
+
+  // TAB SWITCHING
+  document.querySelectorAll('.tab').forEach(t=>{ t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(tab=>tab.classList.remove('active'));
+    t.classList.add('active');
+    document.querySelectorAll('.content-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById(t.getAttribute('data-tab')).classList.add('active');
+  });});
+</script>
+</body>
+</html>

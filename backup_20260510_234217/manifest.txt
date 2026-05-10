@@ -1,0 +1,19 @@
+﻿BACKUP MANIFEST
+===============
+Backup Date: 2026-05-10 23:43:13
+Backup Folder: backup_20260510_234217
+Source Directory: C:\aigaane-v3-root
+
+FILES BACKED UP:
+----------------
+HTML Files: 3
+Python Files: 19
+PowerShell Files: 3
+JSON Files: 1
+
+Folders Backed Up:
+- tabs: True
+- engine: True
+- data: True
+
+Total Backup Size: 275.92 KB

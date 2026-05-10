@@ -1,0 +1,378 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIGAANE V4 — Complete Vedic Engine | IAST | Nakshatra | Rāga</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #e67e22; }
+        * { box-sizing: border-box; font-family: system-ui, 'Segoe UI', sans-serif; }
+        body { margin:0; background: linear-gradient(135deg, #f5f7fa, #c3cfe2); min-height:100vh; }
+        .container { max-width: 1200px; margin: 2rem auto; background: white; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2); overflow: hidden; }
+        .header { background: var(--primary); color: white; padding: 1.5rem 2rem; text-align: center; position: relative; }
+        .header h1 { margin:0; font-size: 2rem; }
+        .mode-toggle { position: absolute; top: 1rem; right: 2rem; background: #ecf0f1; padding: 0.3rem 0.8rem; border-radius: 40px; font-size: 0.75rem; cursor: pointer; color: #2c3e50; font-weight: bold; }
+        .mode-toggle.active { background: var(--accent); color: white; }
+        .tabs { display: flex; background: #ecf0f1; flex-wrap: wrap; }
+        .tab { flex:1; padding:1rem; text-align:center; cursor:pointer; font-weight:600; transition:0.2s; }
+        .tab.active { background:white; border-bottom:4px solid var(--accent); }
+        .content { padding:2rem; min-height:600px; }
+        .hidden { display:none; }
+        input, select, textarea, button { padding:0.7rem; font-size:0.95rem; border-radius:8px; border:1px solid #ddd; margin:0.2rem; }
+        button { background: var(--accent); color:white; border:none; font-weight:bold; cursor:pointer; }
+        button:hover { background:#d35400; }
+        .final { font-size:2rem; font-weight:bold; background:#f1c40f; display:inline-block; padding:0.4rem 1.2rem; border-radius:12px; margin:0.8rem 0; }
+        .step { background:#f8f9fa; padding:0.8rem; margin:0.6rem 0; border-left:5px solid #3498db; border-radius:10px; }
+        .phonetic-table { width:100%; border-collapse:collapse; margin-bottom:1rem; font-size:0.9rem; }
+        .phonetic-table td, .phonetic-table th { padding:0.5rem; border:1px solid #ddd; }
+        .phonetic-table th { background:#2c3e50; color:white; }
+        canvas { border:3px solid #2c3e50; border-radius:12px; background:#fffaf0; max-width:100%; height:auto; }
+        .result-box { background:#f0f8ff; padding:1.2rem; border-radius:12px; margin-top:1rem; }
+        @media (max-width:800px) { .tab { padding:0.6rem; font-size:0.8rem; } .content { padding:1rem; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🏛️ AIGAANE V4 — Complete Vedic Engine</h1>
+        <p>Grammar • Sound • Jyotiṣa • Rāga • Yantra</p>
+        <div id="modeToggle" class="mode-toggle">💻 Local Mode</div>
+    </div>
+    <div class="tabs">
+        <div class="tab" onclick="switchTab(0)">📖 Derivation</div>
+        <div class="tab" onclick="switchTab(1)">🎵 Music & Mantra</div>
+        <div class="tab" onclick="switchTab(2)">🔊 Phonetic Reference</div>
+        <div class="tab" onclick="switchTab(3)">🕉️ Soul Map</div>
+        <div class="tab active" onclick="switchTab(4)">🪐 Astrology & Nakshatra</div>
+    </div>
+
+    <!-- Tab 0: Derivation -->
+    <div class="content hidden" id="tab0">
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem;">
+            <input type="text" id="stem" value="pitṛ" placeholder="Stem (pitṛ, deva, agni)" style="flex:2">
+            <select id="case"><option>nominative</option><option selected>accusative</option><option>instrumental</option></select>
+            <select id="number"><option>singular</option><option>dual</option><option selected>plural</option></select>
+            <button onclick="runDerivation()">🌿 Derive</button>
+        </div>
+        <div id="playgroundResult"></div>
+        <div style="background:#eef; padding:0.8rem; border-radius:8px; font-size:0.85rem;">
+            💡 <strong>Examples:</strong> 
+            <code onclick="setExample('pitṛ','accusative','plural')">pitṛ + Acc.Pl. → pitṝn</code> | 
+            <code onclick="setExample('pitṛ','nominative','dual')">pitṛ + Nom.Du. → pitarau</code> | 
+            <code onclick="setExample('deva','instrumental','singular')">deva + Instr.Sg. → devena</code>
+        </div>
+    </div>
+
+    <!-- Tab 1: Music & Mantra -->
+    <div class="content hidden" id="tab1">
+        <h3>📜 Laghu‑Guru Meter</h3>
+        <textarea id="verseInput" rows="2" style="width:100%" placeholder="Enter Sanskrit text"></textarea>
+        <button onclick="scanProsody()">Scan Meter</button>
+        <div id="meterResult" class="result-box"></div>
+
+        <h3>🧘 Mantra Generator</h3>
+        <select id="deitySelect"><option value="">Random</option><option>śiva</option><option>viṣṇu</option><option>devī</option></select>
+        <select id="intentionSelect"><option value="">Random</option><option>śānti</option><option>dharma</option></select>
+        <button onclick="generateMantra()">✨ Generate</button>
+        <div id="generatedMantra" class="result-box"></div>
+
+        <h3>🎵 49D Frequency & Rāga</h3>
+        <input type="text" id="mantra49d" style="width:100%" placeholder="Enter mantra or text">
+        <button onclick="analyze49d()">Analyze Resonance</button>
+        <div id="mantra49dResult" class="result-box"></div>
+        <div id="ragaSuggestion" class="result-box"></div>
+    </div>
+
+    <!-- Tab 2: Phonetic Reference -->
+    <div class="content hidden" id="tab2">
+        <h3>Vowels (IAST)</h3>
+        <table class="phonetic-table"><thead><tr><th>Devanagari</th><th>IAST</th><th>Pronunciation</th></tr></thead><tbody>
+            <tr><td>अ</td><td>a</td><td>as a in rural</td></tr>
+            <tr><td>आ</td><td>ā</td><td>as a in father</td></tr>
+            <tr><td>इ</td><td>i</td><td>as i in lily</td></tr>
+            <tr><td>ई</td><td>ī</td><td>as i in police</td></tr>
+            <tr><td>उ</td><td>u</td><td>as u in bush</td></tr>
+            <tr><td>ऊ</td><td>ū</td><td>as u in rude</td></tr>
+            <tr><td>ऋ</td><td>ṛ</td><td>as ri in merrily</td></tr>
+            <tr><td>ॠ</td><td>ṝ</td><td>as ri in marine</td></tr>
+            <tr><td>ए</td><td>e</td><td>as e in there</td></tr>
+            <tr><td>ऐ</td><td>ai</td><td>as in aisle</td></tr>
+            <tr><td>ओ</td><td>o</td><td>as in go</td></tr>
+            <tr><td>औ</td><td>au</td><td>as ou in mouse</td></tr>
+        </tbody></table>
+        <h3>Consonants (IAST)</h3>
+        <table class="phonetic-table"><thead><tr><th>Devanagari</th><th>IAST</th><th>Pronunciation</th></tr></thead><tbody>
+            <tr><td>क</td><td>k</td><td>as k in kill</td></tr>
+            <tr><td>ख</td><td>kh</td><td>as kh in inkhorn</td></tr>
+            <tr><td>ग</td><td>g</td><td>as g in gun</td></tr>
+            <tr><td>घ</td><td>gh</td><td>as gh in log-hut</td></tr>
+            <tr><td>ङ</td><td>ṅ</td><td>as n in sink</td></tr>
+            <tr><td>च</td><td>c</td><td>as ch in church</td></tr>
+            <tr><td>छ</td><td>ch</td><td>as chh in church-hill</td></tr>
+            <tr><td>ज</td><td>j</td><td>as j in jet</td></tr>
+            <tr><td>झ</td><td>jh</td><td>as dgeh in hedgehog</td></tr>
+            <tr><td>ञ</td><td>ñ</td><td>as n in none</td></tr>
+            <tr><td>ट</td><td>ṭ</td><td>as t in true (retroflex)</td></tr>
+            <tr><td>ठ</td><td>ṭh</td><td>as th in ant-hill (retroflex)</td></tr>
+            <tr><td>ड</td><td>ḍ</td><td>as d in drum (retroflex)</td></tr>
+            <tr><td>ढ</td><td>ḍh</td><td>as dh in red-haired (retroflex)</td></tr>
+            <tr><td>ण</td><td>ṇ</td><td>as n in none (retroflex)</td></tr>
+            <tr><td>त</td><td>t</td><td>as t in water (dental)</td></tr>
+            <tr><td>थ</td><td>th</td><td>as th in nut-hook</td></tr>
+            <tr><td>द</td><td>d</td><td>as d in dice (dental)</td></tr>
+            <tr><td>ध</td><td>dh</td><td>as dh in adhere</td></tr>
+            <tr><td>न</td><td>n</td><td>as n in not</td></tr>
+            <tr><td>प</td><td>p</td><td>as p in put</td></tr>
+            <tr><td>फ</td><td>ph</td><td>as ph in uphill</td></tr>
+            <tr><td>ब</td><td>b</td><td>as b in bear</td></tr>
+            <tr><td>भ</td><td>bh</td><td>as bh in abhor</td></tr>
+            <tr><td>म</td><td>m</td><td>as m in map</td></tr>
+            <tr><td>य</td><td>y</td><td>as y in yet</td></tr>
+            <tr><td>र</td><td>r</td><td>as r in red</td></tr>
+            <tr><td>ल</td><td>l</td><td>as l in hull</td></tr>
+            <tr><td>व</td><td>v</td><td>as v in ivy</td></tr>
+            <tr><td>श</td><td>ś</td><td>as s in sure</td></tr>
+            <tr><td>ष</td><td>ṣ</td><td>as sh in shun (retroflex)</td></tr>
+            <tr><td>स</td><td>s</td><td>as s in sun</td></tr>
+            <tr><td>ह</td><td>h</td><td>as h in hear</td></tr>
+            <tr><td>ं</td><td>ṃ</td><td>anusvāra (nasal)</td></tr>
+            <tr><td>ः</td><td>ḥ</td><td>visarga (final aspirate)</td></tr>
+        </tbody></table>
+    </div>
+
+    <!-- Tab 3: Soul Map -->
+    <div class="content hidden" id="tab3">
+        <h3>🕉️ Yantra Visualization</h3>
+        <input type="text" id="yantraText" style="width:100%" value="Om">
+        <button onclick="generateYantra()">Generate Yantra</button>
+        <button id="exportYantraBtn" style="background:#2c3e50;">📸 Export PNG</button>
+        <div style="text-align:center;margin-top:1rem"><canvas id="yantraCanvas" width="450" height="450"></canvas></div>
+        <div id="yantraInfo" class="result-box"></div>
+    </div>
+
+    <!-- Tab 4: Astrology -->
+    <div class="content" id="tab4">
+        <h3>🪐 Jyotiṣa & Nakshatra Phala</h3>
+        <input type="text" id="astroText" style="width:100%" value="Rāma">
+        <button onclick="generateAstroMap()">Generate Graha & Nakshatra</button>
+        <div style="text-align:center;margin-top:1rem"><canvas id="astroCanvas" width="450" height="450"></canvas></div>
+        <div id="astroResult" class="result-box"></div>
+    </div>
+</div>
+
+<script>
+// ==== CORE FUNCTIONS ====
+function switchTab(n) {
+    document.querySelectorAll('.content').forEach((el,i)=>el.classList.toggle('hidden',i!==n));
+    document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',i===n));
+    if (n===3) generateYantra();
+    if (n===4) generateAstroMap();
+}
+
+function setExample(stem, caseName, number) {
+    document.getElementById('stem').value = stem;
+    document.getElementById('case').value = caseName;
+    document.getElementById('number').value = number;
+    runDerivation();
+}
+
+function get49D(text) {
+    let h = 0;
+    for (let i = 0; i < text.length; i++) h = ((h << 5) - h) + text.charCodeAt(i);
+    h = Math.abs(h);
+    let ent = -(text.length * 0.7 + new Set(text).size);
+    return { hash: h, entropy: parseFloat(ent.toFixed(2)) };
+}
+
+function playTone(freq, dur) {
+    let ctx = new (window.AudioContext || window.webkitAudioContext)();
+    let o = ctx.createOscillator(), g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = freq; o.type = 'sine'; g.gain.value = 0.3;
+    o.start(); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    o.stop(ctx.currentTime + dur);
+}
+
+// ==== DERIVATION ====
+function derive(stem, caseName, number) {
+    let steps = [], stemType = stem.endsWith("ṛ") ? "ṛ" : stem.endsWith("a") ? "a" : "other";
+    let isStrong = (caseName === "nominative" || caseName === "accusative");
+    let transformed = stem;
+    if (stemType === "ṛ") {
+        if (number === "plural" && caseName === "accusative") transformed = stem.replace("ṛ", "ṝ");
+        else if (isStrong) transformed = stem.replace("ṛ", "ār");
+        else transformed = stem.replace("ṛ", "r");
+    }
+    let endings = { "a_nominative_singular": "ḥ", "a_instrumental_singular": "ena", "ṛ_nominative_singular": "ā", "ṛ_nominative_dual": "au", "ṛ_accusative_plural": "n", "ṛ_instrumental_singular": "ā" };
+    let ending = endings[`${stemType}_${caseName}_${number}`] || "";
+    let finalForm = transformed + ending;
+    return { finalForm, steps: [
+        { desc: `Input: ${stem} → ${caseName} ${number}` },
+        { desc: `Strength: ${isStrong ? "strong" : "weak"}`, rule: "Sarvanāmasthāna" },
+        { desc: `Transformed stem`, before: stem, after: transformed },
+        { desc: `Added ending ${ending}`, before: `${transformed}+${ending}`, after: finalForm }
+    ] };
+}
+
+function runDerivation() {
+    let s = document.getElementById('stem').value, c = document.getElementById('case').value, n = document.getElementById('number').value, r = derive(s, c, n);
+    let html = `<div class="final">${r.finalForm}</div><h3>Steps</h3>`;
+    r.steps.forEach(st => {
+        html += `<div class="step"><strong>${st.desc}</strong>${st.rule ? ` <span style="background:#eef;padding:2px 8px;border-radius:20px">${st.rule}</span>` : ''}${st.before ? `<div style="margin-top:5px">${st.before} → <strong>${st.after}</strong></div>` : ''}</div>`;
+    });
+    document.getElementById('playgroundResult').innerHTML = html;
+}
+
+// ==== PROSODY ====
+function isGuru(s) {
+    let long = "āīūṝeoai", short = "aiuṛḷ";
+    for (let ch of s) if (long.includes(ch)) return true;
+    for (let i = 0; i < s.length; i++) if (short.includes(s[i])) {
+        for (let j = i + 1; j < s.length; j++) if (s[j] === 'ṃ' || s[j] === 'ḥ') return true;
+        break;
+    } return false;
+}
+
+function scanProsody() {
+    let t = document.getElementById('verseInput').value.trim();
+    if (!t) { document.getElementById('meterResult').innerHTML = "Enter text"; return; }
+    let syl = t.match(/[aāiīuūṛṝḷeoaiau][^aāiīuūṛṝḷeoaiau]*/g) || [];
+    let w = syl.map(s => isGuru(s) ? "G" : "L");
+    document.getElementById('meterResult').innerHTML = `<strong>Syllables:</strong> ${syl.join(' + ')}<br><strong>Pattern:</strong> ${w.join('')}<br><strong>Weights:</strong> ${w.join(' ')}`;
+}
+
+// ==== MANTRA ====
+const BEEJAS = ["oṃ", "hrīṃ", "śrīṃ", "klīṃ", "aim", "gam", "dum"];
+const DEITIES = { "śiva": "Śiva", "viṣṇu": "Viṣṇu", "devī": "Devī" };
+const INTENTIONS = { "śānti": "Peace", "dharma": "Righteousness" };
+
+function generateMantra() {
+    let d = document.getElementById('deitySelect').value, i = document.getElementById('intentionSelect').value;
+    let beej = BEEJAS[Math.floor(Math.random() * BEEJAS.length)];
+    let deity = d ? DEITIES[d] : Object.values(DEITIES)[Math.floor(Math.random() * 3)];
+    let intent = i ? INTENTIONS[i] : Object.values(INTENTIONS)[Math.floor(Math.random() * 2)];
+    let mantra = `${beej} ${deity} ${intent} namaḥ`;
+    document.getElementById('generatedMantra').innerHTML = `<strong>✨ ${mantra}</strong><br><button onclick="playTone(136, 3)">🔊 Play</button>`;
+}
+
+function analyze49d() {
+    let t = document.getElementById('mantra49d').value.trim() || "Om";
+    let s = get49D(t);
+    let f = s.entropy < -4 ? 108 : s.entropy < -2 ? 136 : 144;
+    document.getElementById('mantra49dResult').innerHTML = `<strong>“${t}”</strong><br>Entropy: ${s.entropy}<br>Frequency: ${f} Hz<br><button onclick="playTone(${f},3)">▶️ Play</button>`;
+    updateRagaSuggestion(t);
+}
+
+function updateRagaSuggestion(text) {
+    let data = get49D(text);
+    let idx = data.hash % 27;
+    let raga = nakshatras[idx].raga;
+    document.getElementById('ragaSuggestion').innerHTML = `<strong>🎵 Resonant Rāga:</strong> ${raga}`;
+}
+
+// ==== YANTRA ====
+function generateYantra() {
+    let t = document.getElementById('yantraText').value.trim() || "Om";
+    let hash = get49D(t).hash;
+    let canvas = document.getElementById('yantraCanvas'), ctx = canvas.getContext('2d');
+    let w = 450, h = 450, c = 225;
+    canvas.width = w; canvas.height = h;
+    ctx.fillStyle = '#fffaf0'; ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = '#2c3e50'; ctx.lineWidth = 10;
+    ctx.beginPath(); ctx.arc(c, c, 200, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = '#e67e22'; ctx.lineWidth = 3;
+    let seed = hash % 360;
+    for (let i = 0; i < 6; i++) {
+        let angle = (i * 60 + seed) * Math.PI / 180;
+        let r = 70 + i * 18;
+        ctx.beginPath(); ctx.moveTo(c, c);
+        ctx.lineTo(c + r * Math.cos(angle), c + r * Math.sin(angle));
+        ctx.lineTo(c + r * Math.cos(angle + 2 * Math.PI / 3), c + r * Math.sin(angle + 2 * Math.PI / 3));
+        ctx.closePath(); ctx.stroke();
+    }
+    ctx.fillStyle = '#f1c40f'; ctx.beginPath(); ctx.arc(c, c, 10, 0, Math.PI * 2); ctx.fill();
+    document.getElementById('yantraInfo').innerHTML = `<strong>Hash:</strong> ${hash}<br>Yantra for “${t}”`;
+}
+
+document.getElementById('exportYantraBtn')?.addEventListener('click', () => {
+    let canvas = document.getElementById('yantraCanvas');
+    let link = document.createElement('a');
+    link.download = 'aigaane_yantra.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+});
+
+// ==== NAKSHATRAS (All 27) ====
+const nakshatras = [
+    { name: "Ashwini", planet: "Ketu", raga: "Bhairav", beeja: "Om Aswinikumarabhyam Namah", deity: "Ashwini Kumaras", healing: "Ārogya", time: "Sunrise", gemstone: "Cat's Eye" },
+    { name: "Bharani", planet: "Venus", raga: "Malkauns", beeja: "Om Yamaya Namah", deity: "Yama", healing: "Parivartana", time: "Night", gemstone: "Diamond" },
+    { name: "Krittika", planet: "Sun", raga: "Rageshri", beeja: "Om Agnaye Namah", deity: "Agni", healing: "Śodhana", time: "Morning", gemstone: "Ruby" },
+    { name: "Rohini", planet: "Moon", raga: "Desh", beeja: "Om Chandramase Namah", deity: "Prajapati", healing: "Poṣaṇa", time: "Night", gemstone: "Pearl" },
+    { name: "Mrigashira", planet: "Mars", raga: "Bhairav", beeja: "Om Somaya Namah", deity: "Soma", healing: "Saṃvedana", time: "Evening", gemstone: "Red Coral" },
+    { name: "Ardra", planet: "Rahu", raga: "Todi", beeja: "Om Rudraya Namah", deity: "Rudra", healing: "Saṃkṣobha", time: "Night", gemstone: "Hessonite" },
+    { name: "Punarvasu", planet: "Jupiter", raga: "Desh", beeja: "Om Adityaya Namah", deity: "Aditi", healing: "Navīkaraṇa", time: "Morning", gemstone: "Yellow Sapphire" },
+    { name: "Pushya", planet: "Saturn", raga: "Darbari", beeja: "Om Brihaspataye Namah", deity: "Brihaspati", healing: "Pauṣṭi", time: "Night", gemstone: "Blue Sapphire" },
+    { name: "Ashlesha", planet: "Mercury", raga: "Bhimpalasi", beeja: "Om Nagaya Namah", deity: "Sarpas", healing: "Kuṇḍalinī", time: "Afternoon", gemstone: "Emerald" },
+    { name: "Magha", planet: "Ketu", raga: "Bhairav", beeja: "Om Pitribhyo Namah", deity: "Pitrs", healing: "Paitṛka", time: "Morning", gemstone: "Cat's Eye" },
+    { name: "P.Phalguni", planet: "Venus", raga: "Khamaj", beeja: "Om Bhagaya Namah", deity: "Bhaga", healing: "Vaivāhika", time: "Evening", gemstone: "Diamond" },
+    { name: "U.Phalguni", planet: "Sun", raga: "Bhoop", beeja: "Om Aryamne Namah", deity: "Aryaman", healing: "Nāyakatva", time: "Afternoon", gemstone: "Ruby" },
+    { name: "Hasta", planet: "Moon", raga: "Yaman", beeja: "Om Savitre Namah", deity: "Savitr", healing: "Kauśala", time: "Morning", gemstone: "Pearl" },
+    { name: "Chitra", planet: "Mars", raga: "Brindavani Sarang", beeja: "Om Vishwakarmane Namah", deity: "Vishwakarma", healing: "Śilpa", time: "Evening", gemstone: "Red Coral" },
+    { name: "Swati", planet: "Rahu", raga: "Hamsadhwani", beeja: "Om Vayave Namah", deity: "Vayu", healing: "Svātantrya", time: "Night", gemstone: "Hessonite" },
+    { name: "Vishakha", planet: "Jupiter", raga: "Shankara", beeja: "Om Indragnibhyam Namah", deity: "Indra-Agni", healing: "Śakti", time: "Morning", gemstone: "Yellow Sapphire" },
+    { name: "Anuradha", planet: "Saturn", raga: "Malkauns", beeja: "Om Mitraya Namah", deity: "Mitra", healing: "Maitrī", time: "Night", gemstone: "Blue Sapphire" },
+    { name: "Jyeshtha", planet: "Mercury", raga: "Darbari", beeja: "Om Indraya Namah", deity: "Indra", healing: "Śaurya", time: "Afternoon", gemstone: "Emerald" },
+    { name: "Mula", planet: "Ketu", raga: "Malkauns", beeja: "Om Nirritaye Namah", deity: "Nirriti", healing: "Mūla śodhana", time: "Morning", gemstone: "Cat's Eye" },
+    { name: "P.Ashadha", planet: "Venus", raga: "Khamaj", beeja: "Om Apah Namah", deity: "Apas", healing: "Śuddhi", time: "Evening", gemstone: "Diamond" },
+    { name: "U.Ashadha", planet: "Sun", raga: "Bhoop", beeja: "Om Vishvedevaya Namah", deity: "Vishvedevas", healing: "Vijaya", time: "Afternoon", gemstone: "Ruby" },
+    { name: "Shravana", planet: "Moon", raga: "Yaman", beeja: "Om Vishnave Namah", deity: "Vishnu", healing: "Śravaṇa", time: "Night", gemstone: "Pearl" },
+    { name: "Dhanishtha", planet: "Mars", raga: "Brindavani Sarang", beeja: "Om Vasubhyo Namah", deity: "Vasus", healing: "Dhana", time: "Evening", gemstone: "Red Coral" },
+    { name: "Shatabhisha", planet: "Rahu", raga: "Bhairav", beeja: "Om Varunaya Namah", deity: "Varuna", healing: "Rahasya", time: "Night", gemstone: "Hessonite" },
+    { name: "P.Bhadra", planet: "Jupiter", raga: "Desh", beeja: "Om Ajaikapade Namah", deity: "Aja Ekapada", healing: "Ādhyātmika jāgaraṇa", time: "Morning", gemstone: "Yellow Sapphire" },
+    { name: "U.Bhadra", planet: "Saturn", raga: "Darbari", beeja: "Om Ahirbudhnyaya Namah", deity: "Ahirbudhnya", healing: "Sthiratva", time: "Night", gemstone: "Blue Sapphire" },
+    { name: "Revati", planet: "Mercury", raga: "Bhimpalasi", beeja: "Om Pushne Namah", deity: "Pushan", healing: "Rakṣaṇa", time: "Afternoon", gemstone: "Emerald" }
+];
+
+const grahas = ["Sūrya", "Candra", "Maṅgala", "Budha", "Bṛhaspati", "Śukra", "Śani", "Rāhu", "Ketu"];
+const navataraNames = ["Janma", "Sampat", "Vipat", "Kṣema", "Pratyari", "Sādhana", "Naidhana", "Mitra", "Ati-mitra"];
+
+function generateAstroMap() {
+    let t = document.getElementById('astroText').value.trim() || "Om";
+    let data = get49D(t);
+    let planetIdx = data.hash % 9;
+    let nakshatraIdx = data.hash % 27;
+    let n = nakshatras[nakshatraIdx];
+    let navatara = navataraNames[nakshatraIdx % 9];
+    let strength = data.entropy < -5 ? "Very Strong" : data.entropy < -3 ? "Strong" : "Moderate";
+
+    let canvas = document.getElementById('astroCanvas'), ctx = canvas.getContext('2d');
+    let c = 225;
+    canvas.width = 450; canvas.height = 450;
+    ctx.fillStyle = '#fffaf0'; ctx.fillRect(0, 0, 450, 450);
+    ctx.strokeStyle = '#2c3e50'; ctx.lineWidth = 12;
+    ctx.beginPath(); ctx.arc(c, c, 200, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeRect(70, 70, 310, 310);
+    let angle = (planetIdx * 40) * Math.PI / 180;
+    let x = c + 140 * Math.cos(angle), y = c + 140 * Math.sin(angle);
+    ctx.fillStyle = '#e67e22'; ctx.beginPath(); ctx.arc(x, y, 30, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'white'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(grahas[planetIdx], x, y + 6);
+
+    let html = `<strong>Text:</strong> ${t}<br><strong>Graha:</strong> ${grahas[planetIdx]}<br><strong>Bala:</strong> ${strength}<br><strong>49D Hash:</strong> ${data.hash}<br><br>`;
+    html += `<h3>🌟 Nakṣatra: ${n.name}</h3>`;
+    html += `<h3>🌀 Navatara: ${navatara}</h3>`;
+    html += `<table style="width:100%"><tr><th>Lakṣya</th><th>Phala</th></tr>`;
+    html += `<tr><td>Graha</td><td>${n.planet}</td></tr>`;
+    html += `<tr><td>Sugata Rāga</td><td>${n.raga}</td></tr>`;
+    html += `<tr><td>Bīja Mantra</td><td><code>${n.beeja}</code></td></tr>`;
+    html += `<tr><td>Devatā</td><td>${n.deity}</td></tr>`;
+    html += `<tr><td>Svāsthya Lakṣya</td><td>${n.healing}</td></tr>`;
+    html += `<tr><td>Hora</td><td>${n.time}</td></tr>`;
+    html += `<tr><td>Ratna</td><td>${n.gemstone}</td></tr></table>`;
+    html += `<br><em>Japet bīja mantram, śṛṇuyāt rāgam — śāntiḥ.</em>`;
+    document.getElementById('astroResult').innerHTML = html;
+}
+
+window.onload = () => { runDerivation(); generateYantra(); generateAstroMap(); };
+</script>
+</body>
+</html>
